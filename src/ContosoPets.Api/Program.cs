@@ -1,9 +1,9 @@
 ﻿using System;
+using ContosoPets.DataAccess.Data;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using ContosoPets.DataAccess.Data;
 
 namespace ContosoPets.Api
 {
@@ -13,7 +13,7 @@ namespace ContosoPets.Api
         {
             var host = CreateWebHostBuilder(args).Build();
             // This seeding should only execute on the first run.
-            //SeedDatabase(host);
+            SeedDatabase(host);
             host.Run();
         }
 
