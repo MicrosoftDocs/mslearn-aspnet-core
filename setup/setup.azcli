@@ -10,6 +10,7 @@ declare srcWorkingDirectory=~/mslearn-aspnet-core/src
 declare gitRepoWorkingDirectory=$srcWorkingDirectory/ContosoPets.Api
 
 declare sqlServerName=sql$instanceId
+declare sqlHostName=$sqlServerName.database.windows.net
 declare sqlUsername=SqlUser
 declare sqlPassword=Pass.$RANDOM
 declare databaseName=ContosoPets
@@ -89,7 +90,7 @@ showResults() {
     connectInfo+=$'\n' 
     # username 
     connectInfo+=$'\033[1;35mDB Hostname: \033[0;37m'
-    connectInfo+=$sqlServerName.database.windows.net 
+    connectInfo+=$sqlHostName
     connectInfo+=$'\n'
     # username 
     connectInfo+=$'\033[1;35mDB Username: \033[0;37m'
@@ -225,5 +226,6 @@ resetAzureCliDefaults
 setGitRemoteRepository
 cd $srcWorkingDirectory
 showResults
+code .
 
 #END
