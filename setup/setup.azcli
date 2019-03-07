@@ -6,14 +6,16 @@ declare instanceId=$(($RANDOM * $RANDOM))
 # Variables
 declare gitUrl=https://github.com/MicrosoftDocs/mslearn-aspnet-core
 declare gitBranch=persist-data-ef-core
-declare gitRepoWorkingDirectory=~/mslearn-aspnet-core/src/ContosoPets.Api
+declare srcWorkingDirectory=~/mslearn-aspnet-core/src
+declare gitRepoWorkingDirectory=$srcWorkingDirectory/ContosoPets.Api
 
 declare sqlServerName=sql$instanceId
 declare sqlUsername=SqlUser
 declare sqlPassword=Pass.$RANDOM
 declare databaseName=ContosoPets
 declare sqlConnectionString="Data Source=$sqlServerName.database.windows.net;Initial Catalog=$databaseName;Connect Timeout=30;Encrypt=True;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False"
-declare keyVaultEndpoint=https://vault$instanceId.vault.azure.net/
+declare keyVaultName=vault$instanceId
+declare keyVaultEndpoint=https://$keyVaultName.vault.azure.net/
 declare resourceGroupName=EfCoreModule
 
 declare websiteName=web$instanceId
@@ -196,13 +198,13 @@ provisionKeyVaultForWebApp() {
     echo "Provisioning Azure Key Vault..."
 
     az keyvault create \
-        --name $keyVaultEndpoint \
+        --name $keyVaultName \
         --output none
     
     # Set an access policy for the web app's principal ID
     # which permits Get & List operations on the Key Vault
     az keyvault set-policy \
-        --name vault$instanceId \
+        --name $keyVaultName \
         --object-id $webAppPrincipalId \
         --secret-permissions get list \
         --output none  
@@ -221,6 +223,7 @@ provisionDatabase &
 wait &>/dev/null
 resetAzureCliDefaults
 setGitRemoteRepository
+cd $srcWorkingDirectory
 showResults
 
 #END
