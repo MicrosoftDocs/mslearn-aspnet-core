@@ -13,7 +13,7 @@ declare sqlUsername=SqlUser
 declare sqlPassword=Pass.$RANDOM
 declare databaseName=ContosoPets
 declare sqlConnectionString="Data Source=$sqlServerName.database.windows.net;Initial Catalog=$databaseName;Connect Timeout=30;Encrypt=True;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False"
-declare keyVaultEndpoint=vault$instanceId
+declare keyVaultEndpoint=https://vault$instanceId.vault.azure.net/
 declare resourceGroupName=EfCoreModule
 
 declare websiteName=web$instanceId
