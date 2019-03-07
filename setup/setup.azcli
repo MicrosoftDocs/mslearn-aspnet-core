@@ -4,20 +4,20 @@
 declare instanceId=$(($RANDOM * $RANDOM))
 
 # Variables
-declare gitUrl=https://github.com/scottaddie/retailapi
-declare gitBranch=master
-declare gitRepoWorkingDirectory=~/retailapi/Retail.Api
-declare retailApiProjectFile=Retail.Api/Retail.Api.csproj
+declare gitUrl=https://github.com/MicrosoftDocs/mslearn-aspnet-core
+declare gitBranch=persist-data-ef-core
+declare gitRepoWorkingDirectory=~/mslearn-aspnet-core/src/ContosoPets.Api
 
 declare sqlServerName=sql$instanceId
 declare sqlUsername=SqlUser
 declare sqlPassword=Pass.$RANDOM
 declare databaseName=ContosoPets
-
+declare sqlConnectionString="Data Source=$sqlServerName.database.windows.net;Initial Catalog=$databaseName;Connect Timeout=30;Encrypt=True;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False"
 declare keyVaultEndpoint=vault$instanceId
 declare resourceGroupName=EfCoreModule
 
 declare websiteName=web$instanceId
+declare webAppUrl=https://$websiteName.azurewebsites.net
 declare webAppDeploymentPassword=0iQzB97IEc
 
 declare connectFile='connect.txt'
@@ -72,7 +72,8 @@ downloadAndBuild() {
 
     echo "Building code..."
     cd $gitRepoWorkingDirectory
-    (dotnet build --verbosity quiet && echo $'\033[0;37mBuilt code!') &
+    dotnet build --verbosity quiet 
+    echo $'\033[0;37mBuilt code!'
 }
 
 showResults() {
@@ -82,11 +83,7 @@ showResults() {
 
     # db connection
     connectInfo+=$'\033[1;35mDB Connection String:\033[0;37m '
-    connectInfo+=$'Data Source='
-    connectInfo+=$sqlServerName
-    connectInfo+='.database.windows.net;Initial Catalog='
-    connectInfo+=$databaseName
-    connectInfo+=';User ID={0};Password={1};Connect Timeout=30;Encrypt=True;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False' 
+    connectInfo+=$sqlConnectionString
     connectInfo+=$'\n' 
     # username 
     connectInfo+=$'\033[1;35mDB Hostname: \033[0;37m'
@@ -106,7 +103,7 @@ showResults() {
     connectInfo+=$'\n'
 
     connectInfo+=$'\033[1;35mWeb App URL: \033[0;37m'
-    connectInfo+=https://$websiteName.azurewebsites.net
+    connectInfo+=$webAppUrl
     connectInfo+=$'\n'
 
     # Set to purple for drawing .NET Bot
@@ -182,11 +179,16 @@ provisionAppService() {
     az webapp deployment source config-local-git \
         --output none
 
+    echo "Provisioned Azure App Service!"
+}
+
+# Set Git remote for pushing to Azure
+setGitRemoteRepository() {
+    echo "Setting up publishing to Azure..."
     # Add the URL as a Git remote repository
     cd $gitRepoWorkingDirectory
     git remote add azure https://$websiteName:$webAppDeploymentPassword@$websiteName.scm.azurewebsites.net/$websiteName.git
-
-    echo "Provisioned Azure App Service!"
+    echo "Publishing to Azure enabled!"
 }
 
 # Provision Azure Key Vault
@@ -215,10 +217,10 @@ buildTask=$!
 setAzureCliDefaults
 provisionResourceGroup
 provisionDatabase &
-wait $buildTask
 (provisionAppService && provisionKeyVaultForWebApp) & 
-wait
+wait &>/dev/null
 resetAzureCliDefaults
+setGitRemoteRepository
 showResults
 
 #END
