@@ -15,13 +15,7 @@ declare sqlUsername=SqlUser
 declare sqlPassword=Pass.$RANDOM
 declare databaseName=ContosoPets
 declare sqlConnectionString="Data Source=$sqlServerName.database.windows.net;Initial Catalog=$databaseName;Connect Timeout=30;Encrypt=True;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False"
-declare keyVaultName=vault$instanceId
-declare keyVaultEndpoint=https://$keyVaultName.vault.azure.net/
 declare resourceGroupName=EfCoreModule
-
-declare websiteName=web$instanceId
-declare webAppUrl=https://$websiteName.azurewebsites.net
-declare webAppDeploymentPassword=0iQzB97IEc
 
 declare connectFile='connect.txt'
 
@@ -31,15 +25,13 @@ setAzureCliDefaults() {
 
     az configure --defaults \
         group=$resourceGroupName \
-        location=SouthCentralUs \
-        web=$websiteName
+        location=SouthCentralUs
 }
 resetAzureCliDefaults() {
     echo "Resetting default Azure CLI values..."
     az configure --defaults \
         group= \
-        location= \
-        web=
+        location= 
 }
 
 initEnvironment(){
@@ -100,14 +92,7 @@ showResults() {
     connectInfo+=$'\033[1;35mDB Password: \033[0;37m'
     connectInfo+=$sqlPassword
     connectInfo+=$'\n'
-    # key vault
-    connectInfo+=$'\033[1;35mKey Vault Endpoint: \033[0;37m'
-    connectInfo+=$keyVaultEndpoint
-    connectInfo+=$'\n'
 
-    connectInfo+=$'\033[1;35mWeb App URL: \033[0;37m'
-    connectInfo+=$webAppUrl
-    connectInfo+=$'\n'
 
     # Set to purple for drawing .NET Bot
     connectInfo+=$'\033[1;35m'
@@ -154,76 +139,15 @@ provisionDatabase() {
     echo "Provisioned Azure SQL Database!"
 }
 
-# Provision Azure App Service
-provisionAppService() {
-    echo "Provisioning Azure App Service..."
-
-    az appservice plan create \
-        --name $websiteName \
-        --output none
-
-    az webapp create \
-        --name $websiteName \
-        --plan $websiteName \
-        --output none
-        
-    # Enable Managed Service Identity on web app
-    declare -g webAppPrincipalId=$(az webapp identity assign \
-        --query principalId \
-        --output tsv)
-
-        # Create a deployment user
-    az webapp deployment user set \
-        --user-name $websiteName \
-        --password $webAppDeploymentPassword \
-        --output none
-    
-    # Set the deployment source
-    az webapp deployment source config-local-git \
-        --output none
-
-    echo "Provisioned Azure App Service!"
-}
-
-# Set Git remote for pushing to Azure
-setGitRemoteRepository() {
-    echo "Setting up publishing to Azure..."
-    # Add the URL as a Git remote repository
-    cd $gitRepoWorkingDirectory
-    git remote add azure https://$websiteName:$webAppDeploymentPassword@$websiteName.scm.azurewebsites.net/$websiteName.git
-    echo "Publishing to Azure enabled!"
-}
-
-# Provision Azure Key Vault
-provisionKeyVaultForWebApp() {
-    echo "Provisioning Azure Key Vault..."
-
-    az keyvault create \
-        --name $keyVaultName \
-        --output none
-    
-    # Set an access policy for the web app's principal ID
-    # which permits Get & List operations on the Key Vault
-    az keyvault set-policy \
-        --name $keyVaultName \
-        --object-id $webAppPrincipalId \
-        --secret-permissions get list \
-        --output none  
-
-    echo "Provisioned Azure Key Vault!"
-}
-
 # Create resources
 initEnvironment
 downloadAndBuild &
-buildTask=$!
 setAzureCliDefaults
 provisionResourceGroup
 provisionDatabase &
-(provisionAppService && provisionKeyVaultForWebApp) & 
 wait &>/dev/null
 resetAzureCliDefaults
-setGitRemoteRepository
 cd $srcWorkingDirectory
 showResults
 code .
+cd $gitRepoWorkingDirectory
