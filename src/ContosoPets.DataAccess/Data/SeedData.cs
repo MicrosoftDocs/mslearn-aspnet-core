@@ -1,6 +1,4 @@
-﻿using System;
-using System.Linq;
-using Microsoft.EntityFrameworkCore;
+﻿using System.Linq;
 using ContosoPets.Domain.Models;
 
 namespace ContosoPets.DataAccess.Data
