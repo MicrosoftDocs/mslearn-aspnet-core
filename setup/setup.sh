@@ -227,5 +227,3 @@ setGitRemoteRepository
 cd $srcWorkingDirectory
 showResults
 code .
-
-#END
