@@ -11,5 +11,7 @@ namespace ContosoPets.DataAccess.Data
         }
 
         public DbSet<Product> Products { get; set; }
+
+        // Add the DbSet<T> properties
     }
 }
