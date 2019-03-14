@@ -1,9 +1,5 @@
-﻿using System;
-using ContosoPets.DataAccess.Data;
-using Microsoft.AspNetCore;
+﻿using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 
 namespace ContosoPets.Api
 {
@@ -11,37 +7,11 @@ namespace ContosoPets.Api
     {
         public static void Main(string[] args)
         {
-            var host = CreateWebHostBuilder(args).Build();
-            // This seeding should only execute on the first run.
-            SeedDatabase(host);
-            host.Run();
+            CreateWebHostBuilder(args).Build().Run();
         }
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
                 .UseStartup<Startup>();
-
-        private static void SeedDatabase(IWebHost host)
-        {
-            var scopeFactory = host.Services.GetRequiredService<IServiceScopeFactory>();
-
-            using (var scope = scopeFactory.CreateScope())
-            {
-                var context = scope.ServiceProvider.GetRequiredService<ContosoPetsContext>();
-
-                if (context.Database.EnsureCreated())
-                {
-                    try
-                    {
-                        SeedData.Initialize(context);
-                    }
-                    catch (Exception ex)
-                    {
-                        var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
-                        logger.LogError(ex, "A database seeding error occurred.");
-                    }
-                }
-            }
-        }
     }
 }

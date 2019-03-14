@@ -1,5 +1,5 @@
-using ContosoPets.Domain.Models;
 using Microsoft.EntityFrameworkCore;
+// Add the ContosoPets.Domain.Models using statement
 
 namespace ContosoPets.DataAccess.Data
 {
@@ -9,8 +9,6 @@ namespace ContosoPets.DataAccess.Data
             : base(options)
         {
         }
-
-        public virtual DbSet<Product> Products { get; set; }
 
         // Add the DbSet<T> properties
     }
