@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 // Add the System.Data.SqlClient using statement
+// Add the ContosoPets.DataAccess.Services using statement
 
 namespace ContosoPets.Api
 {
@@ -21,6 +22,8 @@ namespace ContosoPets.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            // Add the OrderService DI registration code
+
             // Add the SqlConnectionStringBuilder code
 
             // Add the UseSqlServer code
