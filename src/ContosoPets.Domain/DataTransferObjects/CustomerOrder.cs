@@ -8,6 +8,6 @@ namespace ContosoPets.Domain.DataTransferObjects
         public string OrderPlaced { get; set; }
         public string OrderFulfilled { get; set; }
         public string CustomerName { get; set; }
-        public List<OrderLineItem> OrderLineItems { get; set; }
+        public IEnumerable<OrderLineItem> OrderLineItems { get; set; }
     }
 }
