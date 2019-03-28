@@ -231,7 +231,7 @@ editSettings(){
 
 # Create resources
 initEnvironment
-downloadAndBuild &
+downloadAndBuild
 setAzureCliDefaults
 provisionResourceGroup
 provisionDatabase &
