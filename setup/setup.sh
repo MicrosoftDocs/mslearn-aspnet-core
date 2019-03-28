@@ -1,4 +1,10 @@
 #!/bin/bash
+declare variableScript='variables.sh'
+if [ -e ~/$variableScript ]
+then
+    . ~/$variableScript
+    return 1
+fi
 
 # Generate a random number for unique resource names
 declare instanceId=$(($RANDOM * $RANDOM))
@@ -9,7 +15,7 @@ declare gitBranch=persist-data-ef-core
 declare srcWorkingDirectory=~/mslearn-aspnet-core/src
 declare gitRepoWorkingDirectory=$srcWorkingDirectory/ContosoPets.Api
 
-declare sqlServerName=sql$instanceId
+declare sqlServerName=sqldb$instanceId
 declare sqlHostName=$sqlServerName.database.windows.net
 declare sqlUsername=SqlUser
 declare sqlPassword=Pass.$RANDOM.word
@@ -17,14 +23,13 @@ declare databaseName=ContosoPets
 declare sqlConnectionString="Data Source=$sqlServerName.database.windows.net;Initial Catalog=$databaseName;Connect Timeout=30;Encrypt=True;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False"
 declare resourceGroupName=EfCoreModule
 
-declare appInsightsName=ai$instanceId
+declare appInsightsName=appinsights$instanceId
 declare subscriptionId=$(az account show --query id --output tsv)
 
 declare apiKeyTempFile='apiKey.temp'
 declare appIdTempFile='appId.temp'
 declare instrumentationKeyTempFile='instrumentationKey.temp'
 declare connectFile='connect.txt'
-declare variableScript='remember.sh'
 
 declare red=`tput setaf 1`
 declare green=`tput setaf 2`
@@ -36,6 +41,7 @@ declare white=`tput setaf 7`
 declare defaultColor=`tput setaf 9`
 declare bold=`tput bold`
 declare plain=`tput sgr0`
+declare newline=$'\n'
 
 # Functions
 setAzureCliDefaults() {
@@ -71,10 +77,14 @@ initEnvironment(){
     dotnet tool install dotnetsay --tool-path ~/dotnetsay
 
     # Greetings!
-    ~/dotnetsay/dotnetsay $'\n\033[1;37mHi there!\n\033[0;37mI\'m going to setup some \033[1;34mAzure\033[0;37m resources\nand get the code you\'ll need for this module.\033[1;35m'
-    echo $'\033[0;37m'
+    greeting="${newline}"
+    greeting+="${white}${bold}Hi there!${plain}${newline}"
+    greeting+="I'm going to set up some ${cyan}${bold}Azure${white}${plain} resources${newline}"
+    greeting+="and get the code you'll need for this module.${magenta}"
 
-    echo "${green}Deployment tasks run asynchronously from here on.${white}"
+    ~/dotnetsay/dotnetsay "$greeting"
+    
+    echo "${green}${bold}Deployment tasks run asynchronously from here on.${white}${plain}"
 }
 
 downloadAndBuild() {
@@ -97,87 +107,33 @@ downloadAndBuild() {
     ) 
 }
 
-writeResultsFile() {
-    connectInfo=$'\n'
-    connectInfo+=$'\033[1;32m\033[4mConnection Info\033[0;37m (view again by running: \033[1;37m. ~/remember.sh \033[0;37m)'
-    connectInfo+=$'\n'
-
-    # db connection
-    connectInfo+=$'\033[1;35mDB Connection String:\033[0;37m '
-    connectInfo+=$sqlConnectionString
-    connectInfo+=$'\n' 
-    # username 
-    connectInfo+=$'\033[1;35mDB Hostname: \033[0;37m'
-    connectInfo+=$sqlHostName
-    connectInfo+=$'\n'
-    # username 
-    connectInfo+=$'\033[1;35mDB Username: \033[0;37m'
-    connectInfo+=$sqlUsername@$sqlServerName 
-    connectInfo+=$'\n'
-    # password
-    connectInfo+=$'\033[1;35mDB Password: \033[0;37m'
-    connectInfo+=$sqlPassword
-    connectInfo+=$'\n'
-
-    # App Insights Instrumentation Key
-    connectInfo+=$'\033[1;35mApplication Insights Instrumentation Key: \033[0;37m'
-    connectInfo+=$(cat ~/$instrumentationKeyTempFile)
-    connectInfo+=$'\n'
-
-    # App Insights App ID
-    connectInfo+=$'\033[1;35mApplicationInsights App ID: \033[0;37m'
-    connectInfo+=$(cat ~/$appIdTempFile)
-    connectInfo+=$'\n'
-
-    # App Insights API Key
-    connectInfo+=$'\033[1;35mApplication Insights API Key: \033[0;37m'
-    connectInfo+=$(cat ~/$apiKeyTempFile)
-    connectInfo+=$'\n'
-
-    # Set to purple for drawing .NET Bot
-    #connectInfo+=$'\033[1;35m'
-
-    echo "$connectInfo" > ~/$connectFile
-}
-
 # Write variables script
-writeRememberScript() {
-    text="#!/bin/bash"
-    text+=$'\n'
-    text+="declare gitUrl=$gitUrl"
-    text+=$'\n'
-    text+="declare gitBranch=$gitBranch"
-    text+=$'\n'
-    text+="declare srcWorkingDirectory=$srcWorkingDirectory"
-    text+=$'\n'
-    text+="declare gitRepoWorkingDirectory=$gitRepoWorkingDirectory"
-    text+=$'\n'
-    text+="declare sqlServerName=$sqlServerName"
-    text+=$'\n'
-    text+="declare sqlHostName=$sqlHostName"
-    text+=$'\n'
-    text+="declare sqlUsername=$sqlUsername"
-    text+=$'\n'
-    text+="declare sqlPassword=$sqlPassword"
-    text+=$'\n'
-    text+="declare databaseName=$databaseName"
-    text+=$'\n'
-    text+="declare sqlConnectionString=\"$sqlConnectionString\""
-    text+=$'\n'
-    text+="declare resourceGroupName=$resourceGroupName"
-    text+=$'\n'
-    text+="declare appInsightsName=$appInsightsName"
-    text+=$'\n'
-    text+="declare subscriptionId=$subscriptionId"
-    text+=$'\n'
-    text+="declare apiKey=$(cat ~/$apiKeyTempFile)"
-    text+=$'\n'
-    text+="declare appId=$(cat ~/$appIdTempFile)"
-    text+=$'\n'
-    text+="declare instrumentationKey=$(cat ~/$instrumentationKeyTempFile)"
-    text+=$'\n'
-    text+="cat ~/$connectFile"
-
+writeVariablesScript() {
+    text="#!/bin/bash${newline}"
+    text+="declare gitUrl=$gitUrl${newline}"
+    text+="declare gitBranch=$gitBranch${newline}"
+    text+="declare srcWorkingDirectory=$srcWorkingDirectory${newline}"
+    text+="declare gitRepoWorkingDirectory=$gitRepoWorkingDirectory${newline}"
+    text+="declare sqlServerName=$sqlServerName${newline}"
+    text+="declare sqlHostName=$sqlHostName${newline}"
+    text+="declare sqlUsername=$sqlUsername${newline}"
+    text+="declare sqlPassword=$sqlPassword${newline}"
+    text+="declare databaseName=$databaseName${newline}"
+    text+="declare sqlConnectionString=\"$sqlConnectionString\"${newline}"
+    text+="declare resourceGroupName=$resourceGroupName${newline}"
+    text+="declare appInsightsName=$appInsightsName${newline}"
+    text+="declare subscriptionId=$subscriptionId${newline}"
+    text+="declare apiKey=$(cat ~/$apiKeyTempFile)${newline}"
+    text+="declare appId=$(cat ~/$appIdTempFile)${newline}"
+    text+="declare instrumentationKey=$(cat ~/$instrumentationKeyTempFile)${newline}"
+    text+="echo \"${green}${bold}Connection Info\"${newline}"
+    text+="echo \"${magenta}${bold}DB Connection String: ${white}${plain}$sqlConnectionString\"${newline}"
+    text+="echo \"${magenta}${bold}DB Host Name: ${white}${plain}$sqlHostName\"${newline}"
+    text+="echo \"${magenta}${bold}DB User Name: ${white}${plain}$sqlUsername\"${newline}"
+    text+="echo \"${magenta}${bold}DB Password: ${white}${plain}$sqlPassword\"${newline}"
+    text+="echo \"${magenta}${bold}App Insights Instrumentation Key: ${white}${plain}$(cat ~/$instrumentationKeyTempFile)\"${newline}"
+    text+="echo \"${magenta}${bold}App Insights App ID: ${white}${plain}$(cat ~/$appIdTempFile)\"${newline}"
+    text+="echo \"${magenta}${bold}App Insights API Key: ${white}${plain}$(cat ~/$apiKeyTempFile)\"${newline}"
     echo "$text" > ~/$variableScript
     chmod 755 ~/$variableScript
 }
@@ -245,6 +201,8 @@ provisionAppInsights() {
 
     # Create an API Key for App Insights
     # There is no Az CLI command for this, so we must use the REST API.
+    echo "${white}Using ${cyan}${bold}Azure REST API ${white}${plain}to get App ID and API Key from Application Insights..."
+
     appInsightsDetails=$(az resource show --resource-type microsoft.insights/components --name $appInsightsName)
     token=$(az account get-access-token --output tsv --query accessToken)
     aiPath=$"/subscriptions/$subscriptionId/resourceGroups/$resourceGroupName/providers/microsoft.insights/components/$appInsightsName"
@@ -283,13 +241,16 @@ wait &>/dev/null
 editSettings
 resetAzureCliDefaults
 cd $srcWorkingDirectory
-writeResultsFile
 code .
 cd $gitRepoWorkingDirectory
-writeRememberScript
+writeVariablesScript
 cleanupTempFiles
 
 # We're done! Summarize.
-echo $'Done!\n\n'
-~/dotnetsay/dotnetsay $'\n\033[1;37mYour environment is ready!\n\033[0;37mI set up some \033[1;34mAzure\033[0;37m resources and downloaded the code you\'ll need.\n\033[1;35mYou can find your connection information below.\033[1;35m'
+summary="${newline}"
+summary+="${green}${bold}Your environment is ready!${white}${plain}${newline}"
+summary+="I set up some ${cyan}${bold}Azure${white}${plain} resources and downloaded the code you'll need.${newline}"
+summary+="You can display this information again by running ${red}${bold}. ~/setup.sh${white}${plain} from any location.${magenta}"
+~/dotnetsay/dotnetsay "$summary"
+
 . ~/$variableScript
