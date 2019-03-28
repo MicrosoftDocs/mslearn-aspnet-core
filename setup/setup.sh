@@ -26,19 +26,37 @@ declare instrumentationKeyTempFile='instrumentationKey.temp'
 declare connectFile='connect.txt'
 declare variableScript='remember.sh'
 
+declare red=`tput setaf 1`
+declare green=`tput setaf 2`
+declare yellow=`tput setaf 3`
+declare blue=`tput setaf 4`
+declare magenta=`tput setaf 5`
+declare cyan=`tput setaf 6`
+declare white=`tput setaf 7`
+declare defaultColor=`tput setaf 9`
+declare bold=`tput bold`
+declare plain=`tput sgr0`
+
 # Functions
 setAzureCliDefaults() {
-    echo "Setting default Azure CLI values..."
-
-    az configure --defaults \
-        group=$resourceGroupName \
-        location=SouthCentralUs
+    echo "${white}Setting default Azure CLI values...${cyan}"
+    (
+        set -x
+        az configure --defaults \
+            group=$resourceGroupName \
+            location=SouthCentralUs
+    )
+    echo "${white}"
 }
 resetAzureCliDefaults() {
-    echo "Resetting default Azure CLI values..."
-    az configure --defaults \
-        group= \
-        location= 
+    echo "${white}Resetting default Azure CLI values...${cyan}"
+    (
+        set -x
+        az configure --defaults \
+            group= \
+            location=
+    )
+    echo "${white}"
 }
 
 initEnvironment(){
@@ -47,7 +65,7 @@ initEnvironment(){
 
     # Display installed .NET Core SDK version
     dotnetsdkversion=$(dotnet --version)
-    echo "Using .NET Core SDK version $dotnetsdkversion"
+    echo "${magenta}Using .NET Core SDK version $dotnetsdkversion${white}"
 
     # Install .NET Core global tool to display connection info
     dotnet tool install dotnetsay --tool-path ~/dotnetsay
@@ -56,7 +74,7 @@ initEnvironment(){
     ~/dotnetsay/dotnetsay $'\n\033[1;37mHi there!\n\033[0;37mI\'m going to setup some \033[1;34mAzure\033[0;37m resources\nand get the code you\'ll need for this module.\033[1;35m'
     echo $'\033[0;37m'
 
-    echo "Deployment tasks run asynchronously from here on."
+    echo "${green}Deployment tasks run asynchronously from here on.${white}"
 }
 
 downloadAndBuild() {
@@ -68,14 +86,15 @@ downloadAndBuild() {
     git config --global user.email learn@contoso.com
     
     # Download the sample project, restore NuGet packages, and build
-    echo "Downloading code..."
-    git clone --branch $gitBranch $gitUrl --quiet
-    echo "Downloaded code!"
+    echo "${white}Downloading code...${yellow}"
+    (set -x; git clone --branch $gitBranch $gitUrl --quiet)
 
-    echo "Building code..."
-    cd $gitRepoWorkingDirectory
-    dotnet build --verbosity quiet 
-    echo $'\033[0;37mBuilt code!'
+    echo "${white}Building code...${magenta}"
+    (
+        set -x; 
+        cd $gitRepoWorkingDirectory
+        dotnet build --verbosity quiet
+    ) 
 }
 
 writeResultsFile() {
@@ -171,74 +190,87 @@ cleanupTempFiles() {
 
 # Provision Azure Resource Group
 provisionResourceGroup() {
-    echo "Provisioning Azure Resource Group..."
+    echo "${white}Provisioning Azure Resource Group...${cyan}"
 
-    az group create \
-        --name $resourceGroupName \
-        --output none
-
-    echo "Provisioned Azure Resource Group!"
+    (
+        set -x
+        az group create \
+            --name $resourceGroupName \
+            --output none
+    )
 }
 
 # Provision Azure SQL Database
 provisionDatabase() {
-    echo "Provisioning Azure SQL Database..."
-
-    az sql server create \
-        --name $sqlServerName \
-        --admin-user $sqlUsername \
-        --admin-password $sqlPassword \
-        --output none
-
-    az sql db create \
-        --name $databaseName \
-        --server $sqlServerName \
-        --output none
-
-    az sql server firewall-rule create \
-        --name AllowAzureAccess \
-        --start-ip-address 0.0.0.0 \
-        --end-ip-address 0.0.0.0 \
-        --server $sqlServerName \
-        --output none
-
-    echo "Provisioned Azure SQL Database!"
+    (
+        echo "${white}Provisioning Azure SQL Database Server...${cyan}"
+        set -x
+        az sql server create \
+            --name $sqlServerName \
+            --admin-user $sqlUsername \
+            --admin-password $sqlPassword \
+            --output none
+    )
+    (
+        echo "${white}Provisioning Azure SQL Database...${cyan}"
+        set -x
+        az sql db create \
+            --name $databaseName \
+            --server $sqlServerName \
+            --output none
+    )
+    (
+        echo "${white}Adding Azure IP addresses to Azure SQL Database firewall rules...${cyan}"
+        set -x
+        az sql server firewall-rule create \
+            --name AllowAzureAccess \
+            --start-ip-address 0.0.0.0 \
+            --end-ip-address 0.0.0.0 \
+            --server $sqlServerName \
+            --output none
+    )
 }
 
 provisionAppInsights() {
-    echo "Provisioning Azure Monitor Application Insights..."
+    (
+        echo "${white}Provisioning Azure Monitor Application Insights...${cyan}"
+        set -x
+        az resource create \
+            --resource-type microsoft.insights/components \
+            --name $appInsightsName \
+            --is-full-object \
+            --properties '{"kind":"web","location":"southcentralus","properties":{"Application_Type":"web"}}' \
+            --output none
+    )
 
-    appInsightsDetails=$(az resource create \
-        --resource-type microsoft.insights/components \
-        --name $appInsightsName \
-        --is-full-object \
-        --properties '{"kind":"web","location":"southcentralus","properties":{"Application_Type":"web"}}')
- 
     # Create an API Key for App Insights
     # There is no Az CLI command for this, so we must use the REST API.
+    appInsightsDetails=$(az resource show --resource-type microsoft.insights/components --name $appInsightsName)
     token=$(az account get-access-token --output tsv --query accessToken)
     aiPath=$"/subscriptions/$subscriptionId/resourceGroups/$resourceGroupName/providers/microsoft.insights/components/$appInsightsName"
     body=$"{\"name\":\"$appInsightsName-ApiKey\",\"linkedReadProperties\":[\"$aiPath/api\"]}"
     len=$(expr length $body)
     url="https://management.azure.com$aiPath/apikeys?api-version=2015-05-01"
     result=$(curl -X POST \
-        -H "Authorization: Bearer $token" \
-        -H "Content-Type: application/json" \
-        -H "Content-Length: $len" \
-        -s \
-        $url \
-        -d $body)
+            -H "Authorization: Bearer $token" \
+            -H "Content-Type: application/json" \
+            -H "Content-Length: $len" \
+            -s \
+            $url \
+            -d $body)
     apiKey=$(echo $result | jq -r '.apiKey')
     appId=$(echo $appInsightsDetails | jq -r '.properties.AppId')
     instrumentationKey=$(echo $appInsightsDetails | jq -r '.properties.InstrumentationKey')
 
-    sed -i "s|<instrumentation-key>|$instrumentationKey|g" $gitRepoWorkingDirectory/appsettings.json
     echo $apiKey > ~/$apiKeyTempFile
     echo $appId > ~/$appIdTempFile
     echo $instrumentationKey > ~/$instrumentationKeyTempFile
-
-    echo "Provisioned Azure Monitor Application Insights!"
 }
+
+editSettings(){
+    sed -i "s|<instrumentation-key>|$(cat ~/$instrumentationKeyTempFile)|g" $gitRepoWorkingDirectory/appsettings.json
+}
+
 
 # Create resources
 initEnvironment
@@ -248,6 +280,7 @@ provisionResourceGroup
 provisionDatabase &
 provisionAppInsights &
 wait &>/dev/null
+editSettings
 resetAzureCliDefaults
 cd $srcWorkingDirectory
 writeResultsFile
