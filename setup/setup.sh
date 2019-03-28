@@ -14,6 +14,7 @@ declare instanceId=$(($RANDOM * $RANDOM))
 declare gitUrl=https://github.com/MicrosoftDocs/mslearn-aspnet-core
 declare gitBranch=persist-data-ef-core
 declare srcWorkingDirectory=~/mslearn-aspnet-core/src
+declare setupWorkingDirectory=~/mslearn-aspnet-core/setup
 declare gitRepoWorkingDirectory=$srcWorkingDirectory/ContosoPets.Api
 
 declare sqlServerName=sqldb$instanceId
@@ -113,10 +114,11 @@ writeVariablesScript() {
     text+="declare gitUrl=$gitUrl${newline}"
     text+="declare gitBranch=$gitBranch${newline}"
     text+="declare srcWorkingDirectory=$srcWorkingDirectory${newline}"
+    text+="declare setupWorkingDirectory=$setupWorkingDirectory${newline}"
     text+="declare gitRepoWorkingDirectory=$gitRepoWorkingDirectory${newline}"
     text+="declare sqlServerName=$sqlServerName${newline}"
     text+="declare sqlHostName=$sqlHostName${newline}"
-    text+="declare sqlUsername=$sqlUsername${newline}"
+    text+="declare sqlUsername=$sqlUsername@$sqlServerName${newline}"
     text+="declare sqlPassword=$sqlPassword${newline}"
     text+="declare databaseName=$databaseName${newline}"
     text+="declare sqlConnectionString=\"$sqlConnectionString\"${newline}"
