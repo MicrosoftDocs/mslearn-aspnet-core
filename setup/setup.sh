@@ -78,8 +78,7 @@ initEnvironment(){
     dotnet tool install dotnetsay --tool-path ~/dotnetsay
 
     # Greetings!
-    greeting="${newline}"
-    greeting+="${white}${bold}Hi there!${plain}${newline}"
+    greeting="${newline}${white}${bold}Hi there!${plain}${newline}"
     greeting+="I'm going to set up some ${cyan}${bold}Azure${white}${plain} resources${newline}"
     greeting+="and get the code you'll need for this module.${magenta}"
 
@@ -248,8 +247,7 @@ writeVariablesScript
 cleanupTempFiles
 
 # We're done! Summarize.
-summary="${newline}"
-summary+="${green}${bold}Your environment is ready!${white}${plain}${newline}"
+summary="${newline}${green}${bold}Your environment is ready!${white}${plain}${newline}"
 summary+="I set up some ${cyan}${bold}Azure${white}${plain} resources and downloaded the code you'll need.${newline}"
 summary+="You can display this information again by running ${red}${bold}. ~/setup.sh${white}${plain} from any location.${magenta}"
 ~/dotnetsay/dotnetsay "$summary"
