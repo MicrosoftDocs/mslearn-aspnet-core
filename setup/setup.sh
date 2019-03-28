@@ -134,6 +134,9 @@ writeVariablesScript() {
     text+="echo \"${magenta}${bold}App Insights Instrumentation Key: ${white}${plain}$(cat ~/$instrumentationKeyTempFile)\"${newline}"
     text+="echo \"${magenta}${bold}App Insights App ID: ${white}${plain}$(cat ~/$appIdTempFile)\"${newline}"
     text+="echo \"${magenta}${bold}App Insights API Key: ${white}${plain}$(cat ~/$apiKeyTempFile)\"${newline}"
+    text+="cd $srcWorkingDirectory${newline}"
+    text=+"code .${newline}"
+    text=+"cd $gitRepoWorkingDirectory${newline}"
     echo "$text" > ~/$variableScript
     chmod 755 ~/$variableScript
 }
@@ -239,9 +242,6 @@ provisionAppInsights &
 wait &>/dev/null
 editSettings
 resetAzureCliDefaults
-cd $srcWorkingDirectory
-code .
-cd $gitRepoWorkingDirectory
 writeVariablesScript
 cleanupTempFiles
 
