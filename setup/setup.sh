@@ -101,7 +101,7 @@ downloadAndBuild() {
 
     echo "${white}Building code...${magenta}"
     (
-        set -x; 
+        set -x 
         cd $gitRepoWorkingDirectory
         dotnet build --verbosity quiet
     ) 
@@ -146,9 +146,8 @@ cleanupTempFiles() {
 
 # Provision Azure Resource Group
 provisionResourceGroup() {
-    echo "${white}Provisioning Azure Resource Group...${cyan}"
-
     (
+        echo "${white}Provisioning Azure Resource Group...${cyan}"
         set -x
         az group create \
             --name $resourceGroupName \
