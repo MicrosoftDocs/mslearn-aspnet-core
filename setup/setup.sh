@@ -1,4 +1,5 @@
 #!/bin/bash
+# If the script has already been run, just set the vars and leave.
 declare variableScript='variables.sh'
 if [ -e ~/$variableScript ]
 then
