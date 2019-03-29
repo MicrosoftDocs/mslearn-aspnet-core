@@ -1,15 +1,21 @@
+-- Purge data from all tables
+TRUNCATE TABLE dbo.ProductOrders
+TRUNCATE TABLE dbo.Orders
+TRUNCATE TABLE dbo.Products
+TRUNCATE TABLE dbo.Customers
+
 -- Populate Products table
-INSERT INTO dbo.Products (Name, Price) 
+INSERT INTO dbo.Products ([Name], Price) 
 VALUES ('Knotted Rope', 14.99)
 
 DECLARE @KnottedRopeProductId int = SCOPE_IDENTITY()
 
-INSERT INTO dbo.Products (Name, Price)
+INSERT INTO dbo.Products ([Name], Price)
 VALUES ('Squeaky Bone', 20.99)
 
 DECLARE @SqueakyBoneProductId int = SCOPE_IDENTITY()
 
-INSERT INTO dbo.Products (Name, Price)
+INSERT INTO dbo.Products ([Name], Price)
 VALUES ('Plush Squirrel', 12.99)
 
 DECLARE @PlushSquirrelProductId int = SCOPE_IDENTITY()

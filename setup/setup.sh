@@ -80,7 +80,7 @@ initEnvironment(){
 
     # Greetings!
     greeting="${newline}${white}${bold}Hi there!${plain}${newline}"
-    greeting+="I'm going to set up some ${cyan}${bold}Azure${white}${plain} resources${newline}"
+    greeting+="I'm going to provision some ${cyan}${bold}Azure${white}${plain} resources${newline}"
     greeting+="and get the code you'll need for this module.${magenta}"
 
     ~/dotnetsay/dotnetsay "$greeting"
@@ -128,6 +128,7 @@ writeVariablesScript() {
     text+="declare apiKey=$(cat ~/$apiKeyTempFile)${newline}"
     text+="declare appId=$(cat ~/$appIdTempFile)${newline}"
     text+="declare instrumentationKey=$(cat ~/$instrumentationKeyTempFile)${newline}"
+    text+="alias db=\"sqlcmd -U $sqlUsername -P $sqlPassword -S $sqlHostName -d $databaseName\"${newline}"
     text+="echo \"${green}${bold}Connection Info\"${newline}"
     text+="echo \"${magenta}${bold}DB Connection String: ${white}${plain}$sqlConnectionString\"${newline}"
     text+="echo \"${magenta}${bold}DB Host Name: ${white}${plain}$sqlHostName\"${newline}"
@@ -136,9 +137,12 @@ writeVariablesScript() {
     text+="echo \"${magenta}${bold}App Insights Instrumentation Key: ${white}${plain}$(cat ~/$instrumentationKeyTempFile)\"${newline}"
     text+="echo \"${magenta}${bold}App Insights App ID: ${white}${plain}$(cat ~/$appIdTempFile)\"${newline}"
     text+="echo \"${magenta}${bold}App Insights API Key: ${white}${plain}$(cat ~/$apiKeyTempFile)\"${newline}"
+    text+="echo ${newline}"
+    text+="echo \"${white}db ${magenta}${bold}is an alias for${white}${plain} sqlcmd -U $sqlUsername -P $sqlPassword -S $sqlHostName -d $databaseName\"${newline}"
+    text+="echo ${newline}"
     text+="cd $srcWorkingDirectory${newline}"
-    text=+"code .${newline}"
-    text=+"cd $gitRepoWorkingDirectory${newline}"
+    text+="code .${newline}"
+    text+="cd $gitRepoWorkingDirectory${newline}"
     echo "$text" > ~/$variableScript
     chmod 755 ~/$variableScript
 }
@@ -233,6 +237,12 @@ editSettings(){
     sed -i "s|<instrumentation-key>|$(cat ~/$instrumentationKeyTempFile)|g" $gitRepoWorkingDirectory/appsettings.json
 }
 
+createAliases(){
+    echo "${white}Creating aliases...${yellow}"
+    set -x
+    alias db="sqlcmd -U $sqlUsername -P $sqlPassword -S $sqlHostName -d $databaseName"
+    set +x
+}
 
 # Create resources
 initEnvironment
@@ -244,6 +254,7 @@ provisionAppInsights &
 wait &>/dev/null
 editSettings
 resetAzureCliDefaults
+createAliases
 writeVariablesScript
 cleanupTempFiles
 
