@@ -1,8 +1,14 @@
 -- Purge data from all tables
-TRUNCATE TABLE dbo.ProductOrders
-TRUNCATE TABLE dbo.Orders
-TRUNCATE TABLE dbo.Products
-TRUNCATE TABLE dbo.Customers
+DELETE FROM dbo.ProductOrders
+DELETE FROM dbo.Orders
+DELETE FROM dbo.Products
+DELETE FROM dbo.Customers
+
+-- Reset identity column values to 0
+DBCC CHECKIDENT ('[ProductOrders]', RESEED, 0)
+DBCC CHECKIDENT ('[Orders]', RESEED, 0)
+DBCC CHECKIDENT ('[Products]', RESEED, 0)
+DBCC CHECKIDENT ('[Customers]', RESEED, 0)
 
 -- Populate Products table
 INSERT INTO dbo.Products ([Name], Price) 

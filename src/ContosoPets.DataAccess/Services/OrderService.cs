@@ -17,11 +17,10 @@ namespace ContosoPets.DataAccess.Services
 
         // Add the GetById code
 
-        // Add the Delete code
-
         // Add the Create code
 
         // Add the SetFulfilled code
 
+        // Add the Delete code
     }
 }
