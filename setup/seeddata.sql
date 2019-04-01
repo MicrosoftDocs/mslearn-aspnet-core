@@ -1,14 +1,19 @@
--- Purge data from all tables
-DELETE FROM dbo.ProductOrders
-DELETE FROM dbo.Orders
-DELETE FROM dbo.Products
-DELETE FROM dbo.Customers
+DECLARE @OrdersCount int = (SELECT COUNT(Id) FROM dbo.Orders)
 
--- Reset identity column values to 0
-DBCC CHECKIDENT ('[ProductOrders]', RESEED, 0)
-DBCC CHECKIDENT ('[Orders]', RESEED, 0)
-DBCC CHECKIDENT ('[Products]', RESEED, 0)
-DBCC CHECKIDENT ('[Customers]', RESEED, 0)
+IF @OrdersCount > 0
+BEGIN
+    -- Purge data from all tables
+    DELETE FROM dbo.ProductOrders
+    DELETE FROM dbo.Orders
+    DELETE FROM dbo.Products
+    DELETE FROM dbo.Customers
+
+    -- Reset identity column values to 0
+    DBCC CHECKIDENT ('[ProductOrders]', RESEED, 0)
+    DBCC CHECKIDENT ('[Orders]', RESEED, 0)
+    DBCC CHECKIDENT ('[Products]', RESEED, 0)
+    DBCC CHECKIDENT ('[Customers]', RESEED, 0)
+END;
 
 -- Populate Products table
 INSERT INTO dbo.Products ([Name], Price) 
