@@ -53,6 +53,11 @@ VALUES (DATEADD(DAY, -2, GETDATE()), NULL, @PatrickHuntCustomerId)
 
 DECLARE @PatrickHuntOrderId2 int = SCOPE_IDENTITY()
 
+INSERT INTO dbo.Orders (OrderPlaced, OrderFulfilled, CustomerId)
+VALUES (DATEADD(DAY, -3, GETDATE()), NULL, @ElsaYorkCustomerId)
+
+DECLARE @ElsaYorkOrderId1 int = SCOPE_IDENTITY()
+
 -- Populate ProductOrders table
 INSERT INTO dbo.ProductOrders (Quantity, ProductId, OrderId)
 VALUES (3, @PlushSquirrelProductId, @PatrickHuntOrderId1)
@@ -62,3 +67,9 @@ VALUES (15, @SqueakyBoneProductId, @PatrickHuntOrderId1)
 
 INSERT INTO dbo.ProductOrders (Quantity, ProductId, OrderId)
 VALUES (6, @KnottedRopeProductId, @PatrickHuntOrderId2)
+
+INSERT INTO dbo.ProductOrders (Quantity, ProductId, OrderId)
+VALUES (2, @PlushSquirrelProductId, @ElsaYorkOrderId1)
+
+INSERT INTO dbo.ProductOrders (Quantity, ProductId, OrderId)
+VALUES (2, @SqueakyBoneProductId, @ElsaYorkOrderId1)
