@@ -208,7 +208,6 @@ provisionResourceGroup() {
     if [ $resourceGroupName = $defaultResourceGroupName ]
     then
         (
-            echo
             echo "${newline}${plain}${white}Provisioning Azure Resource Group...${cyan}${bold}"
             set -x
             az group create \
