@@ -7,6 +7,7 @@ BRANCH="master"
 
 # input parameters
 CHECKOUT_DIRS=( "$@" )
+#MODULE_DIR=$CHECKOUT_DIRS[0]/..
 
 mkdir -p $DIR
 if [ -d "$DIR" ]; then
@@ -29,8 +30,12 @@ if [ -d "$DIR" ]; then
     # Current structure is ~/contoso-pets/persist-data-ef-core/src (for example).
     # This is a longer path than we'd like for the best experience,
     # so let's move the src and setup directories up a level
+    pushd $CHECKOUT_DIRS[0]
+    cd ..
+    DELETE_DIR=$PWD 
+    popd
     for i in ${CHECKOUT_DIRS[@]}; do
         mv ${i} ./
     done
-    rm -r persist-data-ef-core
+    rm $DELETE_DIR
 fi
