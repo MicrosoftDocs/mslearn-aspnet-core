@@ -93,7 +93,7 @@ declare connectFile='connect.txt'
 
 # Functions
 setAzureCliDefaults() {
-    echo "${plain}${white}Setting default Azure CLI values...${cyan}"
+    echo "${plain}${white}Setting default Azure CLI values...${cyan}${bold}"
     (
         set -x
         az configure --defaults \
@@ -102,7 +102,7 @@ setAzureCliDefaults() {
     )
 }
 resetAzureCliDefaults() {
-    echo "${plain}${white}Resetting default Azure CLI values...${cyan}"
+    echo "${plain}${white}Resetting default Azure CLI values...${cyan}${bold}"
     (
         set -x
         az configure --defaults \
