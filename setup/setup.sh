@@ -139,7 +139,7 @@ downloadAndBuild() {
     git config --global user.email learn@contoso.com
     
     # Download the sample project, restore NuGet packages, and build
-    echo "${newline}${plain}${white}Downloading code...${yellow}"
+    echo "${newline}${plain}${white}Downloading code...${yellow}${bold}"
     (set -x; git clone --branch $gitBranch $gitUrl --quiet)
 
     echo "${newline}${plain}${white}Building code...${magenta}${bold}"
@@ -203,7 +203,7 @@ provisionResourceGroup() {
     then
         (
             echo
-            echo "${newline}${plain}${white}Provisioning Azure Resource Group...${cyan}"
+            echo "${newline}${plain}${white}Provisioning Azure Resource Group...${cyan}${bold}"
             set -x
             az group create \
                 --name $resourceGroupName \
@@ -215,7 +215,7 @@ provisionResourceGroup() {
 # Provision Azure SQL Database
 provisionDatabase() {
     (
-        echo "${newline}${plain}${white}Provisioning Azure SQL Database Server...${cyan}"
+        echo "${newline}${plain}${white}Provisioning Azure SQL Database Server...${cyan}${bold}"
         set -x
         az sql server create \
             --name $sqlServerName \
@@ -224,7 +224,7 @@ provisionDatabase() {
             --output none
     )
     (
-        echo "${newline}${plain}${white}Provisioning Azure SQL Database...${cyan}"
+        echo "${newline}${plain}${white}Provisioning Azure SQL Database...${cyan}${bold}"
         set -x
         az sql db create \
             --name $databaseName \
@@ -232,7 +232,7 @@ provisionDatabase() {
             --output none
     )
     (
-        echo "${newline}${plain}${white}Adding Azure IP addresses to Azure SQL Database firewall rules...${cyan}"
+        echo "${newline}${plain}${white}Adding Azure IP addresses to Azure SQL Database firewall rules...${cyan}${bold}"
         set -x
         az sql server firewall-rule create \
             --name AllowAzureAccess \
@@ -246,7 +246,7 @@ provisionDatabase() {
 
 provisionAppInsights() {
     (
-        echo "${newline}${plain}${white}Provisioning Azure Monitor Application Insights...${cyan}"
+        echo "${newline}${plain}${white}Provisioning Azure Monitor Application Insights...${cyan}${bold}"
         set -x
         az resource create \
             --resource-type microsoft.insights/components \
@@ -267,7 +267,7 @@ provisionAppInsights() {
     url="https://management.azure.com$aiPath/apikeys?api-version=2015-05-01"
 
     echo "${newline}${plain}${white}Using Azure REST API to set an API Key in Application Insights. The command looks like this (abridged for brevity):"
-    echo "${yellow}curl -X POST \\${newline}" \
+    echo "${yellow}${bold}curl -X POST \\${newline}" \
             "-H \"Authorization: Bearer <token>\" \\${newline}" \
             "-H \"Content-Type: application/json\" \\${newline}" \
             "-H \"Content-Length: <content length>\" \\${newline}" \
@@ -297,7 +297,7 @@ editSettings(){
 }
 
 createAliases(){
-    echo "${newline}${plain}${white}Creating aliases...${yellow}"
+    echo "${newline}${plain}${white}Creating aliases...${yellow}${bold}"
     set -x
     alias db="sqlcmd -U $sqlUsername -P $sqlPassword -S $sqlHostName -d $databaseName"
     set +x
