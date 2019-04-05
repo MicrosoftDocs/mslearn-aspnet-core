@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# This script takes a list of directories to clone from 
+# the mslearn-aspnet-core repo. Since it's a subset of 
+# the repo, it's referred to as a "sparse checkout."
+
 # constants
 DIR="contoso-pets"
 REPOS="https://github.com/MicrosoftDocs/mslearn-aspnet-core"
@@ -12,7 +16,7 @@ mkdir -p $DIR
 if [ -d "$DIR" ]; then
     cd $DIR
     git init --quiet
-    git remote add -f origin $REPOS --quiet
+    git remote add -f origin $REPOS
     git fetch --all --quiet
     git config core.sparseCheckout true
     if [ -f .git/info/sparse-checkout ]; then

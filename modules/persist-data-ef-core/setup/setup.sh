@@ -71,7 +71,8 @@ declare instanceId=$(($RANDOM * $RANDOM))
 # Variables
 declare gitUrl=https://github.com/MicrosoftDocs/mslearn-aspnet-core
 declare gitBranch=master
-declare gitDirectoriesToClone="persist-data-ef-core/setup/ persist-data-ef-core/src/"
+declare gitDirectoriesToClone="modules/persist-data-ef-core/setup/ modules/persist-data-ef-core/src/"
+declare gitPathToCloneScript=https://raw.githubusercontent.com/MicrosoftDocs/mslearn-aspnet-core/master/infrastructure/scripts/sparsecheckout.sh
 
 declare srcWorkingDirectory=~/contoso-pets/src
 declare setupWorkingDirectory=~/contoso-pets/setup
@@ -143,10 +144,10 @@ downloadAndBuild() {
     
     # Download the sample project, restore NuGet packages, and build
     echo "${newline}${plain}${white}Downloading code...${yellow}${bold}"
-    echo Getting running a script to code from $gitUrl.
-    curl -s https://raw.githubusercontent.com/MicrosoftDocs/mslearn-aspnet-core/master/persist-data-ef-core/setup/sparsecheckout.sh \
-        | bash -s $gitDirectoriesToClone
-
+    (
+        set -x
+        curl -s $gitPathToCloneScript | bash -s $gitDirectoriesToClone
+    )
     echo "${newline}${plain}${white}Building code...${magenta}${bold}"
     (
         set -x 
