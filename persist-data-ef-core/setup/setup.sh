@@ -70,9 +70,10 @@ declare instanceId=$(($RANDOM * $RANDOM))
 
 # Variables
 declare gitUrl=https://github.com/MicrosoftDocs/mslearn-aspnet-core
-declare gitBranch=persist-data-ef-core
-declare srcWorkingDirectory=~/mslearn-aspnet-core/src
-declare setupWorkingDirectory=~/mslearn-aspnet-core/setup
+declare gitBranch=master
+
+declare srcWorkingDirectory=~/contoso-pets/src
+declare setupWorkingDirectory=~/contoso-pets/setup
 declare gitRepoWorkingDirectory=$srcWorkingDirectory/ContosoPets.Api
 
 declare sqlServerName=sqldb$instanceId
@@ -141,7 +142,9 @@ downloadAndBuild() {
     
     # Download the sample project, restore NuGet packages, and build
     echo "${newline}${plain}${white}Downloading code...${yellow}${bold}"
-    (set -x; git clone --branch $gitBranch $gitUrl --quiet)
+    #(set -x; git clone --branch $gitBranch $gitUrl --quiet)
+
+    
 
     echo "${newline}${plain}${white}Building code...${magenta}${bold}"
     (
