@@ -119,7 +119,7 @@ initEnvironment(){
 
     # Display installed .NET Core SDK version
     dotnetsdkversion=$(dotnet --version)
-    echo "${magenta}Using .NET Core SDK version $dotnetsdkversion${white}"
+    echo "${magenta}${bold}Using .NET Core SDK version $dotnetsdkversion${white}${plain}"
 
     # Install .NET Core global tool to display connection info
     dotnet tool install dotnetsay --tool-path ~/dotnetsay
@@ -130,8 +130,6 @@ initEnvironment(){
     greeting+="and get the code you'll need for this module.${magenta}${bold}"
 
     ~/dotnetsay/dotnetsay "$greeting"
-    
-    echo "${green}${bold}Deployment tasks run asynchronously from here on.${white}${plain}"
 }
 
 downloadAndBuild() {
@@ -143,10 +141,10 @@ downloadAndBuild() {
     git config --global user.email learn@contoso.com
     
     # Download the sample project, restore NuGet packages, and build
-    echo "${white}Downloading code...${yellow}"
+    echo "${newline}${white}Downloading code...${yellow}"
     (set -x; git clone --branch $gitBranch $gitUrl --quiet)
 
-    echo "${white}Building code...${magenta}${bold}"
+    echo "${newline}${white}Building code...${magenta}${bold}"
     (
         set -x 
         cd $gitRepoWorkingDirectory
@@ -206,20 +204,20 @@ provisionResourceGroup() {
     if [ $resourceGroupName = $defaultResourceGroupName ]
     then
         (
-            echo "${white}Provisioning Azure Resource Group...${cyan}"
+            echo
+            echo "${newline}${white}Provisioning Azure Resource Group...${cyan}"
             set -x
             az group create \
                 --name $resourceGroupName \
                 --output none
         )
-        echo
     fi
 }
 
 # Provision Azure SQL Database
 provisionDatabase() {
     (
-        echo "${white}Provisioning Azure SQL Database Server...${cyan}"
+        echo "${newline}${white}Provisioning Azure SQL Database Server...${cyan}"
         set -x
         az sql server create \
             --name $sqlServerName \
@@ -227,18 +225,16 @@ provisionDatabase() {
             --admin-password $sqlPassword \
             --output none
     )
-    echo
     (
-        echo "${white}Provisioning Azure SQL Database...${cyan}"
+        echo "${newline}${white}Provisioning Azure SQL Database...${cyan}"
         set -x
         az sql db create \
             --name $databaseName \
             --server $sqlServerName \
             --output none
     )
-    echo
     (
-        echo "${white}Adding Azure IP addresses to Azure SQL Database firewall rules...${cyan}"
+        echo "${newline}${white}Adding Azure IP addresses to Azure SQL Database firewall rules...${cyan}"
         set -x
         az sql server firewall-rule create \
             --name AllowAzureAccess \
@@ -252,7 +248,7 @@ provisionDatabase() {
 
 provisionAppInsights() {
     (
-        echo "${white}Provisioning Azure Monitor Application Insights...${cyan}"
+        echo "${newline}${white}Provisioning Azure Monitor Application Insights...${cyan}"
         set -x
         az resource create \
             --resource-type microsoft.insights/components \
@@ -272,7 +268,7 @@ provisionAppInsights() {
     len=$(expr length $body)
     url="https://management.azure.com$aiPath/apikeys?api-version=2015-05-01"
 
-    echo "${white}Using Azure REST API to set an API Key in Application Insights. The command looks like this (abridged for brevity):"
+    echo "${newline}${white}Using Azure REST API to set an API Key in Application Insights. The command looks like this (abridged for brevity):"
     echo "${yellow}curl -X POST \\${newline}" \
             "-H \"Authorization: Bearer <token>\" \\${newline}" \
             "-H \"Content-Type: application/json\" \\${newline}" \
@@ -296,8 +292,6 @@ provisionAppInsights() {
     echo $apiKey > ~/$apiKeyTempFile
     echo $appId > ~/$appIdTempFile
     echo $instrumentationKey > ~/$instrumentationKeyTempFile
-
-    echo
 }
 
 editSettings(){
@@ -305,7 +299,7 @@ editSettings(){
 }
 
 createAliases(){
-    echo "${white}Creating aliases...${yellow}"
+    echo "${newline}${white}Creating aliases...${yellow}"
     set -x
     alias db="sqlcmd -U $sqlUsername -P $sqlPassword -S $sqlHostName -d $databaseName"
     set +x
