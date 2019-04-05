@@ -1,0 +1,9 @@
+C:\Src\mslearn-aspnet-core\src\ContosoPets.Domain\bin\Debug\netstandard2.0\ContosoPets.Domain.deps.json
+C:\Src\mslearn-aspnet-core\src\ContosoPets.Domain\bin\Debug\netstandard2.0\ContosoPets.Domain.dll
+C:\Src\mslearn-aspnet-core\src\ContosoPets.Domain\bin\Debug\netstandard2.0\ContosoPets.Domain.pdb
+C:\Src\mslearn-aspnet-core\src\ContosoPets.Domain\obj\Debug\netstandard2.0\ContosoPets.Domain.csprojAssemblyReference.cache
+C:\Src\mslearn-aspnet-core\src\ContosoPets.Domain\obj\Debug\netstandard2.0\ContosoPets.Domain.csproj.CoreCompileInputs.cache
+C:\Src\mslearn-aspnet-core\src\ContosoPets.Domain\obj\Debug\netstandard2.0\ContosoPets.Domain.AssemblyInfoInputs.cache
+C:\Src\mslearn-aspnet-core\src\ContosoPets.Domain\obj\Debug\netstandard2.0\ContosoPets.Domain.AssemblyInfo.cs
+C:\Src\mslearn-aspnet-core\src\ContosoPets.Domain\obj\Debug\netstandard2.0\ContosoPets.Domain.dll
+C:\Src\mslearn-aspnet-core\src\ContosoPets.Domain\obj\Debug\netstandard2.0\ContosoPets.Domain.pdb

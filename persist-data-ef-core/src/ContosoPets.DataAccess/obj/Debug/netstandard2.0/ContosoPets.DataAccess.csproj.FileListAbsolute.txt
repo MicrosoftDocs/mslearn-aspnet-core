@@ -1,0 +1,12 @@
+C:\Src\mslearn-aspnet-core\src\ContosoPets.DataAccess\bin\Debug\netstandard2.0\ContosoPets.DataAccess.deps.json
+C:\Src\mslearn-aspnet-core\src\ContosoPets.DataAccess\bin\Debug\netstandard2.0\ContosoPets.DataAccess.dll
+C:\Src\mslearn-aspnet-core\src\ContosoPets.DataAccess\bin\Debug\netstandard2.0\ContosoPets.DataAccess.pdb
+C:\Src\mslearn-aspnet-core\src\ContosoPets.DataAccess\bin\Debug\netstandard2.0\ContosoPets.Domain.dll
+C:\Src\mslearn-aspnet-core\src\ContosoPets.DataAccess\bin\Debug\netstandard2.0\ContosoPets.Domain.pdb
+C:\Src\mslearn-aspnet-core\src\ContosoPets.DataAccess\obj\Debug\netstandard2.0\ContosoPets.DataAccess.csprojAssemblyReference.cache
+C:\Src\mslearn-aspnet-core\src\ContosoPets.DataAccess\obj\Debug\netstandard2.0\ContosoPets.DataAccess.csproj.CoreCompileInputs.cache
+C:\Src\mslearn-aspnet-core\src\ContosoPets.DataAccess\obj\Debug\netstandard2.0\ContosoPets.DataAccess.AssemblyInfoInputs.cache
+C:\Src\mslearn-aspnet-core\src\ContosoPets.DataAccess\obj\Debug\netstandard2.0\ContosoPets.DataAccess.AssemblyInfo.cs
+C:\Src\mslearn-aspnet-core\src\ContosoPets.DataAccess\obj\Debug\netstandard2.0\ContosoPets.DataAccess.csproj.CopyComplete
+C:\Src\mslearn-aspnet-core\src\ContosoPets.DataAccess\obj\Debug\netstandard2.0\ContosoPets.DataAccess.dll
+C:\Src\mslearn-aspnet-core\src\ContosoPets.DataAccess\obj\Debug\netstandard2.0\ContosoPets.DataAccess.pdb
