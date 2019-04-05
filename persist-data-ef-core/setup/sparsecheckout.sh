@@ -7,7 +7,6 @@ BRANCH="master"
 
 # input parameters
 CHECKOUT_DIRS=( "$@" )
-#MODULE_DIR=$CHECKOUT_DIRS[0]/..
 
 mkdir -p $DIR
 if [ -d "$DIR" ]; then
