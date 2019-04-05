@@ -32,8 +32,8 @@ declare newline=$'\n'
 if [ "${AZURE_HTTP_USER_AGENT:0:11}" != "cloud-shell" ]
 then
     echo "${bold}${red}WARNING!!!${plain}${white}" \
-        "It appears that you're not running this script in an instance of Azure Cloud Shell. " \
-        "This script runs best in Azure Cloud Shell, and we can make no promises that it'll function as intended anywhere else."
+        "It appears that you're not running this script in an instance of Azure Cloud Shell." \
+        "This script runs best in Azure Cloud Shell, and we can make no promises that it'll function as intended anywhere else." \
         "Please only proceed if you know what you're doing.${newline}${newline}" \
         "${bold}${green}Do you know what you're doing?${plain}${white}"
     select yn in "Yes" "No"; do
