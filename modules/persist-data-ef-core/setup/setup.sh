@@ -4,9 +4,11 @@
 # If you're reading this, you're probably interested in what's 
 # going on within this script. We've provided what we hope are useful
 # comments inline, as well as color-coded relevant shell output.
-# We hope it's useful for you, but if you have any questions
+# We hope it's useful for you, but if you have any questions or suggestions
 # please open an issue on https:/github.com/MicrosoftDocs/learn-aspnet-core.
+#
 
+## Start
 # If the script appears to have already been run, just set the vars and leave.
 declare variableScript='variables.sh'
 if [ -e ~/$variableScript ]
@@ -326,7 +328,7 @@ cleanupTempFiles
 # We're done! Summarize.
 summary="${newline}${green}${bold}Your environment is ready!${white}${plain}${newline}"
 summary+="I set up some ${cyan}${bold}Azure${white}${plain} resources and downloaded the code you'll need.${newline}"
-summary+="You can display this information again by running ${red}${bold}. ~/setup.sh${white}${plain} from any location.${magenta}${bold}"
+summary+="You can resume this session and display this message again by re-running the script.${magenta}${bold}"
 ~/dotnetsay/dotnetsay "$summary"
 
 . ~/$variableScript
