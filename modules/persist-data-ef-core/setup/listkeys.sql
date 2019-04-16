@@ -44,10 +44,10 @@ EXEC sp_pkeys 'ProductOrders'
 INSERT INTO @pktable (TABLE_QUALIFIER, TABLE_OWNER, TABLE_NAME, COLUMN_NAME, KEY_SEQ, PK_NAME)
 EXEC sp_pkeys 'Customers'
 
-SELECT FKTABLE_NAME AS 'Table', FKCOLUMN_NAME AS 'Column', FK_NAME AS 'Foreign key'
-FROM @fktable
+SELECT TABLE_NAME AS 'Table', COLUMN_NAME AS 'Column', PK_NAME AS 'Primary key'
+FROM @pktable
 
 PRINT ''
 
-SELECT TABLE_NAME AS 'Table', COLUMN_NAME AS 'Column', PK_NAME AS 'Primary key'
-FROM @pktable
+SELECT FKTABLE_NAME AS 'Table', FKCOLUMN_NAME AS 'Column', FK_NAME AS 'Foreign key'
+FROM @fktable
