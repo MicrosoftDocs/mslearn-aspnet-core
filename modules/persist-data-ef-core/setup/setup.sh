@@ -145,7 +145,7 @@ downloadAndBuild() {
     git config --global user.email learn@contoso.com
     
     # Download the sample project, restore NuGet packages, and build
-    echo "${newline}${plain}${white}Downloading code...$(blue)${bold}"
+    echo "${newline}${plain}${white}Downloading code...${blue}${bold}"
     (
         set -x
         curl -s $gitPathToCloneScript | bash -s $gitDirectoriesToClone
@@ -274,7 +274,7 @@ provisionAppInsights() {
     url="https://management.azure.com$aiPath/apikeys?api-version=2015-05-01"
 
     echo "${newline}${plain}${white}Using Azure REST API to set an API Key in Application Insights. The command looks like this (abridged for brevity):"
-    echo "$(blue)${bold}curl -X POST \\${newline}" \
+    echo "${blue}${bold}curl -X POST \\${newline}" \
             "-H \"Authorization: Bearer <token>\" \\${newline}" \
             "-H \"Content-Type: application/json\" \\${newline}" \
             "-H \"Content-Length: <content length>\" \\${newline}" \
@@ -304,7 +304,7 @@ editSettings(){
 }
 
 createAliases(){
-    echo "${newline}${plain}${white}Creating aliases...$(blue)${bold}"
+    echo "${newline}${plain}${white}Creating aliases...${blue}${bold}"
     set -x
     alias db="sqlcmd -U $sqlUsername -P $sqlPassword -S $sqlHostName -d $databaseName"
     set +x
