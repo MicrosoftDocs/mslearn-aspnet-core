@@ -95,6 +95,8 @@ declare appIdTempFile='appId.temp'
 declare instrumentationKeyTempFile='instrumentationKey.temp'
 declare connectFile='connect.txt'
 
+declare dotnetsdkversion=$(dotnet --version)
+
 
 
 # Functions
@@ -117,12 +119,23 @@ resetAzureCliDefaults() {
     )
 }
 
+configureDotNetCli() {
+    echo "${newline}${plain}${white}Configuring the .NET Core CLI..."
+
+    # By default, the .NET Core CLI prints Welcome and Telemetry messages on
+    # the first run. Suppress those messages by creating an appropriately
+    # named file on disk.
+    touch ~/.dotnet/$dotnetsdkversion.dotnetFirstUseSentinel
+
+    # Disable the sending of telemetry to the mothership.
+    export DOTNET_CLI_TELEMETRY_OPTOUT=true
+}
+
 initEnvironment(){
     # Set location
     cd ~
 
     # Display installed .NET Core SDK version
-    dotnetsdkversion=$(dotnet --version)
     echo "${magenta}${bold}Using .NET Core SDK version $dotnetsdkversion${white}${plain}"
 
     # Install .NET Core global tool to display connection info
@@ -312,6 +325,7 @@ createAliases(){
 }
 
 # Create resources
+configureDotNetCli
 initEnvironment
 downloadAndBuild
 setAzureCliDefaults
