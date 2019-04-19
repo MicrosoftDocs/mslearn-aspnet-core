@@ -71,10 +71,9 @@ echo "Using Azure resource group ${bold}${cyan}$resourceGroupName${plain}${white
 declare instanceId=$(($RANDOM * $RANDOM))
 
 # Variables
-declare gitUrl=https://github.com/MicrosoftDocs/mslearn-aspnet-core
-declare gitBranch=master
+declare -x gitBranch=live
 declare gitDirectoriesToClone="modules/persist-data-ef-core/setup/ modules/persist-data-ef-core/src/"
-declare gitPathToCloneScript=https://raw.githubusercontent.com/MicrosoftDocs/mslearn-aspnet-core/master/infrastructure/scripts/sparsecheckout.sh
+declare gitPathToCloneScript=https://raw.githubusercontent.com/MicrosoftDocs/mslearn-aspnet-core/$gitBranch/infrastructure/scripts/sparsecheckout.sh
 
 declare srcWorkingDirectory=~/contoso-pets/src
 declare setupWorkingDirectory=~/contoso-pets/setup
@@ -175,8 +174,6 @@ downloadAndBuild() {
 # Write variables script
 writeVariablesScript() {
     text="#!/bin/bash${newline}"
-    text+="declare gitUrl=$gitUrl${newline}"
-    text+="declare gitBranch=$gitBranch${newline}"
     text+="declare srcWorkingDirectory=$srcWorkingDirectory${newline}"
     text+="declare setupWorkingDirectory=$setupWorkingDirectory${newline}"
     text+="declare gitRepoWorkingDirectory=$gitRepoWorkingDirectory${newline}"
