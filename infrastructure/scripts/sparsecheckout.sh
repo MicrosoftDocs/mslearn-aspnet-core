@@ -3,11 +3,13 @@
 # This script takes a list of directories to clone from 
 # the mslearn-aspnet-core repo. Since it's a subset of 
 # the repo, it's referred to as a "sparse checkout."
+# An environment variable named $gitBranch should be set
+# and contain the branch to be used, e.g., "live" or "master".
 
 # constants
 DIR="contoso-pets"
 REPOS="https://github.com/MicrosoftDocs/mslearn-aspnet-core"
-BRANCH="master"
+BRANCH=$gitBranch
 
 # input parameters
 CHECKOUT_DIRS=( "$@" )
