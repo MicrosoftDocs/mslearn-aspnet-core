@@ -9,6 +9,10 @@
 #
 
 ## Start
+
+# Module name
+declare moduleName="persist-data-ef-core"
+
 # If the script appears to have already been run, just set the vars and leave.
 declare variableScript='variables.sh'
 if [ -e ~/$variableScript ]
@@ -128,6 +132,9 @@ configureDotNetCli() {
 
     # Disable the sending of telemetry to the mothership.
     export DOTNET_CLI_TELEMETRY_OPTOUT=true
+
+    # Add ~/.dotnet/tools to the path so .NET Core Global Tool shims can be found
+    if ! [ $(echo $PATH | grep ~/.dotnet/tools) ]; then export PATH=$PATH:~/.dotnet/tools; fi
 }
 
 initEnvironment(){
@@ -138,14 +145,14 @@ initEnvironment(){
     echo "${magenta}${bold}Using .NET Core SDK version $dotnetsdkversion${white}${plain}"
 
     # Install .NET Core global tool to display connection info
-    dotnet tool install dotnetsay --tool-path ~/dotnetsay
+    dotnet tool install dotnetsay --global
 
     # Greetings!
     greeting="${newline}${white}${bold}Hi there!${plain}${newline}"
     greeting+="I'm going to provision some ${cyan}${bold}Azure${white}${plain} resources${newline}"
     greeting+="and get the code you'll need for this module.${magenta}${bold}"
 
-    ~/dotnetsay/dotnetsay "$greeting"
+    dotnetsay "$greeting"
 }
 
 downloadAndBuild() {
@@ -201,6 +208,7 @@ writeVariablesScript() {
     text+="echo \"${magenta}${bold}apiKey ${white}${plain}(for Application Insights)${magenta}${bold}: ${white}${plain}$(cat ~/$apiKeyTempFile)\"${newline}"
     text+="echo ${newline}"
     text+="echo \"${white}db ${magenta}${bold}is an alias for${white}${plain} sqlcmd -U $sqlUsername -P $sqlPassword -S $sqlHostName -d $databaseName\"${newline}"
+    text+="if ! [ \$(echo \$PATH | grep ~/.dotnet/tools) ]; then export PATH=\$PATH:~/.dotnet/tools; fi${newline}"
     text+="echo ${newline}"
     text+="cd $srcWorkingDirectory${newline}"
     text+="code .${newline}"
@@ -321,6 +329,15 @@ createAliases(){
     echo
 }
 
+addVariablesToStartup(){
+    if ! [ $(grep $moduleName .bashrc) ]
+    then
+        echo "# $moduleName" >> .bashrc
+        echo "# Next line added at $(date)" >> .bashrc
+        echo ". ~/$variableScript" >> .bashrc
+    fi 
+}
+
 # Create resources
 configureDotNetCli
 initEnvironment
@@ -334,12 +351,13 @@ editSettings
 resetAzureCliDefaults
 createAliases
 writeVariablesScript
+addVariablesToStartup
 cleanupTempFiles
 
 # We're done! Summarize.
 summary="${newline}${green}${bold}Your environment is ready!${white}${plain}${newline}"
 summary+="I set up some ${cyan}${bold}Azure${white}${plain} resources and downloaded the code you'll need.${newline}"
 summary+="You can resume this session and display this message again by re-running the script.${magenta}${bold}"
-~/dotnetsay/dotnetsay "$summary"
+dotnetsay "$summary"
 
 . ~/$variableScript
