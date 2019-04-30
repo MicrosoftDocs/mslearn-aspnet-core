@@ -150,6 +150,25 @@ summarize(){
 
     . ~/$variableScript
 }
+determineResourceGroup(){
+    # Figure out the name of the resource group to use
+    declare resourceGroupCount=$(az group list | jq '. | length')
+    declare existingResourceGroup=$(az group list | jq '.[0].name' --raw-output)
+
+    # If there is more than one RG or there's only one but its name is not a GUID,
+    # we're probably not in the Learn sandbox.
+    if [[ ! "${existingResourceGroup}" =~ ^[[:xdigit:]]{32}$ ]] || [ $resourceGroupCount -gt 1 ]
+    then
+        echo "${warningStyle}WARNING!!!${defaultTextStyle}" \
+            "It doesn't appear you are currently running in a Microsoft Learn sandbox." \
+            "Using default resource group."
+        resourceGroupName=$moduleName
+    else
+        resourceGroupName=$existingResourceGroup
+    fi
+
+    echo "Using Azure resource group ${azCliCommandStyle}$resourceGroupName${defaultTextStyle}."
+}
 
 
 # Check to make sure we're in Azure Cloud Shell
@@ -168,30 +187,14 @@ then
     done
 fi
 
-# Figure out the name of the resource group to use
-declare resourceGroupCount=$(az group list | jq '. | length')
-declare existingResourceGroup=$(az group list | jq '.[0].name' --raw-output)
-declare rgStatus=""
 
-# If there is more than one RG or there's only one but its name is not a GUID,
-# we're probably not in the Learn sandbox.
-if [[ ! ${existingResourceGroup//-/} =~ ^[[:xdigit:]]{32}$ ]] || [ $resourceGroupCount -gt 1 ]
-then
-    echo "${warningStyle}WARNING!!!${defaultTextStyle}" \
-        "It doesn't appear you are currently running in a Microsoft Learn sandbox." \
-        "Using default resource group."
-    resourceGroupName=$moduleName
-else
-    resourceGroupName=$existingResourceGroup
-fi
-
-echo "Using Azure resource group ${azCliCommandStyle}$resourceGroupName${defaultTextStyle}."
 
 # Load the theme
 declare themeScript=$scriptPath/theme.sh
 . <(wget -q -O - $themeScript)
 
 # Execute functions
+determineResourceGroup
 configureDotNetCli
 displayGreeting
 downloadAndBuild
