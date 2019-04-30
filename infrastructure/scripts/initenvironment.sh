@@ -157,11 +157,11 @@ determineResourceGroup(){
 
     # If there is more than one RG or there's only one but its name is not a GUID,
     # we're probably not in the Learn sandbox.
-    if [[ ! "${existingResourceGroup}" =~ ^[[:xdigit:]]{32}$ ]] || [ $resourceGroupCount -gt 1 ]
+    if [ ! ${existingResourceGroup} =~ ^[[:xdigit:]]{32}$ ] || [ $resourceGroupCount -gt 1 ]
     then
-        echo "${warningStyle}WARNING!!!${defaultTextStyle}" \
+        echo "${warningStyle}WARNING!!!" \
             "It doesn't appear you are currently running in a Microsoft Learn sandbox." \
-            "Using default resource group."
+            "Using default resource group.${defaultTextStyle}"
         resourceGroupName=$moduleName
     else
         resourceGroupName=$existingResourceGroup
@@ -174,15 +174,15 @@ determineResourceGroup(){
 # Check to make sure we're in Azure Cloud Shell
 if [ "${AZURE_HTTP_USER_AGENT:0:11}" != "cloud-shell" ]
 then
-    echo "${warningStyle}WARNING!!!${defaultTextStyle}" \
+    echo "${warningStyle}WARNING!!!" \
         "It appears that you're not running this script in an instance of Azure Cloud Shell." \
         "This script was designed for the environment in Azure Cloud Shell, and we can make no promises that it'll function as intended anywhere else." \
         "Please only proceed if you know what you're doing.${newline}${newline}" \
-        "${warningStyle}Do you know what you're doing?${defaultTextStyle}"
+        "Do you know what you're doing?${defaultTextStyle}"
     select yn in "Yes" "No"; do
         case $yn in
             Yes ) break;;
-            No ) echo "${warningStyle}Please let us know that you saw this message using the feedback links provided.${plain}${white}"; return 0;;
+            No ) echo "${warningStyle}Please let us know that you saw this message using the feedback links provided.${defaultTextStyle}"; return 0;;
         esac
     done
 fi
