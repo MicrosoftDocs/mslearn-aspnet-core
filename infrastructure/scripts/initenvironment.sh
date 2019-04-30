@@ -13,7 +13,7 @@ declare gitPathToCloneScript=https://raw.githubusercontent.com/MicrosoftDocs/msl
 declare srcWorkingDirectory=~/contoso-pets/src
 declare setupWorkingDirectory=~/contoso-pets/setup
 declare subscriptionId=$(az account show --query id --output tsv)
-declare dotnetsdkversion=$(dotnet --version)
+declare dotnetSdkVersion=$(dotnet --version)
 declare resourceGroupName=""
 
 # Functions
@@ -41,7 +41,7 @@ configureDotNetCli() {
     # By default, the .NET Core CLI prints Welcome and Telemetry messages on
     # the first run. Suppress those messages by creating an appropriately
     # named file on disk.
-    touch ~/.dotnet/$dotnetsdkversion.dotnetFirstUseSentinel
+    touch ~/.dotnet/$dotnetSdkVersion.dotnetFirstUseSentinel
 
     # Disable the sending of telemetry to the mothership.
     export DOTNET_CLI_TELEMETRY_OPTOUT=true
@@ -109,8 +109,7 @@ provisionDatabase() {
 }
 # Provision Azure Resource Group
 provisionResourceGroup() {
-    if [ $resourceGroupName -eq $moduleName ]
-    then
+    if (( $resourceGroupName -eq $moduleName )); then
         (
             echo "${newline}${defaultTextStyle}Provisioning Azure Resource Group...${azCliCommandStyle}"
             set -x
@@ -121,10 +120,8 @@ provisionResourceGroup() {
     fi
 }
 addVariablesToStartup(){
-    if ! [ $(grep $moduleName .bashrc) ]
-    then
-        echo "# $moduleName" >> .bashrc
-        echo "# Next line added at $(date)" >> .bashrc
+    if ! (( $(grep $moduleName .bashrc) )); then
+        echo "# Next line added at $(date) by $moduleName" >> .bashrc
         echo ". ~/$variableScript" >> .bashrc
     fi 
 }
@@ -133,7 +130,7 @@ displayGreeting(){
     cd ~
 
     # Display installed .NET Core SDK version
-    echo "${headingStyle}Using .NET Core SDK version $dotnetsdkversion${defaultTextStyle}"
+    echo "${headingStyle}Using .NET Core SDK version $dotnetSdkVersion${defaultTextStyle}"
 
     # Install .NET Core global tool to display connection info
     dotnet tool install dotnetsay --global
@@ -148,7 +145,7 @@ displayGreeting(){
 summarize(){
     summary="${newline}${successStyle}Your environment is ready!${defaultTextStyle}${newline}"
     summary+="I set up some ${azCliCommandStyle}Azure${defaultTextStyle} resources and downloaded the code you'll need.${newline}"
-    summary+="You can resume this session and display this message again by re-running the script.${headingStyle}"
+    summary+="You can resume this session and display this message again by re-running the script.${dotnetCliCommandStyle}"
     dotnetsay "$summary"
 
     . ~/$variableScript
@@ -197,7 +194,6 @@ declare themeScript=$scriptPath/theme.sh
 # Execute functions
 configureDotNetCli
 displayGreeting
-determineResourceGroup
 downloadAndBuild
 setAzureCliDefaults
 
