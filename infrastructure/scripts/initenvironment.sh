@@ -5,6 +5,7 @@
 
 # Declarations
 declare scriptPath=https://raw.githubusercontent.com/MicrosoftDocs/mslearn-aspnet-core/$gitBranch/infrastructure/scripts
+declare themeScript=$scriptPath/theme.sh
 declare instanceId=$(($RANDOM * $RANDOM))
 declare gitDirectoriesToClone="modules/$moduleName/setup/ modules/$moduleName/src/"
 declare gitPathToCloneScript=https://raw.githubusercontent.com/MicrosoftDocs/mslearn-aspnet-core/$gitBranch/infrastructure/scripts/sparsecheckout.sh
@@ -117,13 +118,13 @@ provisionResourceGroup() {
         )
     fi
 }
-addVariablesToStartup(){
+addVariablesToStartup() {
     if ! [[ $(grep $moduleName ~/.bashrc) ]]; then
         echo "# Next line added at $(date) by $moduleName" >> ~/.bashrc
         echo ". ~/$variableScript" >> ~/.bashrc
     fi 
 }
-displayGreeting(){
+displayGreeting() {
     # Set location
     cd ~
 
@@ -140,7 +141,7 @@ displayGreeting(){
 
     dotnetsay "$greeting"
 }
-summarize(){
+summarize() {
     summary="${newline}${successStyle}Your environment is ready!${defaultTextStyle}${newline}"
     summary+="I set up some ${azCliCommandStyle}Azure${defaultTextStyle} resources and downloaded the code you'll need.${newline}"
     summary+="You can resume this session and display this message again by re-running the script.${dotnetCliCommandStyle}"
@@ -148,7 +149,7 @@ summarize(){
 
     . ~/$variableScript
 }
-determineResourceGroup(){
+determineResourceGroup() {
     # Figure out the name of the resource group to use
     declare resourceGroupCount=$(az group list | jq '. | length')
     declare existingResourceGroup=$(az group list | jq '.[0].name' --raw-output)
@@ -167,8 +168,7 @@ determineResourceGroup(){
 
     echo "Using Azure resource group ${azCliCommandStyle}$resourceGroupName${defaultTextStyle}."
 }
-checkForCloudShell()
-{
+checkForCloudShell() {
     # Check to make sure we're in Azure Cloud Shell
     if [ "${AZURE_HTTP_USER_AGENT:0:11}" != "cloud-shell" ]
     then
@@ -185,9 +185,8 @@ checkForCloudShell()
         done
     fi
 }
-loadTheme(){
+loadTheme() {
     # Load the theme
-    declare themeScript=$scriptPath/theme.sh
     . <(wget -q -O - $themeScript)
 }
 
