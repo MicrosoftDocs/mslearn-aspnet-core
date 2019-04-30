@@ -11,7 +11,12 @@
 ## Start
 
 # Module name
-declare moduleName="persist-data-ef-core"
+declare moduleName="create-razor-pages-aspnet-core"
+
+
+declare scriptPath=https://raw.githubusercontent.com/MicrosoftDocs/mslearn-aspnet-core/$gitBranch/infrastructure/scripts
+declare themeScript=$scriptPath/theme.sh
+declare initEnvironmentScript=$scriptPath/initenvironment.sh
 
 # If the script appears to have already been run, just set the vars and leave.
 declare variableScript='variables.sh'
@@ -21,18 +26,8 @@ then
     return 1
 fi
 
-# Text formatting
-declare red=`tput setaf 1`
-declare green=`tput setaf 2`
-declare yellow=`tput setaf 3`
-declare blue=`tput setaf 4`
-declare magenta=`tput setaf 5`
-declare cyan=`tput setaf 6`
-declare white=`tput setaf 7`
-declare defaultColor=`tput setaf 9`
-declare bold=`tput bold`
-declare plain=`tput sgr0`
-declare newline=$'\n'
+# Grab and run themeScript
+. <(wget -q -O - $themeScript)
 
 # Check to make sure we're in Azure Cloud Shell
 if [ "${AZURE_HTTP_USER_AGENT:0:11}" != "cloud-shell" ]
@@ -137,21 +132,7 @@ configureDotNetCli() {
 }
 
 initEnvironment(){
-    # Set location
-    cd ~
 
-    # Display installed .NET Core SDK version
-    echo "${magenta}${bold}Using .NET Core SDK version $dotnetsdkversion${white}${plain}"
-
-    # Install .NET Core global tool to display connection info
-    dotnet tool install dotnetsay --global
-
-    # Greetings!
-    greeting="${newline}${white}${bold}Hi there!${plain}${newline}"
-    greeting+="I'm going to provision some ${cyan}${bold}Azure${white}${plain} resources${newline}"
-    greeting+="and get the code you'll need for this module.${magenta}${bold}"
-
-    dotnetsay "$greeting"
 }
 
 downloadAndBuild() {
@@ -183,28 +164,12 @@ writeVariablesScript() {
     text+="declare srcWorkingDirectory=$srcWorkingDirectory${newline}"
     text+="declare setupWorkingDirectory=$setupWorkingDirectory${newline}"
     text+="declare gitRepoWorkingDirectory=$gitRepoWorkingDirectory${newline}"
-    text+="declare sqlServerName=$sqlServerName${newline}"
-    text+="declare sqlHostName=$sqlHostName${newline}"
-    text+="declare sqlUsername=$sqlUsername@$sqlServerName${newline}"
-    text+="declare sqlPassword=$sqlPassword${newline}"
-    text+="declare databaseName=$databaseName${newline}"
     text+="declare sqlConnectionString=\"$sqlConnectionString\"${newline}"
     text+="declare resourceGroupName=$resourceGroupName${newline}"
-    text+="declare appInsightsName=$appInsightsName${newline}"
     text+="declare subscriptionId=$subscriptionId${newline}"
-    text+="declare apiKey=$(cat ~/$apiKeyTempFile)${newline}"
-    text+="declare appId=$(cat ~/$appIdTempFile)${newline}"
-    text+="declare instrumentationKey=$(cat ~/$instrumentationKeyTempFile)${newline}"
-    text+="alias db=\"sqlcmd -U $sqlUsername -P $sqlPassword -S $sqlHostName -d $databaseName\"${newline}"
     text+="echo \"${green}${bold}The following variables are used in this module:\"${newline}"
     text+="echo \"${magenta}${bold}srcWorkingDirectory: ${white}${plain}$srcWorkingDirectory\"${newline}"
     text+="echo \"${magenta}${bold}setupWorkingDirectory: ${white}${plain}$setupWorkingDirectory\"${newline}"
-    text+="echo \"${magenta}${bold}sqlConnectionString: ${white}${plain}$sqlConnectionString\"${newline}"
-    text+="echo \"${magenta}${bold}sqlUsername: ${white}${plain}$sqlUsername\"${newline}"
-    text+="echo \"${magenta}${bold}sqlPassword: ${white}${plain}$sqlPassword\"${newline}"
-    text+="echo \"${magenta}${bold}instrumentationKey ${white}${plain}(for Application Insights)${magenta}${bold}: ${white}${plain}$(cat ~/$instrumentationKeyTempFile)\"${newline}"
-    text+="echo \"${magenta}${bold}appId ${white}${plain}(for Application Insights)${magenta}${bold}: ${white}${plain}$(cat ~/$appIdTempFile)\"${newline}"
-    text+="echo \"${magenta}${bold}apiKey ${white}${plain}(for Application Insights)${magenta}${bold}: ${white}${plain}$(cat ~/$apiKeyTempFile)\"${newline}"
     text+="echo ${newline}"
     text+="echo \"${white}db ${magenta}${bold}is an alias for${white}${plain} sqlcmd -U $sqlUsername -P $sqlPassword -S $sqlHostName -d $databaseName\"${newline}"
     text+="if ! [ \$(echo \$PATH | grep ~/.dotnet/tools) ]; then export PATH=\$PATH:~/.dotnet/tools; fi${newline}"
@@ -320,14 +285,6 @@ editSettings(){
     sed -i "s|<instrumentation-key>|$(cat ~/$instrumentationKeyTempFile)|g" $gitRepoWorkingDirectory/appsettings.json
 }
 
-createAliases(){
-    echo "${newline}${plain}${white}Creating aliases...${blue}${bold}"
-    set -x
-    alias db="sqlcmd -U $sqlUsername -P $sqlPassword -S $sqlHostName -d $databaseName"
-    set +x
-    echo
-}
-
 addVariablesToStartup(){
     if ! [ $(grep $moduleName .bashrc) ]
     then
@@ -344,11 +301,9 @@ downloadAndBuild
 setAzureCliDefaults
 provisionResourceGroup
 provisionDatabase &
-provisionAppInsights &
 wait &>/dev/null
 editSettings
 resetAzureCliDefaults
-createAliases
 writeVariablesScript
 addVariablesToStartup
 cleanupTempFiles
