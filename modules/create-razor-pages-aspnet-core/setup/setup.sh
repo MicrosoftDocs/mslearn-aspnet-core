@@ -15,7 +15,8 @@ declare -x moduleName="create-razor-pages-aspnet-core"
 
 # Any other declarations we need
 declare -x gitBranch="create-razor-pages-aspnet-core"
-declare initScript=
+declare initScript=https://raw.githubusercontent.com/MicrosoftDocs/mslearn-aspnet-core/$gitBranch/infrastructure/scripts/sparsecheckout.sh
+declare -x projectRootDirectory="ContosoPets.Api"
 
 # If the script appears to have already been run, just set the vars and leave.
 declare variableScript='variables.sh'
@@ -30,7 +31,6 @@ writeVariablesScript() {
     text="#!/bin/bash${newline}"
     text+="declare srcWorkingDirectory=$srcWorkingDirectory${newline}"
     text+="declare setupWorkingDirectory=$setupWorkingDirectory${newline}"
-    text+="declare gitRepoWorkingDirectory=$gitRepoWorkingDirectory${newline}"
     text+="declare subscriptionId=$subscriptionId${newline}"
     text+="echo \"${headingStyle}The following variables are used in this module:\"${newline}"
     text+="echo \"${headingStyle}srcWorkingDirectory: ${defaultTextStyle}$srcWorkingDirectory\"${newline}"

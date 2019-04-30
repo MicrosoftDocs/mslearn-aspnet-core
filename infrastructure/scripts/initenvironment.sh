@@ -1,6 +1,7 @@
 # This script expects the following environment variables:
 # moduleName
 # scriptPath
+# projectRootDirectory
 
 # Declarations
 declare scriptPath=https://raw.githubusercontent.com/MicrosoftDocs/mslearn-aspnet-core/$gitBranch/infrastructure/scripts
@@ -83,9 +84,9 @@ downloadAndBuild() {
     echo "${newline}${defaultTextStyle}Building code...${dotnetCliCommandStyle}"
     (
         set -x 
-        cd $gitRepoWorkingDirectory
+        cd srcWorkingDirectory/$projectRootDirectory
         dotnet build --verbosity quiet
-    ) 
+    )
     echo "${defaultTextStyle}"
 }
 # Provision Azure SQL Database
