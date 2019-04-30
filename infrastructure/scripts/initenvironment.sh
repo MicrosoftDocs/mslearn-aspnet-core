@@ -14,35 +14,9 @@ declare srcWorkingDirectory=~/contoso-pets/src
 declare setupWorkingDirectory=~/contoso-pets/setup
 declare subscriptionId=$(az account show --query id --output tsv)
 declare dotnetsdkversion=$(dotnet --version)
+declare resourceGroupName=""
 
 # Functions
-loadTheme(){
-    set -x
-    declare themeScript=$scriptPath/theme.sh
-    . <(wget -q -O - $themeScript)
-    set +x
-}
-determineResourceGroup(){
-    # Figure out the name of the resource group to use
-    declare resourceGroupCount=$(az group list | jq '. | length')
-    declare existingResourceGroup=$(az group list | jq '.[0].name' --raw-output)
-    declare resourceGroupName=""
-    declare rgStatus=""
-
-    # If there is more than one RG or there's only one but its name is not a GUID,
-    # we're probably not in the Learn sandbox.
-    if [[ ! ${existingResourceGroup//-/} =~ ^[[:xdigit:]]{32}$ ]] || [ $resourceGroupCount -gt 1 ]
-    then
-        echo "${warningStyle}WARNING!!!${defaultTextStyle}" \
-            "It doesn't appear you are currently running in a Microsoft Learn sandbox." \
-            "Using default resource group."
-        resourceGroupName=$moduleName
-    else
-        resourceGroupName=$existingResourceGroup
-    fi
-
-    echo "Using Azure resource group ${azCliCommandStyle}$resourceGroupName${defaultTextStyle}."
-}
 setAzureCliDefaults() {
     echo "${defaultTextStyle}Setting default Azure CLI values...${azCliCommandStyle}"
     (
@@ -154,7 +128,7 @@ addVariablesToStartup(){
         echo ". ~/$variableScript" >> .bashrc
     fi 
 }
-greeting(){
+displayGreeting(){
     # Set location
     cd ~
 
@@ -197,9 +171,34 @@ then
     done
 fi
 
-loadTheme
+# Figure out the name of the resource group to use
+declare resourceGroupCount=$(az group list | jq '. | length')
+declare existingResourceGroup=$(az group list | jq '.[0].name' --raw-output)
+declare rgStatus=""
+
+# If there is more than one RG or there's only one but its name is not a GUID,
+# we're probably not in the Learn sandbox.
+if [[ ! ${existingResourceGroup//-/} =~ ^[[:xdigit:]]{32}$ ]] || [ $resourceGroupCount -gt 1 ]
+then
+    echo "${warningStyle}WARNING!!!${defaultTextStyle}" \
+        "It doesn't appear you are currently running in a Microsoft Learn sandbox." \
+        "Using default resource group."
+    resourceGroupName=$moduleName
+else
+    resourceGroupName=$existingResourceGroup
+fi
+
+echo "Using Azure resource group ${azCliCommandStyle}$resourceGroupName${defaultTextStyle}."
+
+# Load the theme
+declare themeScript=$scriptPath/theme.sh
+. <(wget -q -O - $themeScript)
+
+# Execute functions
 configureDotNetCli
-greeting
+displayGreeting
 determineResourceGroup
 downloadAndBuild
 setAzureCliDefaults
+
+# Additional setup in setup.sh occurs next.
