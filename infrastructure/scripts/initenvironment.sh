@@ -5,7 +5,6 @@
 
 # Declarations
 declare scriptPath=https://raw.githubusercontent.com/MicrosoftDocs/mslearn-aspnet-core/$gitBranch/infrastructure/scripts
-declare themeScript=$scriptPath/theme.sh
 declare instanceId=$(($RANDOM * $RANDOM))
 declare gitDirectoriesToClone="modules/$moduleName/setup/ modules/$moduleName/src/"
 declare gitPathToCloneScript=https://raw.githubusercontent.com/MicrosoftDocs/mslearn-aspnet-core/$gitBranch/infrastructure/scripts/sparsecheckout.sh
@@ -185,13 +184,13 @@ checkForCloudShell() {
         done
     fi
 }
-loadTheme() {
-    # Load the theme
-    . <(wget -q -O - $themeScript)
-}
+
+
+# Load the theme
+declare themeScript=$scriptPath/theme.sh
+. <(wget -q -O - $themeScript)
 
 # Execute functions
-loadTheme
 checkForCloudShell
 determineResourceGroup
 configureDotNetCli
