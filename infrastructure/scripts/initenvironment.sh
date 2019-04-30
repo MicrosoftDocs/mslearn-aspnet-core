@@ -109,7 +109,7 @@ provisionDatabase() {
 }
 # Provision Azure Resource Group
 provisionResourceGroup() {
-    if (( $resourceGroupName -eq $moduleName )); then
+    if [ $resourceGroupName -eq $moduleName ]; then
         (
             echo "${newline}${defaultTextStyle}Provisioning Azure Resource Group...${azCliCommandStyle}"
             set -x
@@ -120,7 +120,7 @@ provisionResourceGroup() {
     fi
 }
 addVariablesToStartup(){
-    if ! (( $(grep $moduleName ~/.bashrc) )); then
+    if ! [ $(grep $moduleName ~/.bashrc) ]; then
         echo "# Next line added at $(date) by $moduleName" >> ~/.bashrc
         echo ". ~/$variableScript" >> ~/.bashrc
     fi 
