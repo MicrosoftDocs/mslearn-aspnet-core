@@ -3,8 +3,6 @@
 # scriptPath
 # projectRootDirectory
 
-# Load themes
-
 # Declarations
 declare scriptPath=https://raw.githubusercontent.com/MicrosoftDocs/mslearn-aspnet-core/$gitBranch/infrastructure/scripts
 declare instanceId=$(($RANDOM * $RANDOM))
@@ -169,31 +167,33 @@ determineResourceGroup(){
 
     echo "Using Azure resource group ${azCliCommandStyle}$resourceGroupName${defaultTextStyle}."
 }
-
-
-# Check to make sure we're in Azure Cloud Shell
-if [ "${AZURE_HTTP_USER_AGENT:0:11}" != "cloud-shell" ]
-then
-    echo "${warningStyle}WARNING!!!" \
-        "It appears that you're not running this script in an instance of Azure Cloud Shell." \
-        "This script was designed for the environment in Azure Cloud Shell, and we can make no promises that it'll function as intended anywhere else." \
-        "Please only proceed if you know what you're doing.${newline}${newline}" \
-        "Do you know what you're doing?${defaultTextStyle}"
-    select yn in "Yes" "No"; do
-        case $yn in
-            Yes ) break;;
-            No ) echo "${warningStyle}Please let us know that you saw this message using the feedback links provided.${defaultTextStyle}"; return 0;;
-        esac
-    done
-fi
-
-
-
-# Load the theme
-declare themeScript=$scriptPath/theme.sh
-. <(wget -q -O - $themeScript)
+checkForCloudShell()
+{
+    # Check to make sure we're in Azure Cloud Shell
+    if [ "${AZURE_HTTP_USER_AGENT:0:11}" != "cloud-shell" ]
+    then
+        echo "${warningStyle}WARNING!!!" \
+            "It appears that you're not running this script in an instance of Azure Cloud Shell." \
+            "This script was designed for the environment in Azure Cloud Shell, and we can make no promises that it'll function as intended anywhere else." \
+            "Please only proceed if you know what you're doing.${newline}${newline}" \
+            "Do you know what you're doing?${defaultTextStyle}"
+        select yn in "Yes" "No"; do
+            case $yn in
+                Yes ) break;;
+                No ) echo "${warningStyle}Please let us know that you saw this message using the feedback links provided.${defaultTextStyle}"; return 0;;
+            esac
+        done
+    fi
+}
+loadTheme(){
+    # Load the theme
+    declare themeScript=$scriptPath/theme.sh
+    . <(wget -q -O - $themeScript)
+}
 
 # Execute functions
+loadTheme
+checkForCloudShell
 determineResourceGroup
 configureDotNetCli
 displayGreeting
