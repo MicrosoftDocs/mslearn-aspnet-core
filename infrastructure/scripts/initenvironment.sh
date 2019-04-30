@@ -3,7 +3,7 @@
 # scriptPath
 # projectRootDirectory
 
-echo "in init"
+# Load themes
 
 # Declarations
 declare scriptPath=https://raw.githubusercontent.com/MicrosoftDocs/mslearn-aspnet-core/$gitBranch/infrastructure/scripts
@@ -16,6 +16,10 @@ declare subscriptionId=$(az account show --query id --output tsv)
 declare dotnetsdkversion=$(dotnet --version)
 
 # Functions
+loadTheme(){
+    declare themeScript=$scriptPath/theme.sh
+    . <(wget -q -O - $themeScript)
+}
 determineResourceGroup(){
     # Figure out the name of the resource group to use
     declare resourceGroupCount=$(az group list | jq '. | length')
@@ -191,6 +195,7 @@ then
     done
 fi
 
+loadTheme
 configureDotNetCli
 greeting
 determineResourceGroup
