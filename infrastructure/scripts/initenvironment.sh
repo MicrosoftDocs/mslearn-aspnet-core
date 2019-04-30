@@ -17,8 +17,10 @@ declare dotnetsdkversion=$(dotnet --version)
 
 # Functions
 loadTheme(){
+    set -x
     declare themeScript=$scriptPath/theme.sh
     . <(wget -q -O - $themeScript)
+    set +x
 }
 determineResourceGroup(){
     # Figure out the name of the resource group to use
