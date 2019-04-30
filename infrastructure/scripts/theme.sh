@@ -10,4 +10,11 @@ declare defaultColor=`tput setaf 9`
 declare bold=`tput bold`
 declare plain=`tput sgr0`
 declare newline=$'\n'
-declare heading="${magenta}${bold}"
+
+# Element styling
+declare azCliCommandStyle="${cyan}${bold}"
+declare defaultTextStyle="${white}${plain}"
+declare dotnetCliCommandStyle="${magenta}${bold}"
+declare headingStyle="${white}${bold}"
+declare successStyle="${green}${bold}"
+declare warningStyle="${yellow}${bold}"
