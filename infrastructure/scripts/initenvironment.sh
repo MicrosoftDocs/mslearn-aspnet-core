@@ -157,7 +157,7 @@ determineResourceGroup(){
 
     # If there is more than one RG or there's only one but its name is not a GUID,
     # we're probably not in the Learn sandbox.
-    if [[ ! ${existingResourceGroup} =~ ^[[:xdigit:]]{32}$ ]] || [ $resourceGroupCount -gt 1 ]
+    if [[ ! ${existingResourceGroup//-/} =~ ^[[:xdigit:]]{32}$ ]] || [ $resourceGroupCount -gt 1 ]
     then
         echo "${warningStyle}WARNING!!!" \
             "It doesn't appear you are currently running in a Microsoft Learn sandbox." \
