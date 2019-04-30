@@ -120,9 +120,9 @@ provisionResourceGroup() {
     fi
 }
 addVariablesToStartup(){
-    if ! (( $(grep $moduleName .bashrc) )); then
-        echo "# Next line added at $(date) by $moduleName" >> .bashrc
-        echo ". ~/$variableScript" >> .bashrc
+    if ! (( $(grep $moduleName ~/.bashrc) )); then
+        echo "# Next line added at $(date) by $moduleName" >> ~/.bashrc
+        echo ". ~/$variableScript" >> ~/.bashrc
     fi 
 }
 displayGreeting(){

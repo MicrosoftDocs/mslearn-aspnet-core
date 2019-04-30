@@ -47,6 +47,10 @@ writeVariablesScript() {
 # Grab and run initenvironment.sh
 . <(wget -q -O - $initScript)
 
+# Provision stuff here
+provisionResourceGroup
+
+
 # Clean up
 resetAzureCliDefaults
 writeVariablesScript
