@@ -12,9 +12,9 @@ declare plain=`tput sgr0`
 declare newline=$'\n'
 
 # Element styling
-declare azCliCommandStyle="${cyan}${bold}"
+declare azCliCommandStyle="${cyan}"
 declare defaultTextStyle="${white}${plain}"
-declare dotnetCliCommandStyle="${magenta}${bold}"
+declare dotnetCliCommandStyle="${magenta}"
 declare headingStyle="${white}${bold}"
 declare successStyle="${green}${bold}"
 declare warningStyle="${yellow}${bold}"

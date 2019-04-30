@@ -16,7 +16,7 @@ declare resourceGroupName=""
 
 # Functions
 setAzureCliDefaults() {
-    echo "${defaultTextStyle}Setting default Azure CLI values...${azCliCommandStyle}"
+    echo "${headingStyle}Setting default Azure CLI values...${azCliCommandStyle}"
     (
         set -x
         az configure --defaults \
@@ -25,7 +25,7 @@ setAzureCliDefaults() {
     )
 }
 resetAzureCliDefaults() {
-    echo "${defaultTextStyle}Resetting default Azure CLI values...${azCliCommandStyle}"
+    echo "${headingStyle}Resetting default Azure CLI values...${azCliCommandStyle}"
     (
         set -x
         az configure --defaults \
@@ -34,7 +34,7 @@ resetAzureCliDefaults() {
     )
 }
 configureDotNetCli() {
-    echo "${newline}${defaultTextStyle}Configuring the .NET Core CLI..."
+    echo "${newline}${headingStyle}Configuring the .NET Core CLI...${defaultTextStyle}"
 
     # By default, the .NET Core CLI prints Welcome and Telemetry messages on
     # the first run. Suppress those messages by creating an appropriately
@@ -56,15 +56,19 @@ downloadAndBuild() {
     git config --global user.email learn@contoso.com
     
     # Download the sample project, restore NuGet packages, and build
-    echo "${newline}${defaultTextStyle}Downloading code...${headingStyle}"
+    echo "${newline}${headingStyle}Downloading code...${defaultTextStyle}"
     (
         set -x
         curl -s $gitPathToCloneScript | bash -s $gitDirectoriesToClone
     )
-    echo "${newline}${defaultTextStyle}Building code...${dotnetCliCommandStyle}"
+    echo "${newline}${headingStyle}Building code...${defaultTextStyle}"
     (
         set -x 
         cd $srcWorkingDirectory/$projectRootDirectory
+    )
+    (
+        echo "${dotnetCliCommandStyle}"
+        set -x
         dotnet build --verbosity quiet
     )
     echo "${defaultTextStyle}"
@@ -77,7 +81,7 @@ provisionDatabase() {
     # sqlPassword
     # databaseName
     (
-        echo "${newline}${defaultTextStyle}Provisioning Azure SQL Database Server...${azCliCommandStyle}"
+        echo "${newline}${headingStyle}Provisioning Azure SQL Database Server...${azCliCommandStyle}"
         set -x
         az sql server create \
             --name $sqlServerName \
@@ -86,7 +90,7 @@ provisionDatabase() {
             --output none
     )
     (
-        echo "${newline}${defaultTextStyle}Provisioning Azure SQL Database...${azCliCommandStyle}"
+        echo "${newline}${headingStyle}Provisioning Azure SQL Database...${azCliCommandStyle}"
         set -x
         az sql db create \
             --name $databaseName \
@@ -94,7 +98,7 @@ provisionDatabase() {
             --output none
     )
     (
-        echo "${newline}${defaultTextStyle}Adding Azure IP addresses to Azure SQL Database firewall rules...${azCliCommandStyle}"
+        echo "${newline}${headingStyle}Adding Azure IP addresses to Azure SQL Database firewall rules...${azCliCommandStyle}"
         set -x
         az sql server firewall-rule create \
             --name AllowAzureAccess \
@@ -109,7 +113,7 @@ provisionDatabase() {
 provisionResourceGroup() {
     if [ "$resourceGroupName" = "$moduleName" ]; then
         (
-            echo "${newline}${defaultTextStyle}Provisioning Azure Resource Group...${azCliCommandStyle}"
+            echo "${newline}${headingStyle}Provisioning Azure Resource Group...${azCliCommandStyle}"
             set -x
             az group create \
                 --name $resourceGroupName \
