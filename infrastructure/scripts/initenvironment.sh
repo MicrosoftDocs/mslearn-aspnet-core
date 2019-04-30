@@ -3,6 +3,8 @@
 # scriptPath
 # projectRootDirectory
 
+echo "in init"
+
 # Declarations
 declare scriptPath=https://raw.githubusercontent.com/MicrosoftDocs/mslearn-aspnet-core/$gitBranch/infrastructure/scripts
 declare instanceId=$(($RANDOM * $RANDOM))
