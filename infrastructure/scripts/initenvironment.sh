@@ -86,7 +86,7 @@ downloadAndBuild() {
     echo "${newline}${defaultTextStyle}Building code...${dotnetCliCommandStyle}"
     (
         set -x 
-        cd srcWorkingDirectory/$projectRootDirectory
+        cd $srcWorkingDirectory/$projectRootDirectory
         dotnet build --verbosity quiet
     )
     echo "${defaultTextStyle}"

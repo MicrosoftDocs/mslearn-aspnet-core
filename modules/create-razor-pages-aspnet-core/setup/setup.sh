@@ -44,7 +44,7 @@ writeVariablesScript() {
     chmod 755 ~/$variableScript
 }
 
-# Grab and run initEnvironment
+# Grab and run initenvironment.sh
 . <(wget -q -O - $initScript)
 
 # Clean up
