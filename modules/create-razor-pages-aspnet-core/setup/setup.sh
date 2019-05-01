@@ -36,7 +36,7 @@ writeVariablesScript() {
     text+="echo \"${headingStyle}srcWorkingDirectory: ${defaultTextStyle}$srcWorkingDirectory\"${newline}"
     text+="echo \"${headingStyle}setupWorkingDirectory: ${defaultTextStyle}$setupWorkingDirectory\"${newline}"
     text+="echo ${newline}"
-    text+="echo ${headingStyle}Your API URL is: ${defaultTextStyle}https://$webAppName.azurewebsites.net${newline}"
+    text+="echo \"${headingStyle}Your API URL is: ${defaultTextStyle}https://$webAppName.azurewebsites.net/api/products\"${newline}"
     text+="echo ${newline}"
     text+="if ! [ \$(echo \$PATH | grep ~/.dotnet/tools) ]; then export PATH=\$PATH:~/.dotnet/tools; fi${newline}"
     text+="echo ${newline}"
