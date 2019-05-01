@@ -1,7 +1,3 @@
-declare appInsightsName=appinsights$instanceId
-declare apiKeyTempFile=~/.apiKey.temp
-declare appIdTempFile=~/.appId.temp
-declare instrumentationKeyTempFile=~/.instrumentationKey.temp
 (
     echo "${newline}${headingStyle}Provisioning Azure Monitor Application Insights...${azCliCommandStyle}"
     set -x

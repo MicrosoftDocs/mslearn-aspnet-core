@@ -3,7 +3,7 @@
 # scriptPath
 # projectRootDirectory
 
-# Declarations
+# Common Declarations
 declare scriptPath=https://raw.githubusercontent.com/MicrosoftDocs/mslearn-aspnet-core/$gitBranch/infrastructure/scripts
 declare provisioningPath=$scriptPath/provisioning
 declare defaultLocation=southcentralus
@@ -15,6 +15,24 @@ declare setupWorkingDirectory=~/contoso-pets/setup
 declare subscriptionId=$(az account show --query id --output tsv)
 declare dotnetSdkVersion=$(dotnet --version)
 declare resourceGroupName=""
+
+# AppService Declarations
+declare appServicePlan=appservice$instanceId
+declare webAppName=webapp$instanceId
+declare deploymentUser=$(cat /proc/sys/kernel/random/uuid)
+declare deploymentPassword=Pass.$RANDOM.word
+
+# AppInsights Declarations
+declare appInsightsName=appinsights$instanceId
+declare apiKeyTempFile=~/.apiKey.temp
+declare appIdTempFile=~/.appId.temp
+declare instrumentationKeyTempFile=~/.instrumentationKey.temp
+
+# SQL Database Declarations
+# sqlServerName
+# sqlUsername
+# sqlPassword
+# databaseName
 
 # Functions
 setAzureCliDefaults() {

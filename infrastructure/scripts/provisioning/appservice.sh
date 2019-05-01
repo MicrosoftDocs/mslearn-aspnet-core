@@ -1,8 +1,3 @@
-declare appServicePlan=appservice$instanceId
-declare webAppName=webapp$instanceId
-declare deploymentUser=$(cat /proc/sys/kernel/random/uuid)
-declare deploymentPassword=Pass.$RANDOM.word
-
 (
     echo "${newline}${headingStyle}Provisioning Azure App Service Plan...${azCliCommandStyle}"
     set -x
