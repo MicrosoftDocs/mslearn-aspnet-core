@@ -41,7 +41,7 @@ writeVariablesScript() {
     text+="if ! [ \$(echo \$PATH | grep ~/.dotnet/tools) ]; then export PATH=\$PATH:~/.dotnet/tools; fi${newline}"
     text+="echo ${newline}"
     text+="cd $srcWorkingDirectory${newline}"
-    text+="code .${newline}"
+    #text+="code .${newline}"
     echo "$text" > ~/$variableScript
     chmod +x ~/$variableScript
 }
