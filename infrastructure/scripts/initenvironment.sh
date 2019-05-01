@@ -6,6 +6,7 @@
 # Declarations
 declare scriptPath=https://raw.githubusercontent.com/MicrosoftDocs/mslearn-aspnet-core/$gitBranch/infrastructure/scripts
 declare provisioningPath=$scriptPath/provisioning
+declare defaultLocation=southcentralus
 declare instanceId=$(($RANDOM * $RANDOM))
 declare gitDirectoriesToClone="modules/$moduleName/setup/ modules/$moduleName/src/"
 declare gitPathToCloneScript=https://raw.githubusercontent.com/MicrosoftDocs/mslearn-aspnet-core/$gitBranch/infrastructure/scripts/sparsecheckout.sh
@@ -22,7 +23,7 @@ setAzureCliDefaults() {
         set -x
         az configure --defaults \
             group=$resourceGroupName \
-            location=SouthCentralUs
+            location=$defaultLocation
     )
 }
 resetAzureCliDefaults() {
@@ -79,6 +80,11 @@ provisionAzSqlDatabase() {
 # Provision App Insights
 provisionAppInsights() {
     declare provisionScript=$provisioningPath/appinsights.sh
+    . <(wget -q -O - $provisionScript)
+}
+# Provision Azure App Service
+provisionAppService() {
+    declare provisionScript=$provisioningPath/appservice.sh
     . <(wget -q -O - $provisionScript)
 }
 # Provision Azure Resource Group
