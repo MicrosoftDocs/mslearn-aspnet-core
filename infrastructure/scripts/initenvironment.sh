@@ -5,6 +5,7 @@
 
 # Declarations
 declare scriptPath=https://raw.githubusercontent.com/MicrosoftDocs/mslearn-aspnet-core/$gitBranch/infrastructure/scripts
+declare provisioningPath=$scriptPath/provisioning
 declare instanceId=$(($RANDOM * $RANDOM))
 declare gitDirectoriesToClone="modules/$moduleName/setup/ modules/$moduleName/src/"
 declare gitPathToCloneScript=https://raw.githubusercontent.com/MicrosoftDocs/mslearn-aspnet-core/$gitBranch/infrastructure/scripts/sparsecheckout.sh
@@ -72,12 +73,12 @@ downloadAndBuild() {
 }
 # Provision Azure SQL Database
 provisionAzSqlDatabase() {
-    declare provisionScript=$scriptPath/azuresql.sh
+    declare provisionScript=$provisioningPath/azuresql.sh
     . <(wget -q -O - $provisionScript)
 }
 # Provision App Insights
 provisionAppInsights() {
-    declare provisionScript=$scriptPath/appinsights.sh
+    declare provisionScript=$provisioningPath/appinsights.sh
     . <(wget -q -O - $provisionScript)
 }
 # Provision Azure Resource Group
