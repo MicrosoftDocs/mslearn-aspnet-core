@@ -49,8 +49,8 @@ pushWebApi() {
         cd $srcWorkingDirectory/$projectRootDirectory
         set -x
         git push --quiet --set-upstream azure master
-        echo
     )
+    echo
 }
 
 # Grab and run initenvironment.sh
