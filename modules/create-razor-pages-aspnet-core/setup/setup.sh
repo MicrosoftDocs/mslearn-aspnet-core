@@ -41,7 +41,15 @@ writeVariablesScript() {
     text+="cd $srcWorkingDirectory${newline}"
     text+="code .${newline}"
     echo "$text" > ~/$variableScript
-    chmod 755 ~/$variableScript
+    chmod +x ~/$variableScript
+}
+pushWebApi() {
+    (
+        echo "${newline}${headingStyle}Deploying API dependency app to Azure...${defaultTextStyle}"
+        cd $srcWorkingDirectory/$projectRootDirectory
+        set -x
+        git push --quiet --set-upstream azure master
+    )
 }
 
 # Grab and run initenvironment.sh
@@ -51,6 +59,7 @@ writeVariablesScript() {
 provisionResourceGroup
 #provisionAppInsights
 provisionAppService
+pushWebApi
 
 # Clean up
 resetAzureCliDefaults

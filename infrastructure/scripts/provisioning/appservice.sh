@@ -34,5 +34,7 @@ declare deploymentPassword=Pass.$RANDOM.word
     set -x
     git init --quiet
     git remote add azure https://$deploymentUser:$deploymentPassword@$webAppName.scm.azurewebsites.net/$webAppName.git
-    git branch --quiet --set-upstream-to azure/master
+    git checkout -b master
+    git add -A
+    git commit -am "init"
 )
