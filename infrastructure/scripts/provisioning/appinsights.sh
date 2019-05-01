@@ -39,6 +39,6 @@ apiKey=$(echo $result | jq -r '.apiKey')
 appId=$(echo $appInsightsDetails | jq -r '.properties.AppId')
 instrumentationKey=$(echo $appInsightsDetails | jq -r '.properties.InstrumentationKey')
 
-echo $apiKey > ~/$apiKeyTempFile
-echo $appId > ~/$appIdTempFile
-echo $instrumentationKey > ~/$instrumentationKeyTempFile
+echo $apiKey > $apiKeyTempFile
+echo $appId > $appIdTempFile
+echo $instrumentationKey > $instrumentationKeyTempFile

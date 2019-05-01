@@ -45,10 +45,11 @@ writeVariablesScript() {
 }
 pushWebApi() {
     (
-        echo "${newline}${headingStyle}Deploying API dependency app to Azure...${defaultTextStyle}"
+        echo "${newline}${headingStyle}Deploying ASP.NET Core web API to Azure...${defaultTextStyle}"
         cd $srcWorkingDirectory/$projectRootDirectory
         set -x
         git push --quiet --set-upstream azure master
+        echo
     )
 }
 
@@ -57,7 +58,6 @@ pushWebApi() {
 
 # Provision stuff here
 provisionResourceGroup
-#provisionAppInsights
 provisionAppService
 pushWebApi
 

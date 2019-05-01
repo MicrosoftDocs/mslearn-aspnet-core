@@ -136,14 +136,14 @@ displayGreeting() {
     # Greetings!
     greeting="${newline}${defaultTextStyle}Hi there!${newline}"
     greeting+="I'm going to provision some ${azCliCommandStyle}Azure${defaultTextStyle} resources${newline}"
-    greeting+="and get the code you'll need for this module.${dotnetCliCommandStyle}"
+    greeting+="and get the code you'll need for this module.${dotnetSayStyle}"
 
     dotnetsay "$greeting"
 }
 summarize() {
     summary="${newline}${successStyle}Your environment is ready!${defaultTextStyle}${newline}"
     summary+="I set up some ${azCliCommandStyle}Azure${defaultTextStyle} resources and downloaded the code you'll need.${newline}"
-    summary+="You can resume this session and display this message again by re-running the script.${dotnetCliCommandStyle}"
+    summary+="You can resume this session and display this message again by re-running the script.${dotnetSayStyle}"
     dotnetsay "$summary"
 
     . ~/$variableScript
