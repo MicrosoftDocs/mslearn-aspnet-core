@@ -54,7 +54,7 @@ writeVariablesScript() {
 
 # Provision stuff here
 provisionResourceGroup
-provisionAppService
+provisionAppInsights
 
 # Clean up
 resetAzureCliDefaults
