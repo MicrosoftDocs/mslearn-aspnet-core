@@ -47,9 +47,14 @@ writeVariablesScript() {
 # Grab and run initenvironment.sh
 . <(wget -q -O - $initScript)
 
+# Create any variables required for provisioning here.
+# initenvironment.sh creates an $instanceId variable
+# for unique names.
+
+
 # Provision stuff here
 provisionResourceGroup
-
+provisionAppService
 
 # Clean up
 resetAzureCliDefaults
