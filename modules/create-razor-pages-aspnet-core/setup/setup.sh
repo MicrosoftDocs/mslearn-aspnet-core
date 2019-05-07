@@ -75,3 +75,6 @@ addVariablesToStartup
 
 # We're done! Summarize.
 summarize
+
+# Run the variables script to make sure everything is as expected
+. ~/$variableScript

@@ -145,8 +145,6 @@ summarize() {
     summary+="I set up some ${azCliCommandStyle}Azure${defaultTextStyle} resources and downloaded the code you'll need.${newline}"
     summary+="You can resume this session and display this message again by re-running the script.${dotnetSayStyle}"
     dotnetsay "$summary"
-
-    . ~/$variableScript
 }
 determineResourceGroup() {
     # Figure out the name of the resource group to use
