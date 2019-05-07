@@ -180,6 +180,12 @@ checkForCloudShell() {
         done
     fi
 }
+cleanupTempFiles() {
+    # App Insights
+    rm $apiKeyTempFile
+    rm $appIdTempFile
+    rm $instrumentationKeyTempFile
+}
 
 
 # Load the theme
