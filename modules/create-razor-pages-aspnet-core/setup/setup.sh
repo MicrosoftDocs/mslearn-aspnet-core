@@ -28,20 +28,26 @@ fi
 
 # Write variables script
 writeVariablesScript() {
+    declare razorAppName=$instanceId"razorApp"
     text="#!/bin/bash${newline}"
     text+="declare srcWorkingDirectory=$srcWorkingDirectory${newline}"
     text+="declare setupWorkingDirectory=$setupWorkingDirectory${newline}"
     text+="declare subscriptionId=$subscriptionId${newline}"
+    text+="declare resourceGroupName=$resourceGroupName${newline}"
+    text+="declare appServicePlan=$appServicePlan${newline}"    
+    text+="declare razorAppName=$razorAppName${newline}"
     text+="echo \"${headingStyle}The following variables are used in this module:\"${newline}"
     text+="echo \"${headingStyle}srcWorkingDirectory: ${defaultTextStyle}$srcWorkingDirectory\"${newline}"
     text+="echo \"${headingStyle}setupWorkingDirectory: ${defaultTextStyle}$setupWorkingDirectory\"${newline}"
+    text+="echo \"${headingStyle}resourceGroupName: ${defaultTextStyle}$resourceGroupName\"${newline}"
+    text+="echo \"${headingStyle}appServicePlan: ${defaultTextStyle}$appServicePlan\"${newline}"
+    text+="echo \"${headingStyle}razorAppName: ${defaultTextStyle}$razorAppName\"${newline}"
     text+="echo ${newline}"
     text+="echo \"${headingStyle}Your API URL is: ${defaultTextStyle}https://$webAppName.azurewebsites.net/api/products\"${newline}"
     text+="echo ${newline}"
     text+="if ! [ \$(echo \$PATH | grep ~/.dotnet/tools) ]; then export PATH=\$PATH:~/.dotnet/tools; fi${newline}"
     text+="echo ${newline}"
     text+="cd $srcWorkingDirectory${newline}"
-    #text+="code .${newline}"
     echo "$text" > ~/$variableScript
     chmod +x ~/$variableScript
 }
