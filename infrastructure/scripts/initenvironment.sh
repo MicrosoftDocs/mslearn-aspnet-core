@@ -28,10 +28,11 @@ declare instrumentationKeyTempFile=~/.instrumentationKey.temp
 
 # SQL Database Declarations
 declare sqlServerName=azsql$instanceId
+declare sqlHostName=$sqlServerName.database.windows.net
 declare sqlUsername=SqlUser
 declare sqlPassword=Pass.$RANDOM.word
 declare databaseName=ContosoPets
-declare sqlConnectionString="Data Source=$sqlServerName.database.windows.net;Initial Catalog=$databaseName;Connect Timeout=30;Encrypt=True;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False"
+declare sqlConnectionString="Data Source=$sqlHostName;Initial Catalog=$databaseName;Connect Timeout=30;Encrypt=True;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False"
 
 # Functions
 setAzureCliDefaults() {
