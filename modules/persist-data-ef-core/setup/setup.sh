@@ -13,6 +13,10 @@
 # Module name
 declare moduleName="persist-data-ef-core"
 
+# Any other declarations we need
+declare -x gitBranch="create-razor-pages-aspnet-core"
+declare initScript=https://raw.githubusercontent.com/MicrosoftDocs/mslearn-aspnet-core/$gitBranch/infrastructure/scripts/initenvironment.sh
+
 # If the script appears to have already been run, just set the vars and leave.
 declare variableScript='variables.sh'
 if [ -e ~/$variableScript ]
