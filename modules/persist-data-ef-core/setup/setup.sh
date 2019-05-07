@@ -66,7 +66,7 @@ writeVariablesScript() {
 }
 
 editSettings(){
-    sed -i "s|<instrumentation-key>|$(cat ~/$instrumentationKeyTempFile)|g" $srcWorkingDirectory/$projectRootDirectory/appsettings.json
+    sed -i "s|<instrumentation-key>|$(cat $instrumentationKeyTempFile)|g" $srcWorkingDirectory/$projectRootDirectory/appsettings.json
 }
 
 createAliases(){
