@@ -19,8 +19,6 @@ declare resourceGroupName=""
 # AppService Declarations
 declare appServicePlan=appservice$instanceId
 declare webAppName=webapp$instanceId
-declare deploymentUser=$(cat /proc/sys/kernel/random/uuid)
-declare deploymentPassword=Pass.$RANDOM.word
 
 # AppInsights Declarations
 declare appInsightsName=appinsights$instanceId
