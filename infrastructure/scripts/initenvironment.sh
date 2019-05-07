@@ -27,10 +27,11 @@ declare appIdTempFile=~/.appId.temp
 declare instrumentationKeyTempFile=~/.instrumentationKey.temp
 
 # SQL Database Declarations
-# sqlServerName
-# sqlUsername
-# sqlPassword
-# databaseName
+declare sqlServerName=azsql$instanceId
+declare sqlUsername=SqlUser
+declare sqlPassword=Pass.$RANDOM.word
+declare databaseName=ContosoPets
+declare sqlConnectionString="Data Source=$sqlServerName.database.windows.net;Initial Catalog=$databaseName;Connect Timeout=30;Encrypt=True;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False"
 
 # Functions
 setAzureCliDefaults() {
@@ -154,7 +155,7 @@ determineResourceGroup() {
     if [[ ! ${existingResourceGroup//-/} =~ ^[[:xdigit:]]{32}$ ]] || [ $resourceGroupCount -gt 1 ]
     then
         echo "${warningStyle}WARNING!!!" \
-            "It doesn't appear you are currently running in a Microsoft Learn sandbox." \
+            "It appears you aren't currently running in a Microsoft Learn sandbox." \
             "Using default resource group.${defaultTextStyle}"
         resourceGroupName=$moduleName
     else
@@ -168,7 +169,7 @@ checkForCloudShell() {
     if [ "${AZURE_HTTP_USER_AGENT:0:11}" != "cloud-shell" ]
     then
         echo "${warningStyle}WARNING!!!" \
-            "It appears that you're not running this script in an instance of Azure Cloud Shell." \
+            "It appears you aren't running this script in an instance of Azure Cloud Shell." \
             "This script was designed for the environment in Azure Cloud Shell, and we can make no promises that it'll function as intended anywhere else." \
             "Please only proceed if you know what you're doing.${newline}${newline}" \
             "Do you know what you're doing?${defaultTextStyle}"

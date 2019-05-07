@@ -16,6 +16,7 @@ declare moduleName="persist-data-ef-core"
 # Any other declarations we need
 declare -x gitBranch="create-razor-pages-aspnet-core"
 declare initScript=https://raw.githubusercontent.com/MicrosoftDocs/mslearn-aspnet-core/$gitBranch/infrastructure/scripts/initenvironment.sh
+declare -x projectRootDirectory="ContosoPets.Api"
 
 # If the script appears to have already been run, just set the vars and leave.
 declare variableScript='variables.sh'
@@ -58,9 +59,8 @@ writeVariablesScript() {
     text+="echo \"${defaultTextStyle}db ${headingStyle}is an alias for${defaultTextStyle} sqlcmd -U $sqlUsername -P $sqlPassword -S $sqlHostName -d $databaseName\"${newline}"
     text+="if ! [ \$(echo \$PATH | grep ~/.dotnet/tools) ]; then export PATH=\$PATH:~/.dotnet/tools; fi${newline}"
     text+="echo ${newline}"
-    text+="cd $srcWorkingDirectory${newline}"
-    text+="code .${newline}"
-    text+="cd $gitRepoWorkingDirectory${newline}"
+    text+="cd $srcWorkingDirectory/$projectRootDirectory${newline}"
+    text+="code ..${newline}"
     echo "$text" > ~/$variableScript
     chmod 755 ~/$variableScript
 }
@@ -82,7 +82,7 @@ createAliases(){
 
 # Provision stuff here
 provisionResourceGroup
-provisionDatabase &
+provisionAzSqlDatabase &
 provisionAppInsights &
 wait &>/dev/null
 
@@ -96,6 +96,11 @@ cleanupTempFiles
 # Clean up
 writeVariablesScript
 addVariablesToStartup
+
+# Switch to working directory and launch Cloud Shell Editor
+# Open the parent directory in the file explorer
+cd $srcWorkingDirectory/$projectRootDirectory
+code .. 
 
 # We're done! Summarize.
 summarize
