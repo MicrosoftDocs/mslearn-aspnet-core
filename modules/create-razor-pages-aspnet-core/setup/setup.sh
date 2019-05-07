@@ -48,15 +48,6 @@ writeVariablesScript() {
     echo "$text" > ~/$variableScript
     chmod +x ~/$variableScript
 }
-pushWebApi() {
-    (
-        echo "${newline}${headingStyle}Deploying ASP.NET Core web API to Azure...${defaultTextStyle}"
-        cd $srcWorkingDirectory/$projectRootDirectory
-        set -x
-        git push --quiet --set-upstream azure master
-    )
-    echo
-}
 
 # Grab and run initenvironment.sh
 . <(wget -q -O - $initScript)
@@ -64,10 +55,8 @@ pushWebApi() {
 # Provision stuff here
 provisionResourceGroup
 provisionAppService
-pushWebApi
 
 # Clean up
-resetAzureCliDefaults
 writeVariablesScript
 addVariablesToStartup
 
