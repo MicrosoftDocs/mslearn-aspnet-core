@@ -42,9 +42,9 @@ writeVariablesScript() {
     text+="declare resourceGroupName=$resourceGroupName${newline}"
     text+="declare appInsightsName=$appInsightsName${newline}"
     text+="declare subscriptionId=$subscriptionId${newline}"
-    text+="declare apiKey=$(cat ~/$apiKeyTempFile)${newline}"
-    text+="declare appId=$(cat ~/$appIdTempFile)${newline}"
-    text+="declare instrumentationKey=$(cat ~/$instrumentationKeyTempFile)${newline}"
+    text+="declare apiKey=$(cat $apiKeyTempFile)${newline}"
+    text+="declare appId=$(cat $appIdTempFile)${newline}"
+    text+="declare instrumentationKey=$(cat $instrumentationKeyTempFile)${newline}"
     text+="alias db=\"sqlcmd -U $sqlUsername -P $sqlPassword -S $sqlHostName -d $databaseName\"${newline}"
     text+="echo \"${headingStyle}The following variables are used in this module:\"${newline}"
     text+="echo \"${headingStyle}srcWorkingDirectory: ${defaultTextStyle}$srcWorkingDirectory\"${newline}"
@@ -52,9 +52,9 @@ writeVariablesScript() {
     text+="echo \"${headingStyle}sqlConnectionString: ${defaultTextStyle}$sqlConnectionString\"${newline}"
     text+="echo \"${headingStyle}sqlUsername: ${defaultTextStyle}$sqlUsername\"${newline}"
     text+="echo \"${headingStyle}sqlPassword: ${defaultTextStyle}$sqlPassword\"${newline}"
-    text+="echo \"${headingStyle}instrumentationKey ${defaultTextStyle}(for Application Insights)${headingStyle}: ${defaultTextStyle}$(cat ~/$instrumentationKeyTempFile)\"${newline}"
-    text+="echo \"${headingStyle}appId ${defaultTextStyle}(for Application Insights)${headingStyle}: ${defaultTextStyle}$(cat ~/$appIdTempFile)\"${newline}"
-    text+="echo \"${headingStyle}apiKey ${defaultTextStyle}(for Application Insights)${headingStyle}: ${defaultTextStyle}$(cat ~/$apiKeyTempFile)\"${newline}"
+    text+="echo \"${headingStyle}instrumentationKey ${defaultTextStyle}(for Application Insights)${headingStyle}: ${defaultTextStyle}$(cat $instrumentationKeyTempFile)\"${newline}"
+    text+="echo \"${headingStyle}appId ${defaultTextStyle}(for Application Insights)${headingStyle}: ${defaultTextStyle}$(cat $appIdTempFile)\"${newline}"
+    text+="echo \"${headingStyle}apiKey ${defaultTextStyle}(for Application Insights)${headingStyle}: ${defaultTextStyle}$(cat $apiKeyTempFile)\"${newline}"
     text+="echo ${newline}"
     text+="echo \"${defaultTextStyle}db ${headingStyle}is an alias for${defaultTextStyle} sqlcmd -U $sqlUsername -P $sqlPassword -S $sqlHostName -d $databaseName\"${newline}"
     text+="if ! [ \$(echo \$PATH | grep ~/.dotnet/tools) ]; then export PATH=\$PATH:~/.dotnet/tools; fi${newline}"
@@ -66,7 +66,7 @@ writeVariablesScript() {
 }
 
 editSettings(){
-    sed -i "s|<instrumentation-key>|$(cat ~/$instrumentationKeyTempFile)|g" $gitRepoWorkingDirectory/appsettings.json
+    sed -i "s|<instrumentation-key>|$(cat ~/$instrumentationKeyTempFile)|g" $srcWorkingDirectory/$projectRootDirectory/appsettings.json
 }
 
 createAliases(){
@@ -92,10 +92,6 @@ createAliases
 writeVariablesScript
 addVariablesToStartup
 cleanupTempFiles
-
-# Clean up
-writeVariablesScript
-addVariablesToStartup
 
 # Switch to working directory and launch Cloud Shell Editor
 # Open the parent directory in the file explorer

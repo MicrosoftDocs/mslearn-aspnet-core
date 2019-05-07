@@ -183,9 +183,6 @@ checkForCloudShell() {
 }
 cleanupTempFiles() {
     # App Insights
-    rm $apiKeyTempFile
-    rm $appIdTempFile
-    rm $instrumentationKeyTempFile
 }
 
 
