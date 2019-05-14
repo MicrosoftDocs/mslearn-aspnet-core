@@ -1,7 +1,7 @@
 # Downloads and installs sqlite3 command-line shell in the Cloud Shell
 
 # Depends on gitBranch variable
-if ! [ -z $gitBranch ]; then
+if ! [ -z ${gitBranch+x} ]; then
     echo "${errorStyle}\$gitBranch is not set."
     return 0;
 fi
