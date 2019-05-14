@@ -1,19 +1,24 @@
-# Downloads and installs sqlite3 CLI in the Cloud Shell
+# Downloads and installs sqlite3 command-line shell in the Cloud Shell
+
 # Depends on gitBranch variable
+if ! [ -z $gitBranch ]; then
+    echo "${errorStyle}\$gitBranch is not set."
+    return 0;
+fi
 
 declare sqlitePath=~/.sqlite3
 declare sqliteUrl=https://raw.githubusercontent.com/MicrosoftDocs/mslearn-aspnet-core/$gitBranch/infrastructure/binaries/sqlite3
-echo "${newline}${headingStyle}Installing SQLite3 CLI tool...${newline}${defaultTextStyle}"
+echo "${newline}${headingStyle}Installing SQLite3 command-line shell...${newline}${defaultTextStyle}"
 # Bug out if it's already installed
 if [ -d "${sqlitePath}" ]; then
     if [ -f "${sqlitePath}/sqlite3" ]; then
-        echo "${warningStyle}SQLite3 CLI tool already installed."
+        echo "${warningStyle}SQLite3 command-line shell already installed."
         return 1;
     fi
 fi
 
 # Download and install the binary
-mkdir $sqlitePath;
+mkdir $sqlitePath
 wget -q -O $sqlitePath/sqlite3 $sqliteUrl
 chmod +x $sqlitePath/sqlite3
 
