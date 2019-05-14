@@ -6,6 +6,8 @@
 # Common Declarations
 declare scriptPath=https://raw.githubusercontent.com/MicrosoftDocs/mslearn-aspnet-core/$gitBranch/infrastructure/scripts
 declare provisioningPath=$scriptPath/provisioning
+declare toolsPath=$scriptPath/tools
+declare binariesPath=https://raw.githubusercontent.com/MicrosoftDocs/mslearn-aspnet-core/$gitBranch/infrastructure/binaries
 declare defaultLocation=southcentralus
 declare instanceId=$(($RANDOM * $RANDOM))
 declare gitDirectoriesToClone="modules/$moduleName/setup/ modules/$moduleName/src/"
@@ -181,6 +183,10 @@ checkForCloudShell() {
             esac
         done
     fi
+}
+installSqlite() {
+    declare sqliteScript=$toolsPath/sqlite3.sh
+    . <(wget -q -O - $sqliteScript)
 }
 cleanupTempFiles() {
     # App Insights
