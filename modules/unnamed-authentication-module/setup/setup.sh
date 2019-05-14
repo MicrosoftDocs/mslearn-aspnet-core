@@ -11,7 +11,7 @@
 ## Start
 
 # Module name
-declare moduleName="unnamed authentication module"
+declare moduleName="unnamed-authentication-module"
 
 # Any other declarations we need
 declare -x gitBranch="authentication-stuff"
