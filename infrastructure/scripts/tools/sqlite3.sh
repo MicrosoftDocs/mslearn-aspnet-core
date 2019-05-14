@@ -17,6 +17,13 @@ mkdir $sqlitePath;
 wget -q -O $sqlitePath/sqlite3 $sqliteUrl
 chmod +x $sqlitePath/sqlite3
 
+# Resource file (default values)
+if ! [ -f "~/.sqliterc" ]; then
+    echo ".mode columns" > ~/.sqliterc
+    echo ".headers on" >> ~/.sqliterc
+    echo ".nullvalue NULL" >> ~/.sqliterc
+fi
+
 # Add the path
 if ! [ $(echo $PATH | grep $sqlitePath) ]; then 
     export PATH=$PATH:$sqlitePath
