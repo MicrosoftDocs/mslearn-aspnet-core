@@ -12,7 +12,7 @@
     
     # Download and install the binary
     mkdir $sqlitePath;
-    wget -s -O $sqlitePath/sqlite3 $sqliteUrl
+    wget -q -O $sqlitePath/sqlite3 $sqliteUrl
     chmod +x $sqlitePath/sqlite3
 
     # Add the path
