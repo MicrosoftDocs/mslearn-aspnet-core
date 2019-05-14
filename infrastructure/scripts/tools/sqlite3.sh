@@ -1,7 +1,7 @@
 # Downloads and installs sqlite3 command-line shell in the Cloud Shell
 
 # Depends on binariesPath variable
-if ! [ -z ${binariesPath+x} ]; then
+if [[ ! $binariesPath ]]; then
     echo "${newline}${errorStyle}\$binariesPath is not set.${newline}${defaultTextStyle}"
     return 0;
 fi
