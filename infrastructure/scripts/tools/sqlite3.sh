@@ -1,3 +1,6 @@
+# Downloads and installs sqlite3 CLI in the Cloud Shell
+# Depends on gitBranch variable
+
 declare sqlitePath=~/.sqlite3
 declare sqliteUrl=https://raw.githubusercontent.com/MicrosoftDocs/mslearn-aspnet-core/$gitBranch/infrastructure/binaries/sqlite3
 echo "${newline}${headingStyle}Installing SQLite3 CLI tool...${newline}${defaultTextStyle}"
