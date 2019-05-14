@@ -49,6 +49,7 @@ writeVariablesScript() {
 . <(wget -q -O - $initScript)
 
 # Provision stuff here
+installSqliteCli
 
 # Clean up
 writeVariablesScript

@@ -184,7 +184,7 @@ checkForCloudShell() {
         done
     fi
 }
-installSqlite() {
+installSqliteCli() {
     declare sqliteScript=$toolsPath/sqlite3.sh
     . <(wget -q -O - $sqliteScript)
 }
