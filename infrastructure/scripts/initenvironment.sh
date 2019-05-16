@@ -199,7 +199,5 @@ checkForCloudShell
 determineResourceGroup
 configureDotNetCli
 displayGreeting
-downloadAndBuild
-setAzureCliDefaults
 
 # Additional setup in setup.sh occurs next.

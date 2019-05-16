@@ -62,7 +62,7 @@ writeVariablesScript() {
     text+="cd $srcWorkingDirectory/$projectRootDirectory${newline}"
     text+="code ..${newline}"
     echo "$text" > ~/$variableScript
-    chmod 755 ~/$variableScript
+    chmod +x ~/$variableScript
 }
 
 editSettings(){
@@ -80,11 +80,17 @@ createAliases(){
 # Grab and run initenvironment.sh
 . <(wget -q -O - $initScript)
 
+
+# Download and build
+downloadAndBuild
+
 # Provision stuff here
+setAzureCliDefaults
 provisionResourceGroup
 provisionAzSqlDatabase &
 provisionAppInsights &
 wait &>/dev/null
+resetAzureCliDefaults
 
 # Clean up
 editSettings
