@@ -50,6 +50,9 @@ writeVariablesScript() {
     echo "$text" > ~/$variableScript
     chmod +x ~/$variableScript
 }
+editSettings(){
+    sed -i "s|<web-app-name>|$webAppName|g" $srcWorkingDirectory/$moduleWorkingDirectory/appsettings.json
+}
 
 # Grab and run initenvironment.sh
 . <(wget -q -O - $initScript)
@@ -61,9 +64,9 @@ downloadAndBuild
 setAzureCliDefaults
 provisionResourceGroup
 provisionAppService
-resetAzureCliDefaults
 
 # Clean up
+editSettings
 writeVariablesScript
 addVariablesToStartup
 
