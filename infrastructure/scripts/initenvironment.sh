@@ -42,7 +42,7 @@ declare postgreSqlServerName=postgresql$instanceId
 declare postgreSqlHostName=$postgreSqlServerName.postgres.database.azure.com
 declare postgreSqlUsername=pgsqluser
 declare postgreSqlPassword=Pass.$RANDOM.word
-declare postgreSqlDatabaseName=ContosoPets
+declare postgreSqlDatabaseName=contosopets
 declare postgreSqlConnectionString="Server=$postgreSqlHostName;Database=$postgreSqlDatabaseName;Port=5432;Ssl Mode=Require;"
 
 # Functions
