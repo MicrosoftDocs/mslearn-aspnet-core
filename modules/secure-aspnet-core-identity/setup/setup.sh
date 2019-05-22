@@ -11,7 +11,7 @@
 ## Start
 
 # Module name
-declare moduleName="unnamed-authentication-module"
+declare moduleName="secure-aspnet-core-identity"
 
 # Any other declarations we need
 declare -x gitBranch="authentication-stuff"
@@ -33,6 +33,10 @@ writeVariablesScript() {
     text+="declare srcWorkingDirectory=$srcWorkingDirectory${newline}"
     text+="declare setupWorkingDirectory=$setupWorkingDirectory${newline}"
     text+="declare resourceGroupName=$resourceGroupName${newline}"
+    text+="declare postgreSqlServerName=$postgreSqlServerName${newline}"
+    text+="declare postgreSqlHostName=$postgreSqlHostName${newline}"
+    text+="declare postgreSqlUsername=$postgreSqlUsername@$postgreSqlServerName${newline}"
+    text+="declare postgreSqlPassword=$postgreSqlPassword${newline}"
     text+="declare subscriptionId=$subscriptionId${newline}"
     text+="echo \"${headingStyle}The following variables are used in this module:\"${newline}"
     text+="echo \"${headingStyle}srcWorkingDirectory: ${defaultTextStyle}$srcWorkingDirectory\"${newline}"
@@ -49,7 +53,11 @@ writeVariablesScript() {
 . <(wget -q -O - $initScript)
 
 # Provision stuff here
-installSqliteCli
+provisionResourceGroup
+# App Service and PostgreSQL provision in parallel
+provisionAppService &
+provisionAzPostgreSqlDatabase
+wait &>/dev/null
 
 # Clean up
 writeVariablesScript

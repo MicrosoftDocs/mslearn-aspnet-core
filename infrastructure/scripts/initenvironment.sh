@@ -28,13 +28,22 @@ declare apiKeyTempFile=~/.apiKey.temp
 declare appIdTempFile=~/.appId.temp
 declare instrumentationKeyTempFile=~/.instrumentationKey.temp
 
-# SQL Database Declarations
+# Azure SQL Database Declarations
 declare sqlServerName=azsql$instanceId
 declare sqlHostName=$sqlServerName.database.windows.net
 declare sqlUsername=SqlUser
 declare sqlPassword=Pass.$RANDOM.word
 declare databaseName=ContosoPets
 declare sqlConnectionString="Data Source=$sqlHostName;Initial Catalog=$databaseName;Connect Timeout=30;Encrypt=True;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False"
+
+# Azure Database for PostgreSQL Declarations
+declare postgreSqlSku=B_Gen5_1
+declare postgreSqlServerName=postgresql$instanceId
+declare postgreSqlHostName=$postgreSqlServerName.postgres.database.azure.com
+declare postgreSqlUsername=pgsqluser
+declare postgreSqlPassword=Pass.$RANDOM.word
+declare postgreSqlDatabaseName=ContosoPets
+declare postgreSqlConnectionString="Server=$postgreSqlHostName;Database=$postgreSqlDatabaseName;Port=5432;Ssl Mode=Require;"
 
 # Functions
 setAzureCliDefaults() {
@@ -95,6 +104,11 @@ downloadAndBuild() {
 # Provision Azure SQL Database
 provisionAzSqlDatabase() {
     declare provisionScript=$provisioningPath/azuresql.sh
+    . <(wget -q -O - $provisionScript)
+}
+# Provision Azure Database for PostgreSQL
+provisionAzPostgreSqlDatabase() {
+    declare provisionScript=$provisioningPath/azurepostgresql.sh
     . <(wget -q -O - $provisionScript)
 }
 # Provision App Insights
@@ -183,10 +197,6 @@ checkForCloudShell() {
             esac
         done
     fi
-}
-installSqliteCli() {
-    declare sqliteScript=$toolsPath/sqlite3.sh
-    . <(wget -q -O - $sqliteScript)
 }
 cleanupTempFiles() {
     # App Insights
