@@ -17,6 +17,7 @@ declare -x moduleName="create-razor-pages-aspnet-core"
 declare -x gitBranch="create-razor-pages-aspnet-core"
 declare initScript=https://raw.githubusercontent.com/MicrosoftDocs/mslearn-aspnet-core/$gitBranch/infrastructure/scripts/initenvironment.sh
 declare -x projectRootDirectory="ContosoPets.Api"
+declare moduleWorkingDirectory="ContosoPets.Ui"
 
 # If the script appears to have already been run, just set the vars and leave.
 declare variableScript='variables.sh'
@@ -44,19 +45,28 @@ writeVariablesScript() {
     text+="echo ${newline}"
     text+="if ! [ \$(echo \$PATH | grep ~/.dotnet/tools) ]; then export PATH=\$PATH:~/.dotnet/tools; fi${newline}"
     text+="echo ${newline}"
-    text+="cd $srcWorkingDirectory${newline}"
+    text+="cd $srcWorkingDirectory/$moduleWorkingDirectory${newline}"
+    text+="code ."
     echo "$text" > ~/$variableScript
     chmod +x ~/$variableScript
+}
+editSettings(){
+    sed -i "s|<web-app-name>|$webAppName|g" $srcWorkingDirectory/$moduleWorkingDirectory/appsettings.json
 }
 
 # Grab and run initenvironment.sh
 . <(wget -q -O - $initScript)
+ 
+# Download and build
+downloadAndBuild
 
 # Provision stuff here
+setAzureCliDefaults
 provisionResourceGroup
 provisionAppService
 
 # Clean up
+editSettings
 writeVariablesScript
 addVariablesToStartup
 

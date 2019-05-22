@@ -172,8 +172,9 @@ determineResourceGroup() {
     if [[ ! ${existingResourceGroup//-/} =~ ^[[:xdigit:]]{32}$ ]] || [ $resourceGroupCount -gt 1 ]
     then
         echo "${warningStyle}WARNING!!!" \
-            "It appears you aren't currently running in a Microsoft Learn sandbox." \
-            "Using default resource group.${defaultTextStyle}"
+            "It appears you aren't currently running in a Microsoft Learn sandbox. " \
+            "Any Azure resources provisioned by this script will result in charges " \
+            "to your Azure subscription.${defaultTextStyle}"
         resourceGroupName=$moduleName
     else
         resourceGroupName=$existingResourceGroup
@@ -215,7 +216,5 @@ checkForCloudShell
 determineResourceGroup
 configureDotNetCli
 displayGreeting
-downloadAndBuild
-setAzureCliDefaults
 
 # Additional setup in setup.sh occurs next.
