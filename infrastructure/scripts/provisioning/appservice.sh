@@ -3,5 +3,7 @@
     cd $srcWorkingDirectory/$projectRootDirectory
     set -x
     az webapp up \
-        --name $webAppName
+        --name $webAppName \
+        --output none \
+        &>/dev/null #swallow all the output
 )

@@ -57,7 +57,11 @@ writeVariablesScript() {
 # Grab and run initenvironment.sh
 . <(wget -q -O - $initScript)
 
+# Download and build
+downloadAndBuild
+
 # Provision stuff here
+setAzureCliDefaults
 provisionResourceGroup
 # App Service and PostgreSQL provision in parallel
 provisionAppService &
@@ -67,6 +71,7 @@ wait &>/dev/null
 # Clean up
 writeVariablesScript
 addVariablesToStartup
+resetAzureCliDefaults
 
 # Switch to working directory and launch Cloud Shell Editor
 # Open the parent directory in the file explorer
