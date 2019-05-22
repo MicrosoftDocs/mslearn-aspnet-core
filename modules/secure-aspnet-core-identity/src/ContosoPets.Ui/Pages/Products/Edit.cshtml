@@ -1,0 +1,24 @@
+﻿@page "{id:int}"
+@model ContosoPets.Ui.Pages.Products.EditModel
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit Product</h1>
+
+<form method="post">
+    <input asp-for="Product.Id" type="hidden" />
+    <div class="form-group">
+        <label asp-for="Product.Name" class="control-label"></label>
+        <input asp-for="Product.Name" class="form-control" />
+        <span asp-validation-for="Product.Name" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Product.Price" class="control-label"></label>
+        <input asp-for="Product.Price" class="form-control" />
+        <span asp-validation-for="Product.Price" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <input type="submit" value="Save" class="btn btn-primary" />
+    </div>
+</form>

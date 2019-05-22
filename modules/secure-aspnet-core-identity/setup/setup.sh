@@ -61,7 +61,7 @@ writeVariablesScript() {
 provisionResourceGroup
 # App Service and PostgreSQL provision in parallel
 provisionAppService &
-provisionAzPostgreSqlDatabase
+provisionAzPostgreSqlDatabase &
 wait &>/dev/null
 
 # Clean up
