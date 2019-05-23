@@ -18,10 +18,8 @@ namespace ContosoPets.Ui.Pages.Products
             _productService = productService;
         }
 
-        public async Task OnGet(int id)
-        {
+        public async Task OnGet(int id) =>
             Product = await _productService.GetProductById(id);
-        }
 
         public async Task<IActionResult> OnPostAsync()
         {

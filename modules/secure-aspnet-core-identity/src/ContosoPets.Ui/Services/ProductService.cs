@@ -40,7 +40,7 @@ namespace ContosoPets.Ui.Services
             await _httpClient.PutAsJsonAsync<Product>($"{_route}/{product.Id}", product);
 
         public async Task CreateProduct(Product product) =>
-            await _httpClient.PostAsJsonAsync<Product>($"{_route}", product);
+            await _httpClient.PostAsJsonAsync<Product>(_route, product);
 
         public async Task DeleteProduct(int productId) =>
             await _httpClient.DeleteAsync($"{_route}/{productId}");
