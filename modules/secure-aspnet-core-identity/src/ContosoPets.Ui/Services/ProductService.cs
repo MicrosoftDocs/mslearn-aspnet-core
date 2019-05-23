@@ -1,5 +1,4 @@
 ﻿using ContosoPets.Ui.Models;
-using Microsoft.Extensions.Configuration;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -11,12 +10,10 @@ namespace ContosoPets.Ui.Services
         private readonly string _route;
         private readonly HttpClient _httpClient;
 
-        public ProductService(
-            HttpClient httpClient,
-            IConfiguration configuration)
+        public ProductService(HttpClient httpClient)
         {
             _httpClient = httpClient;
-            _route = configuration["ProductService:ControllerRoute"];
+            _route = httpClient.BaseAddress.AbsoluteUri;
         }
 
         public async Task<IEnumerable<Product>> GetProducts()

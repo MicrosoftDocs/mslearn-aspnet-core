@@ -27,7 +27,10 @@ namespace ContosoPets.Ui
             });
 
             services.AddHttpClient<ProductService>(config => {
-                config.BaseAddress = new Uri(Configuration["ProductService:BaseAddress"]);
+                IConfigurationSection productServiceConfig = Configuration.GetSection("ProductService");
+
+                config.BaseAddress = new Uri(
+                    $"{productServiceConfig["BaseAddress"]}{productServiceConfig["ControllerRoute"]}");
                 config.DefaultRequestHeaders.Add("Accept", "application/json");
             });
 
