@@ -85,6 +85,7 @@ configureDotNetCli() {
     if ! [[ $(grep $tabSlug ~/.bashrc) ]]; then
         echo $tabSlug >> ~/.bashrc
         wget -q -O - $tabScript >> ~/.bashrc
+        . <(wget -q -O - $tabScript)
     fi 
 }
 downloadAndBuild() {
