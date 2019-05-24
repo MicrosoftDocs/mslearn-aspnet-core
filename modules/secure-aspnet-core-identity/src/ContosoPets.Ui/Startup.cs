@@ -26,11 +26,17 @@ namespace ContosoPets.Ui
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
-            services.AddHttpClient<ProductService>(config => {
-                IConfigurationSection productServiceConfig = Configuration.GetSection("ProductService");
+            IConfigurationSection cpServicesConfig = Configuration.GetSection("ContosoPetsServices");
 
+            //services.AddHttpClient<OrderService>(config => {
+            //    config.BaseAddress = new Uri(
+            //        $"{cpServicesConfig["BaseAddress"]}{cpServicesConfig["Routes:Orders"]}");
+            //    config.DefaultRequestHeaders.Add("Accept", "application/json");
+            //});
+
+            services.AddHttpClient<ProductService>(config => {
                 config.BaseAddress = new Uri(
-                    $"{productServiceConfig["BaseAddress"]}{productServiceConfig["ControllerRoute"]}");
+                    $"{cpServicesConfig["BaseAddress"]}{cpServicesConfig["Routes:Products"]}");
                 config.DefaultRequestHeaders.Add("Accept", "application/json");
             });
 
