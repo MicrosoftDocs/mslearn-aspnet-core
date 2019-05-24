@@ -7,6 +7,7 @@
 declare scriptPath=https://raw.githubusercontent.com/MicrosoftDocs/mslearn-aspnet-core/$gitBranch/infrastructure/scripts
 declare provisioningPath=$scriptPath/provisioning
 declare toolsPath=$scriptPath/tools
+declare dotnetScriptsPath=$scriptPath/dotnet
 declare binariesPath=https://raw.githubusercontent.com/MicrosoftDocs/mslearn-aspnet-core/$gitBranch/infrastructure/binaries
 declare defaultLocation=southcentralus
 declare instanceId=$(($RANDOM * $RANDOM))
@@ -77,6 +78,13 @@ configureDotNetCli() {
 
     # Add ~/.dotnet/tools to the path so .NET Core Global Tool shims can be found
     if ! [ $(echo $PATH | grep ~/.dotnet/tools) ]; then export PATH=$PATH:~/.dotnet/tools; fi
+
+    tabSlug="#dotnet-tab-completion"
+    tabScript=$dotnetScriptsPath/tabcomplete.sh
+    if ! [[ $(grep $tabSlug ~/.bashrc) ]]; then
+        echo $tabSlug >> ~/.bashrc
+        wget -q -O - $tabScript >> ~/.bashrc
+    fi 
 }
 downloadAndBuild() {
     # Set location
