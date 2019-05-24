@@ -79,6 +79,7 @@ configureDotNetCli() {
     # Add ~/.dotnet/tools to the path so .NET Core Global Tool shims can be found
     if ! [ $(echo $PATH | grep ~/.dotnet/tools) ]; then export PATH=$PATH:~/.dotnet/tools; fi
 
+    # Add tab completion for .NET Core CLI
     tabSlug="#dotnet-tab-completion"
     tabScript=$dotnetScriptsPath/tabcomplete.sh
     if ! [[ $(grep $tabSlug ~/.bashrc) ]]; then
