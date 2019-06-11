@@ -1,3 +1,4 @@
+using ContosoPets.Ui.Middlewares;
 using ContosoPets.Ui.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -26,13 +27,16 @@ namespace ContosoPets.Ui
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
+            services.AddHttpClient<CloudShellService>(config => 
+                config.BaseAddress = new Uri(Configuration["CloudShellService:BaseAddress"]));
+
             IConfigurationSection cpServicesConfig = Configuration.GetSection("ContosoPetsServices");
 
-            //services.AddHttpClient<OrderService>(config => {
-            //    config.BaseAddress = new Uri(
-            //        $"{cpServicesConfig["BaseAddress"]}{cpServicesConfig["Routes:Orders"]}");
-            //    config.DefaultRequestHeaders.Add("Accept", "application/json");
-            //});
+            services.AddHttpClient<OrderService>(config => {
+               config.BaseAddress = new Uri(
+                   $"{cpServicesConfig["BaseAddress"]}{cpServicesConfig["Routes:Orders"]}");
+               config.DefaultRequestHeaders.Add("Accept", "application/json");
+            });
 
             services.AddHttpClient<ProductService>(config => {
                 config.BaseAddress = new Uri(
@@ -58,7 +62,7 @@ namespace ContosoPets.Ui
                 app.UseHsts();
             }
 
-            app.UseHttpsRedirection();
+            app.UseCloudShell();
             app.UseStaticFiles();
             app.UseCookiePolicy();
             app.UseMvc();

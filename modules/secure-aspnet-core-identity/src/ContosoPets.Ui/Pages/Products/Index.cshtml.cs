@@ -13,7 +13,7 @@ namespace ContosoPets.Ui.Pages.Products
         private readonly ProductService _productService;
 
         public string AntiforgeryToken => HttpContext.GetAntiforgeryTokenForJs();
-        public IEnumerable<Product> Products { get; } = new List<Product>();
+        public IEnumerable<Product> Products { get; private set; } = new List<Product>();
 
         public IndexModel(ProductService productService)
         {
