@@ -9,7 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using System;
 
 namespace ContosoPets.Ui
-{
+{ 
     public class Startup
     {
         public Startup(IConfiguration configuration)
