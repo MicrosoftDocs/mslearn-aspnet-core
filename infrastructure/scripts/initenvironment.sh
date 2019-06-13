@@ -132,6 +132,7 @@ provisionAppService() {
     . <(wget -q -O - $provisionScript)
 }
 # Provision Azure Resource Group
+# Should only ever run if we're running in the Cloud Shell without the Learn environment
 provisionResourceGroup() {
     if [ "$resourceGroupName" = "$moduleName" ]; then
         (
@@ -174,12 +175,11 @@ summarize() {
 }
 determineResourceGroup() {
     # Figure out the name of the resource group to use
-    declare resourceGroupCount=$(az group list | jq '. | length')
-    declare existingResourceGroup=$(az group list | jq '.[0].name' --raw-output)
+    declare existingResourceGroup=$(az group list | jq '.[] | select(.tags."x-created-by"=="freelearning").name' --raw-output)
 
     # If there is more than one RG or there's only one but its name is not a GUID,
     # we're probably not in the Learn sandbox.
-    if [[ ! ${existingResourceGroup//-/} =~ ^[[:xdigit:]]{32}$ ]] || [ $resourceGroupCount -gt 1 ]
+    if ! [ $existingResourceGroup ]
     then
         echo "${warningStyle}WARNING!!!" \
             "It appears you aren't currently running in a Microsoft Learn sandbox. " \

@@ -11,8 +11,9 @@ namespace ContosoPets.Ui.Middlewares
         private readonly RequestDelegate _next;
         private Uri _proxyUri;
         private readonly bool _isRunningInCloudShell;
-        private const string CLOUD_SHELL_UA = "AZURE_HTTP_USER_AGENT";
         private readonly Task _openPort;
+
+        private const string CLOUD_SHELL_UA = "AZURE_HTTP_USER_AGENT";
 
         public CloudShellMiddleware(RequestDelegate next,
                                     CloudShellService cloudShellService)
@@ -45,6 +46,7 @@ namespace ContosoPets.Ui.Middlewares
                     context.Request.PathBase = _proxyUri.AbsolutePath;
                 }
 
+                context.Request.Headers["Connection"].Remove();
             }
             // Call the next delegate/middleware in the pipeline
             await _next(context);

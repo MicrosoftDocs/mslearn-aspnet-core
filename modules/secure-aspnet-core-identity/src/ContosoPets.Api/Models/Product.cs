@@ -11,7 +11,7 @@ namespace ContosoPets.Api.Models
             ProductOrders = new HashSet<ProductOrder>();
         }
 
-        public int Id { get; set; }
+        public long Id { get; set; }
         [Required]
         public string Name { get; set; }
         [Column(TypeName = "decimal(18, 2)")]
