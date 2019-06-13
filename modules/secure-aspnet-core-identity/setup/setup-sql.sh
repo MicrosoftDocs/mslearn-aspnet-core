@@ -13,6 +13,9 @@
 # Module name
 declare moduleName="secure-aspnet-core-identity"
 
+# dotnet SDK version
+declare -x dotnetSdkVersion="2.2.300"
+
 # Any other declarations we need
 declare -x gitBranch="authentication-stuff"
 declare initScript=https://raw.githubusercontent.com/MicrosoftDocs/mslearn-aspnet-core/$gitBranch/infrastructure/scripts/initenvironment.sh

@@ -13,6 +13,9 @@
 # Module name
 declare -x moduleName="create-razor-pages-aspnet-core"
 
+# dotnet SDK version
+declare -x dotnetSdkVersion="2.2.300"
+
 # Any other declarations we need
 declare -x gitBranch="create-razor-pages-aspnet-core"
 declare initScript=https://raw.githubusercontent.com/MicrosoftDocs/mslearn-aspnet-core/$gitBranch/infrastructure/scripts/initenvironment.sh
@@ -43,7 +46,6 @@ writeVariablesScript() {
     text+="echo ${newline}"
     text+="echo \"${headingStyle}Your API URL is: ${defaultTextStyle}https://$webAppName.azurewebsites.net/api/products\"${newline}"
     text+="echo ${newline}"
-    text+="if ! [ \$(echo \$PATH | grep ~/.dotnet/tools) ]; then export PATH=\$PATH:~/.dotnet/tools; fi${newline}"
     text+="echo ${newline}"
     text+="cd $srcWorkingDirectory/$moduleWorkingDirectory${newline}"
     text+="code ."
