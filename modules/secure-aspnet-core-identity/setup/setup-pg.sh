@@ -13,6 +13,9 @@
 # Module name
 declare moduleName="secure-aspnet-core-identity"
 
+# dotnet SDK version
+declare -x dotnetSdkVersion="2.2.300"
+
 # Any other declarations we need
 declare -x gitBranch="authentication-stuff"
 declare initScript=https://raw.githubusercontent.com/MicrosoftDocs/mslearn-aspnet-core/$gitBranch/infrastructure/scripts/initenvironment.sh
@@ -49,7 +52,6 @@ writeVariablesScript() {
     text+="echo \"${headingStyle}PGPASSWORD: ${defaultTextStyle}$postgreSqlPassword\"${newline}"
     text+="echo ${newline}"
     text+="echo \"${defaultTextStyle}db ${headingStyle}is an alias for${defaultTextStyle} psql --host=$postgreSqlHostName --port=5432 --username=$postgreSqlUsername --dbname=$postgreSqlDatabaseName\"${newline}"
-    text+="if ! [ \$(echo \$PATH | grep ~/.dotnet/tools) ]; then export PATH=\$PATH:~/.dotnet/tools; fi${newline}"
     text+="echo ${newline}"
     text+="cd $srcWorkingDirectory/$projectRootDirectory${newline}"
     text+="code ..${newline}"

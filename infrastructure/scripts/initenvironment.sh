@@ -16,7 +16,6 @@ declare gitPathToCloneScript=https://raw.githubusercontent.com/MicrosoftDocs/msl
 declare srcWorkingDirectory=~/contoso-pets/src
 declare setupWorkingDirectory=~/contoso-pets/setup
 declare subscriptionId=$(az account show --query id --output tsv)
-declare dotnetSdkVersion=$(dotnet --version)
 declare resourceGroupName=""
 
 # AppService Declarations
@@ -68,6 +67,16 @@ resetAzureCliDefaults() {
 configureDotNetCli() {
     echo "${newline}${headingStyle}Configuring the .NET Core CLI...${defaultTextStyle}"
 
+    # Install .NET Core SDK
+    wget -q -O - https://dot.net/v1/dotnet-install.sh | bash /dev/stdin --version $dotnetSdkVersion
+
+    # Add .NET Core SDK and .NET Core Global Tools default installation directory to PATH
+    if ! [ $(echo $PATH | grep .dotnet) ]; then 
+        export PATH=~/.dotnet:~/.dotnet/tools:$PATH; 
+        echo "# Add custom .NET Core SDK to PATH" >> ~/.bashrc
+        echo "export PATH=~/.dotnet:~/.dotnet/tools:\$PATH;" >> ~/.bashrc
+    fi
+
     # By default, the .NET Core CLI prints Welcome and Telemetry messages on
     # the first run. Suppress those messages by creating an appropriately
     # named file on disk.
@@ -76,9 +85,6 @@ configureDotNetCli() {
     # Disable the sending of telemetry to the mothership.
     export DOTNET_CLI_TELEMETRY_OPTOUT=true
 
-    # Add ~/.dotnet/tools to the path so .NET Core Global Tool shims can be found
-    if ! [ $(echo $PATH | grep ~/.dotnet/tools) ]; then export PATH=$PATH:~/.dotnet/tools; fi
-
     # Add tab completion for .NET Core CLI
     tabSlug="#dotnet-tab-completion"
     tabScript=$dotnetScriptsPath/tabcomplete.sh
@@ -86,7 +92,9 @@ configureDotNetCli() {
         echo $tabSlug >> ~/.bashrc
         wget -q -O - $tabScript >> ~/.bashrc
         . <(wget -q -O - $tabScript)
-    fi 
+    fi
+
+    echo "Using .NET Core SDK " $(dotnet --version)
 }
 downloadAndBuild() {
     # Set location
