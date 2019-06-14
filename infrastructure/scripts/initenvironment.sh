@@ -70,6 +70,9 @@ configureDotNetCli() {
     # Install .NET Core SDK
     wget -q -O - https://dot.net/v1/dotnet-install.sh | bash /dev/stdin --version $dotnetSdkVersion
 
+    # Add a note to .bashrc in case someone is running this in their own Cloud Shell
+    echo "# The following was added by Microsoft Learn $moduleName" >> ~/.bashrc
+
     # Add .NET Core SDK and .NET Core Global Tools default installation directory to PATH
     if ! [ $(echo $PATH | grep .dotnet) ]; then 
         export PATH=~/.dotnet:~/.dotnet/tools:$PATH; 
@@ -82,9 +85,17 @@ configureDotNetCli() {
     # named file on disk.
     touch ~/.dotnet/$dotnetSdkVersion.dotnetFirstUseSentinel
 
+    # Suppress priming the NuGet package cache with assemblies and 
+    # XML docs we won't need.
+    export DOTNET_SKIP_FIRST_TIME_EXPERIENCE=true
+    echo "export DOTNET_SKIP_FIRST_TIME_EXPERIENCE=true" >> ~/.bashrc
+    export NUGET_XMLDOC_MODE=skip
+    echo "export NUGET_XMLDOC_MODE=skip" >> ~/.bashrc
+    
     # Disable the sending of telemetry to the mothership.
     export DOTNET_CLI_TELEMETRY_OPTOUT=true
-
+    echo "export DOTNET_CLI_TELEMETRY_OPTOUT=true" >> ~/.bashrc
+    
     # Add tab completion for .NET Core CLI
     tabSlug="#dotnet-tab-completion"
     tabScript=$dotnetScriptsPath/tabcomplete.sh
@@ -94,7 +105,8 @@ configureDotNetCli() {
         . <(wget -q -O - $tabScript)
     fi
 
-    echo "Using .NET Core SDK " $(dotnet --version)
+    # Generate developer certificate so ASP.NET Core projects run without complaint
+    dotnet dev-certs https --quiet
 }
 downloadAndBuild() {
     # Set location
@@ -153,8 +165,8 @@ provisionResourceGroup() {
     fi
 }
 addVariablesToStartup() {
-    if ! [[ $(grep $moduleName ~/.bashrc) ]]; then
-        echo "# Next line added at $(date) by $moduleName" >> ~/.bashrc
+    if ! [[ $(grep $variableScript ~/.bashrc) ]]; then
+        echo "# Next line added at $(date) by Microsoft Learn $moduleName" >> ~/.bashrc
         echo ". ~/$variableScript" >> ~/.bashrc
     fi 
 }
@@ -163,10 +175,10 @@ displayGreeting() {
     cd ~
 
     # Display installed .NET Core SDK version
-    echo "${headingStyle}Using .NET Core SDK version $dotnetSdkVersion${defaultTextStyle}"
+    echo "${defaultTextStyle}Using .NET Core SDK version ${headingStyle}$dotnetSdkVersion${defaultTextStyle}"
 
     # Install .NET Core global tool to display connection info
-    dotnet tool install dotnetsay --global
+    dotnet tool install dotnetsay --global--verbosity quiet
 
     # Greetings!
     greeting="${newline}${defaultTextStyle}Hi there!${newline}"

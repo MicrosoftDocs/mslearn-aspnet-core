@@ -14,7 +14,7 @@
 declare moduleName="secure-aspnet-core-identity"
 
 # dotnet SDK version
-declare -x dotnetSdkVersion="2.2.300"
+declare -x dotnetSdkVersion="2.2.204"
 
 # Any other declarations we need
 declare -x gitBranch="authentication-stuff"
