@@ -178,7 +178,7 @@ displayGreeting() {
     echo "${defaultTextStyle}Using .NET Core SDK version ${headingStyle}$dotnetSdkVersion${defaultTextStyle}"
 
     # Install .NET Core global tool to display connection info
-    dotnet tool install dotnetsay --global--verbosity quiet
+    dotnet tool install dotnetsay --global --verbosity quiet
 
     # Greetings!
     greeting="${newline}${defaultTextStyle}Hi there!${newline}"
