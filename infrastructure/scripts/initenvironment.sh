@@ -67,9 +67,15 @@ resetAzureCliDefaults() {
 }
 configureDotNetCli() {
     echo "${newline}${headingStyle}Configuring the .NET Core CLI...${defaultTextStyle}"
+    declare installedDotNet=$(dotnet --version)
 
-    # Install .NET Core SDK
-    wget -q -O - https://dot.net/v1/dotnet-install.sh | bash /dev/stdin --version $dotnetSdkVersion
+    if [ "$dotnetSdkVersion" = "$installedDotNet" ];
+    then
+        echo ".NET Core SDK $dotnetSdkVersion already installed."
+    else
+        # Install .NET Core SDK
+        wget -q -O - https://dot.net/v1/dotnet-install.sh | bash /dev/stdin --version $dotnetSdkVersion
+    fi
 
     # Add a note to .bashrc in case someone is running this in their own Cloud Shell
     echo "# The following was added by Microsoft Learn $moduleName" >> ~/.bashrc
