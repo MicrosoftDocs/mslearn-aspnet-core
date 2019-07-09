@@ -67,19 +67,19 @@ downloadAndBuild
 setAzureCliDefaults
 provisionResourceGroup
 
-provisionAppServicePlan
+(
+    # API web app
+    declare -x webAppName=apiapp$instanceId
+    declare -x projectRootDirectory="ContosoPets.Api"
+    declare -x webAppLabel="Products Web API"
+    provisionAppService
 
-# API web app
-declare -x webAppName=apiapp$instanceId
-declare -x projectRootDirectory="ContosoPets.Api"
-declare -x webAppLabel="Products Web API"
-provisionAppService &
-
-# UI web app
-declare -x webAppName=webapp$instanceId
-declare -x projectRootDirectory="ContosoPets.Ui"
-declare -x webAppLabel="Products Web UI"
-provisionAppService &
+    # UI web app
+    declare -x webAppName=webapp$instanceId
+    declare -x projectRootDirectory="ContosoPets.Ui"
+    declare -x webAppLabel="Products Web UI"
+    provisionAppService
+) &
 
 provisionAzSqlDatabase &
 wait &>/dev/null
@@ -87,12 +87,13 @@ wait &>/dev/null
 # Clean up
 writeVariablesScript
 addVariablesToStartup
-resetAzureCliDefaults
 
 # Switch to working directory and launch Cloud Shell Editor
 # Open the parent directory in the file explorer
 cd $srcWorkingDirectory/$projectRootDirectory
 code .. 
+
+
 
 # We're done! Summarize.
 summarize
