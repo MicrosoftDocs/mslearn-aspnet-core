@@ -19,7 +19,7 @@ declare -x dotnetSdkVersion="2.2.204"
 # Any other declarations we need
 declare -x gitBranch="authentication-stuff"
 declare initScript=https://raw.githubusercontent.com/MicrosoftDocs/mslearn-aspnet-core/$gitBranch/infrastructure/scripts/initenvironment.sh
-declare -x projectRootDirectory="ContosoPets.Api"
+declare -x projectRootDirectory="ContosoPets.Ui"
 
 # If the script appears to have already been run, just set the vars and leave.
 declare variableScript='variables.sh'
@@ -52,7 +52,7 @@ writeVariablesScript() {
     text+="if ! [ \$(echo \$PATH | grep ~/.dotnet/tools) ]; then export PATH=\$PATH:~/.dotnet/tools; fi${newline}"
     text+="echo ${newline}"
     text+="cd $srcWorkingDirectory/$projectRootDirectory${newline}"
-    text+="code ..${newline}"
+    text+="code .${newline}"
     echo "$text" > ~/$variableScript
     chmod +x ~/$variableScript
 }
@@ -95,12 +95,12 @@ wait &>/dev/null
 writeVariablesScript
 addVariablesToStartup
 
-# Switch to working directory and launch Cloud Shell Editor
-# Open the parent directory in the file explorer
+# Switch to working directory
+# Modify the UI config to point to the API
+# Open the current directory in the editor
 cd $srcWorkingDirectory/$projectRootDirectory
-code .. 
-
-
+sed -i "s|<web-app-name>|apiapp$instanceId|g" appsettings.json
+code . 
 
 # We're done! Summarize.
 summarize

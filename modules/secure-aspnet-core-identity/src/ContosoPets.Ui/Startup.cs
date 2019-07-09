@@ -27,9 +27,6 @@ namespace ContosoPets.Ui
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
-            services.AddHttpClient<CloudShellService>(config => 
-                config.BaseAddress = new Uri(Configuration["CloudShellService:BaseAddress"]));
-
             IConfigurationSection cpServicesConfig = Configuration.GetSection("ContosoPetsServices");
 
             services.AddHttpClient<OrderService>(config => {
