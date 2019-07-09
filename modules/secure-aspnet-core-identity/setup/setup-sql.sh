@@ -67,12 +67,7 @@ downloadAndBuild
 setAzureCliDefaults
 provisionResourceGroup
 
-declare -x webPlanName=plan$instanceId
-(
-    echo "${newline}${headingStyle}Provisioning App Service Plan...${azCliCommandStyle}"
-    set -x
-    az appservice plan create --name $webPlanName --sku D1
-)
+provisionAppServicePlan
 
 # API web app
 declare -x webAppName=apiapp$instanceId

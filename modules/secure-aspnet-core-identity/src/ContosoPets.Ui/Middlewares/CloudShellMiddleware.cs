@@ -45,8 +45,6 @@ namespace ContosoPets.Ui.Middlewares
                 {
                     context.Request.PathBase = _proxyUri.AbsolutePath;
                 }
-
-                context.Request.Headers["Connection"].Remove();
             }
             // Call the next delegate/middleware in the pipeline
             await _next(context);

@@ -21,7 +21,7 @@ declare resourceGroupName=""
 # AppService Declarations
 declare appServicePlan=appservice$instanceId
 declare webAppName=webapp$instanceId
-declare apiAppName=apiapp$instanceId
+declare webPlanName=plan$instanceId
 
 # AppInsights Declarations
 declare appInsightsName=appinsights$instanceId
@@ -150,6 +150,11 @@ provisionAppInsights() {
 # Provision Azure App Service
 provisionAppService() {
     declare provisionScript=$provisioningPath/appservice.sh
+    . <(wget -q -O - $provisionScript)
+}
+# Provision Azure App Service Plan
+provisionAppServicePlan() {
+    declare provisionScript=$provisioningPath/appserviceplan.sh
     . <(wget -q -O - $provisionScript)
 }
 # Provision Azure Resource Group
