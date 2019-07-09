@@ -1,5 +1,4 @@
-﻿using ContosoPets.Ui.Services;
-using Microsoft.AspNetCore;
+﻿using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 
 namespace ContosoPets.Ui
@@ -13,7 +12,6 @@ namespace ContosoPets.Ui
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
-                .UseUrls($"http://*:{(int)CloudShellPorts.Port8000}")
                 .UseStartup<Startup>();
     }
 }

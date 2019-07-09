@@ -1,4 +1,3 @@
-using ContosoPets.Ui.Middlewares;
 using ContosoPets.Ui.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
