@@ -1,6 +1,7 @@
 (
     if ![ $webAppLabel ]
-        $webAppLabel = "Azure App Service"
+    then
+        declare webAppLabel="Azure App Service"
     fi
     echo "${newline}${headingStyle}Provisioning $webAppLabel Web App and deploying code...${azCliCommandStyle}"
     cd $srcWorkingDirectory/$projectRootDirectory
