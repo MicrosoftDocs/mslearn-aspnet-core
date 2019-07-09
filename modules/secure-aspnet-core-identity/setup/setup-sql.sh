@@ -66,14 +66,16 @@ downloadAndBuild
 # Provision stuff here
 setAzureCliDefaults
 provisionResourceGroup
+provisionAppServicePlan
 
 (
     # API web app
     declare -x webAppName=apiapp$instanceId
     declare -x projectRootDirectory="ContosoPets.Api"
     declare -x webAppLabel="Products Web API"
-    provisionAppService
-
+    provisionAppService 
+) &
+(   
     # UI web app
     declare -x webAppName=webapp$instanceId
     declare -x projectRootDirectory="ContosoPets.Ui"
