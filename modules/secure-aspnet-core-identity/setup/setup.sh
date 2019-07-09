@@ -43,7 +43,7 @@ writeVariablesScript() {
     text+="declare webAppName=$webAppName${newline}"
     text+="declare webPlanName=$webPlanName${newline}"
     
-    if [ "$dbType"="pg" ];
+    if [ "$dbType" = "pg" ];
     then
         text+="declare postgreSqlServerName=$postgreSqlServerName${newline}"
         text+="declare postgreSqlHostName=$postgreSqlHostName${newline}"
@@ -66,7 +66,7 @@ writeVariablesScript() {
     text+="echo \"${headingStyle}srcWorkingDirectory: ${defaultTextStyle}$srcWorkingDirectory\"${newline}"
     text+="echo \"${headingStyle}webAppName: ${defaultTextStyle}$webAppName\"${newline}"
     text+="echo \"${headingStyle}webPlanName: ${defaultTextStyle}$webPlanName\"${newline}"
-    if [ "$dbType"="pg" ];
+    if [ "$dbType" = "pg" ];
     then
         text+="echo \"${headingStyle}postgreSqlConnectionString: ${defaultTextStyle}$postgreSqlConnectionString\"${newline}"
         text+="echo \"${headingStyle}postgreSqlUsername: ${defaultTextStyle}$postgreSqlUsername\"${newline}"
@@ -122,7 +122,7 @@ provisionAppServicePlan
     az webapp up --name $webAppName --plan $webPlanName &> deploy.log
 ) &
 
-if [ "$dbType"="pg" ];
+if [ "$dbType" = "pg" ];
 then
     provisionAzPostgreSqlDatabase & 
 else
