@@ -10,6 +10,9 @@
 
 ## Start
 
+# Input parameters
+declare -x dbType=$1
+
 # Module name
 declare moduleName="secure-aspnet-core-identity"
 
@@ -36,23 +39,45 @@ writeVariablesScript() {
     text+="declare srcWorkingDirectory=$srcWorkingDirectory${newline}"
     text+="declare setupWorkingDirectory=$setupWorkingDirectory${newline}"
     text+="declare resourceGroupName=$resourceGroupName${newline}"
+    text+="declare subscriptionId=$subscriptionId${newline}"
     text+="declare webAppName=$webAppName${newline}"
     text+="declare webPlanName=$webPlanName${newline}"
-    text+="declare sqlServerName=$sqlServerName${newline}"
-    text+="declare sqlHostName=$sqlHostName${newline}"
-    text+="declare sqlUsername=$sqlUsername@$sqlServerName${newline}"
-    text+="declare sqlPassword=$sqlPassword${newline}"
-    text+="declare databaseName=$databaseName${newline}"
-    text+="declare sqlConnectionString=\"$sqlConnectionString\"${newline}"
-    text+="declare resourceGroupName=$resourceGroupName${newline}"
-    text+="declare subscriptionId=$subscriptionId${newline}"
+    
+    if [ "$dbType" = "pg"];
+    then
+        text+="declare postgreSqlServerName=$postgreSqlServerName${newline}"
+        text+="declare postgreSqlHostName=$postgreSqlHostName${newline}"
+        text+="declare postgreSqlUsername=$postgreSqlUsername@$postgreSqlServerName${newline}"
+        text+="export PGPASSWORD=$postgreSqlPassword${newline}"
+        text+="declare postgreSqlConnectionString=\"$postgreSqlConnectionString\"${newline}"
+        text+="declare postgreSqlDatabaseName=$postgreSqlDatabaseName${newline}"
+        text+="alias db=\"psql --host=$postgreSqlHostName --port=5432 --username=$postgreSqlUsername --dbname=$postgreSqlDatabaseName\"${newline}"
+    else
+        text+="declare sqlServerName=$sqlServerName${newline}"
+        text+="declare sqlHostName=$sqlHostName${newline}"
+        text+="declare sqlUsername=$sqlUsername@$sqlServerName${newline}"
+        text+="declare sqlPassword=$sqlPassword${newline}"
+        text+="declare databaseName=$databaseName${newline}"
+        text+="declare sqlConnectionString=\"$sqlConnectionString\"${newline}"
+        #TODO - create a sql alias
+    fi
+
     text+="echo \"${headingStyle}The following variables are used in this module:\"${newline}"
     text+="echo \"${headingStyle}srcWorkingDirectory: ${defaultTextStyle}$srcWorkingDirectory\"${newline}"
     text+="echo \"${headingStyle}webAppName: ${defaultTextStyle}$webAppName\"${newline}"
     text+="echo \"${headingStyle}webPlanName: ${defaultTextStyle}$webPlanName\"${newline}"
-    text+="echo \"${headingStyle}sqlConnectionString: ${defaultTextStyle}$sqlConnectionString\"${newline}"
-    text+="echo \"${headingStyle}sqlUsername: ${defaultTextStyle}$sqlUsername\"${newline}"
-    text+="echo \"${headingStyle}sqlPassword: ${defaultTextStyle}$sqlPassword\"${newline}"
+    if [ "$dbType" = "pg"];
+    then
+        text+="echo \"${headingStyle}postgreSqlConnectionString: ${defaultTextStyle}$postgreSqlConnectionString\"${newline}"
+        text+="echo \"${headingStyle}postgreSqlUsername: ${defaultTextStyle}$postgreSqlUsername\"${newline}"
+        text+="echo \"${headingStyle}PGPASSWORD: ${defaultTextStyle}$postgreSqlPassword\"${newline}"
+        text+="echo ${newline}"
+        text+="echo \"${defaultTextStyle}db ${headingStyle}is an alias for${defaultTextStyle} psql --host=$postgreSqlHostName --port=5432 --username=$postgreSqlUsername --dbname=$postgreSqlDatabaseName\"${newline}"
+    else
+        text+="echo \"${headingStyle}sqlConnectionString: ${defaultTextStyle}$sqlConnectionString\"${newline}"
+        text+="echo \"${headingStyle}sqlUsername: ${defaultTextStyle}$sqlUsername\"${newline}"
+        text+="echo \"${headingStyle}sqlPassword: ${defaultTextStyle}$sqlPassword\"${newline}"
+    fi
     text+="if ! [ \$(echo \$PATH | grep ~/.dotnet/tools) ]; then export PATH=\$PATH:~/.dotnet/tools; fi${newline}"
     text+="echo ${newline}"
     text+="cd $srcWorkingDirectory/$projectRootDirectory${newline}"
@@ -90,9 +115,20 @@ provisionAppServicePlan
     declare -x projectRootDirectory="ContosoPets.Ui"
     declare -x webAppLabel="Products Web UI"
     provisionAppService
+
+    echo "${newline}${headingStyle}Uploading $webAppLabel to Azure...${azCliCommandStyle}"
+    cd $srcWorkingDirectory/$projectRootDirectory
+    set -x
+    az webapp up --name $webAppName --plan $webPlanName &> deploy.log
 ) &
 
-provisionAzSqlDatabase &
+if [ "$dbType" = "pg"];
+then
+    provisionAzPostgreSqlDatabase & 
+else
+    provisionAzSqlDatabase &
+fi
+
 wait &>/dev/null
 
 # Clean up

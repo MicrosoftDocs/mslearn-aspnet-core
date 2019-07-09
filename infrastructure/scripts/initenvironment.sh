@@ -69,10 +69,8 @@ configureDotNetCli() {
     echo "${newline}${headingStyle}Configuring the .NET Core CLI...${defaultTextStyle}"
     declare installedDotNet=$(dotnet --version)
 
-    if [ "$dotnetSdkVersion" = "$installedDotNet" ];
+    if [ "$dotnetSdkVersion" != "$installedDotNet" ];
     then
-        echo ".NET Core SDK $dotnetSdkVersion already installed."
-    else
         # Install .NET Core SDK
         wget -q -O - https://dot.net/v1/dotnet-install.sh | bash /dev/stdin --version $dotnetSdkVersion
     fi
