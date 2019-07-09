@@ -1,5 +1,5 @@
 (
-    echo "${newline}${headingStyle}Provisioning $webAppLabel Web App and deploying code...${azCliCommandStyle}"
+    echo "${newline}${headingStyle}Provisioning $webAppLabel Web App...${azCliCommandStyle}"
     cd $srcWorkingDirectory/$projectRootDirectory
     set -x
     az webapp create \

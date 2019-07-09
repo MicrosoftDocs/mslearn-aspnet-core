@@ -6,7 +6,7 @@
         --admin-user $postgreSqlUsername \
         --admin-password $postgreSqlPassword \
         --sku-name $postgreSqlSku \
-        --ssl-enforcement disabled
+        --ssl-enforcement disabled \
         --output none
 )
 (

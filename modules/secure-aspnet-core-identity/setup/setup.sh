@@ -59,7 +59,7 @@ writeVariablesScript() {
         text+="declare sqlPassword=$sqlPassword${newline}"
         text+="declare databaseName=$databaseName${newline}"
         text+="declare sqlConnectionString=\"$sqlConnectionString\"${newline}"
-        #TODO - create a sql alias
+        text+="alias db=\"sqlcmd -U $sqlUsername -P $sqlPassword -S $sqlHostName -d $databaseName\"${newline}"
     fi
 
     text+="echo \"${headingStyle}The following variables are used in this module:\"${newline}"
@@ -77,6 +77,8 @@ writeVariablesScript() {
         text+="echo \"${headingStyle}sqlConnectionString: ${defaultTextStyle}$sqlConnectionString\"${newline}"
         text+="echo \"${headingStyle}sqlUsername: ${defaultTextStyle}$sqlUsername\"${newline}"
         text+="echo \"${headingStyle}sqlPassword: ${defaultTextStyle}$sqlPassword\"${newline}"
+        text+="echo ${newline}"
+        text+="echo \"${defaultTextStyle}db ${headingStyle}is an alias for${defaultTextStyle} sqlcmd -U $sqlUsername -P $sqlPassword -S $sqlHostName -d $databaseName\"${newline}"
     fi
     text+="if ! [ \$(echo \$PATH | grep ~/.dotnet/tools) ]; then export PATH=\$PATH:~/.dotnet/tools; fi${newline}"
     text+="echo ${newline}"
@@ -101,24 +103,22 @@ provisionAppServicePlan
     # API web app
     declare -x webAppName=apiapp$instanceId
     declare -x projectRootDirectory="ContosoPets.Api"
-    declare -x webAppLabel="Products Web API"
-    provisionAppService 
+    declare -x webAppLabel="ContosoPets.Api API"
+    provisionAppService
 
-    echo "${newline}${headingStyle}Uploading $webAppLabel to Azure...${azCliCommandStyle}"
+    # Deploy the app because it's a dependency.
     cd $srcWorkingDirectory/$projectRootDirectory
-    set -x
     az webapp up --name $webAppName --plan $webPlanName &> deploy.log
 ) &
 (   
     # UI web app
     declare -x webAppName=webapp$instanceId
     declare -x projectRootDirectory="ContosoPets.Ui"
-    declare -x webAppLabel="Products Web UI"
+    declare -x webAppLabel="ContosoPets.Ui Web App"
     provisionAppService
 
-    echo "${newline}${headingStyle}Uploading $webAppLabel to Azure...${azCliCommandStyle}"
+    # Preemptively deploy the UI so subsequent deployments go quicker
     cd $srcWorkingDirectory/$projectRootDirectory
-    set -x
     az webapp up --name $webAppName --plan $webPlanName &> deploy.log
 ) &
 
