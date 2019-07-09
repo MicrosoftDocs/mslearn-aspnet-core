@@ -117,8 +117,10 @@ provisionAppServicePlan
     declare -x webAppLabel="ContosoPets.Ui Web App"
     provisionAppService
 
-    # Preemptively deploy the UI so subsequent deployments go quicker
     cd $srcWorkingDirectory/$projectRootDirectory
+    # Point to the API
+    sed -i "s|<web-app-name>|apiapp$instanceId|g" appsettings.json
+    # Preemptively deploy the UI so subsequent deployments go quicker
     az webapp up --name $webAppName --plan $webPlanName &> deploy.log
 ) &
 
@@ -134,13 +136,6 @@ wait &>/dev/null
 # Clean up
 writeVariablesScript
 addVariablesToStartup
-
-# Switch to working directory
-# Modify the UI config to point to the API
-# Open the current directory in the editor
-cd $srcWorkingDirectory/$projectRootDirectory
-sed -i "s|<web-app-name>|apiapp$instanceId|g" appsettings.json
-code . 
 
 # We're done! Summarize.
 summarize
