@@ -68,15 +68,15 @@ setAzureCliDefaults
 provisionResourceGroup
 
 # API web app
-webAppName = apiapp$instanceId
+declare -x webAppName=apiapp$instanceId
 declare -x projectRootDirectory="ContosoPets.Api"
-webAppLabel = "Products Web API"
+declare -x webAppLabel="Products Web API"
 provisionAppService &
 
 # UI web app
+declare -x webAppName=webapp$instanceId
 declare -x projectRootDirectory="ContosoPets.Ui"
-webAppName = webapp$instanceId
-webAppLabel = "Products Web UI"
+declare -x webAppLabel="Products Web UI"
 provisionAppService &
 
 provisionAzSqlDatabase &
