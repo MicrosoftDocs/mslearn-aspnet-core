@@ -67,7 +67,7 @@ downloadAndBuild
 setAzureCliDefaults
 provisionResourceGroup
 
-declare -x $webPlanName=plan$instanceId
+declare -x webPlanName=plan$instanceId
 (
 set -x
 az appservice plan create --name $webPlanName --sku D1
