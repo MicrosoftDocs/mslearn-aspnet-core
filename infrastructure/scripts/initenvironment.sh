@@ -105,9 +105,6 @@ configureDotNetCli() {
         wget -q -O - $tabScript >> ~/.bashrc
         . <(wget -q -O - $tabScript)
     fi
-
-    # Generate developer certificate so ASP.NET Core projects run without complaint
-    dotnet dev-certs https --quiet
 }
 downloadAndBuild() {
     # Set location

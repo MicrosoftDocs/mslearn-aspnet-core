@@ -74,6 +74,11 @@ provisionAppServicePlan
     declare -x projectRootDirectory="ContosoPets.Api"
     declare -x webAppLabel="Products Web API"
     provisionAppService 
+
+    echo "${newline}${headingStyle}Uploading $webAppLabel to Azure...${azCliCommandStyle}"
+    cd $srcWorkingDirectory/$projectRootDirectory
+    set -x
+    az webapp up --name $webAppName --plan $webPlanName &> deploy.log
 ) &
 (   
     # UI web app
