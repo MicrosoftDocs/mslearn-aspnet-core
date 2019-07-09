@@ -21,6 +21,7 @@ declare resourceGroupName=""
 # AppService Declarations
 declare appServicePlan=appservice$instanceId
 declare webAppName=webapp$instanceId
+declare apiAppName=apiapp$instanceId
 
 # AppInsights Declarations
 declare appInsightsName=appinsights$instanceId

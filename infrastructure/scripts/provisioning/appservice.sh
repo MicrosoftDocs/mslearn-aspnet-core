@@ -1,5 +1,8 @@
 (
-    echo "${newline}${headingStyle}Provisioning Azure App Service Web App and deploying code...${azCliCommandStyle}"
+    if ![ $webAppLabel ]
+        $webAppLabel = "Azure App Service"
+    fi
+    echo "${newline}${headingStyle}Provisioning $webAppLabel Web App and deploying code...${azCliCommandStyle}"
     cd $srcWorkingDirectory/$projectRootDirectory
     set -x
     az webapp up \

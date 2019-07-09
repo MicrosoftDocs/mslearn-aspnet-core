@@ -66,8 +66,19 @@ downloadAndBuild
 # Provision stuff here
 setAzureCliDefaults
 provisionResourceGroup
-# App Service and SQL Server provision in parallel
+
+# API web app
+webAppName = apiapp$instanceId
+declare -x projectRootDirectory="ContosoPets.Api"
+webAppLabel = "Products Web API"
 provisionAppService &
+
+# UI web app
+declare -x projectRootDirectory="ContosoPets.Ui"
+webAppName = webapp$instanceId
+webAppLabel = "Products Web UI"
+provisionAppService &
+
 provisionAzSqlDatabase &
 wait &>/dev/null
 
