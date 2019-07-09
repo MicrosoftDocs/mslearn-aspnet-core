@@ -59,7 +59,6 @@ namespace ContosoPets.Ui
                 app.UseHsts();
             }
 
-            app.UseCloudShell();
             app.UseStaticFiles();
             app.UseCookiePolicy();
             app.UseMvc();
