@@ -1,5 +1,5 @@
 (
-    if ![ $webAppLabel ]
+    if [ ! $webAppLabel ]
     then
         declare webAppLabel="Azure App Service"
     fi
@@ -8,6 +8,7 @@
     set -x
     az webapp up \
         --name $webAppName \
+        --plan $webPlanName
         --output none \
-        &>/dev/null #swallow all the output
+        # &>/dev/null #swallow all the output
 )

@@ -67,6 +67,11 @@ downloadAndBuild
 setAzureCliDefaults
 provisionResourceGroup
 
+(
+set -x
+az appservice plan create --name $webappname --sku D1
+)
+
 # API web app
 declare -x webAppName=apiapp$instanceId
 declare -x projectRootDirectory="ContosoPets.Api"
