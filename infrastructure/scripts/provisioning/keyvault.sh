@@ -9,7 +9,7 @@
     echo "${newline}${headingStyle}Assigning managed service identity for web app...${azCliCommandStyle}"
     set -x
     az webapp identity assign \
-        --name $webAppName
+        --name $webAppName \
         --output none
 )
 (

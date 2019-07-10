@@ -140,7 +140,7 @@ provisionAppServicePlan
             --vault-name $keyVaultName \
             --name "DbUsername" \
             --value "$userTemp" \
-            --output none
+            --output none &
         az keyvault secret set \
             --vault-name $keyVaultName \
             --name "DbPassword" \
