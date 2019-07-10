@@ -23,6 +23,9 @@ declare appServicePlan=appservice$instanceId
 declare webAppName=webapp$instanceId
 declare webPlanName=plan$instanceId
 
+# Key Vault Declarations
+declare keyVaultName=keyvault$instanceId
+
 # AppInsights Declarations
 declare appInsightsName=appinsights$instanceId
 declare apiKeyTempFile=~/.apiKey.temp
@@ -151,6 +154,11 @@ provisionAppInsights() {
 # Provision Azure App Service
 provisionAppService() {
     declare provisionScript=$provisioningPath/appservice.sh
+    . <(wget -q -O - $provisionScript)
+}
+# Provision Azure Key Vault
+provisionKeyVault() {
+    declare provisionScript=$provisioningPath/keyvault.sh
     . <(wget -q -O - $provisionScript)
 }
 # Provision Azure App Service Plan

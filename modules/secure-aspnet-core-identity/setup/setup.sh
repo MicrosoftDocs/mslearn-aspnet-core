@@ -121,7 +121,32 @@ provisionAppServicePlan
     # Point to the API
     sed -i "s|<web-app-name>|apiapp$instanceId|g" appsettings.json
     # Preemptively deploy the UI so subsequent deployments go quicker
-    az webapp up --name $webAppName --plan $webPlanName &> deploy.log
+    az webapp up --name $webAppName --plan $webPlanName &> deploy.log &
+
+    ## Key Vault for UI web app
+    provisionKeyVault
+    (
+        echo "${newline}${headingStyle}Adding database secrets to Azure Key Vault..${azCliCommandStyle}"
+        declare -x userTemp
+        declare -x passwordTemp
+        if [ "$dbType" = "pg" ];
+        then
+            userTemp=$postgreSqlUsername && passwordTemp=$postgreSqlPassword
+        else
+            userTemp=$sqlUsername && passwordTemp=$sqlPassword
+        fi
+        set -x
+        az keyvault secret set \
+            --vault-name $keyVaultName \
+            --name "DbUsername" \
+            --value "$userTemp" \
+            --output none &
+        az keyvault secret set \
+            --vault-name $keyVaultName \
+            --name "DbPassword" \
+            --value "$passwordTemp" \
+            --output none 
+    )
 ) &
 
 if [ "$dbType" = "pg" ];
