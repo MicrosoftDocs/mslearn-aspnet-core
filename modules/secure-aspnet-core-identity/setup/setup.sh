@@ -126,7 +126,7 @@ provisionAppServicePlan
     ## Key Vault for UI web app
     provisionKeyVault
     (
-        echo "${newline}${headingStyle}Adding database secrets to Azure Key Vault..${azCliCommandStyle}"
+        echo "${newline}${headingStyle}Adding database secrets to Azure Key Vault...${azCliCommandStyle}"
         declare -x userTemp
         declare -x passwordTemp
         if [ "$dbType" = "pg" ];
