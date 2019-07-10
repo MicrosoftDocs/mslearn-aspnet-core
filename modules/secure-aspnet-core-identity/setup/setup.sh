@@ -144,6 +144,7 @@ provisionAppServicePlan
             --output none &
     )
     (
+        sleep 5 # Adding a small wait to resolve a race condition
         echo "${newline}${headingStyle}Adding database password to Azure Key Vault...${azCliCommandStyle}"
         set -x
         az keyvault secret set \
