@@ -125,34 +125,32 @@ provisionAppServicePlan
 
     ## Key Vault for UI web app
     provisionKeyVault
+    declare -x userTemp
+    declare -x passwordTemp
+    if [ "$dbType" = "pg" ];
+    then
+        userTemp=$postgreSqlUsername && passwordTemp=$postgreSqlPassword
+    else
+        userTemp=$sqlUsername && passwordTemp=$sqlPassword
+    fi
+    
     (
-        echo "${newline}${headingStyle}Adding database secrets to Azure Key Vault..."
-        declare -x userTemp
-        declare -x passwordTemp
-        if [ "$dbType" = "pg" ];
-        then
-            userTemp=$postgreSqlUsername && passwordTemp=$postgreSqlPassword
-        else
-            userTemp=$sqlUsername && passwordTemp=$sqlPassword
-        fi
-        (
-            echo "${azCliCommandStyle}"
-            set -x
-            az keyvault secret set \
-                --vault-name $keyVaultName \
-                --name "DbUsername" \
-                --value "$userTemp" \
-                --output none &
-        )
-        (
-            echo "${azCliCommandStyle}"
-            set -x
-            az keyvault secret set \
-                --vault-name $keyVaultName \
-                --name "DbPassword" \
-                --value "$passwordTemp" \
-                --output none 
-        )
+        echo "${newline}${headingStyle}Adding database username to Azure Key Vault...${azCliCommandStyle}"
+        set -x
+        az keyvault secret set \
+            --vault-name $keyVaultName \
+            --name "DbUsername" \
+            --value "$userTemp" \
+            --output none &
+    )
+    (
+        echo "${newline}${headingStyle}Adding database password to Azure Key Vault...${azCliCommandStyle}"
+        set -x
+        az keyvault secret set \
+            --vault-name $keyVaultName \
+            --name "DbPassword" \
+            --value "$passwordTemp" \
+            --output none 
     )
 ) &
 
