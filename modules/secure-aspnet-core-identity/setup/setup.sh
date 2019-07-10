@@ -51,7 +51,7 @@ writeVariablesScript() {
         text+="export PGPASSWORD=$postgreSqlPassword${newline}"
         text+="declare postgreSqlConnectionString=\"$postgreSqlConnectionString\"${newline}"
         text+="declare postgreSqlDatabaseName=$postgreSqlDatabaseName${newline}"
-        text+="alias db=\"psql --host=$postgreSqlHostName --port=5432 --username=$postgreSqlUsername --dbname=$postgreSqlDatabaseName\"${newline}"
+        text+="alias db=\"psql --host=$postgreSqlHostName --port=5432 --username=$postgreSqlUsername@$postgreSqlServerName --dbname=$postgreSqlDatabaseName\"${newline}"
     else
         text+="declare sqlServerName=$sqlServerName${newline}"
         text+="declare sqlHostName=$sqlHostName${newline}"
@@ -72,7 +72,7 @@ writeVariablesScript() {
         text+="echo \"${headingStyle}postgreSqlUsername: ${defaultTextStyle}$postgreSqlUsername\"${newline}"
         text+="echo \"${headingStyle}PGPASSWORD: ${defaultTextStyle}$postgreSqlPassword\"${newline}"
         text+="echo ${newline}"
-        text+="echo \"${defaultTextStyle}db ${headingStyle}is an alias for${defaultTextStyle} psql --host=$postgreSqlHostName --port=5432 --username=$postgreSqlUsername --dbname=$postgreSqlDatabaseName\"${newline}"
+        text+="echo \"${defaultTextStyle}db ${headingStyle}is an alias for${defaultTextStyle} psql --host=$postgreSqlHostName --port=5432 --username=$postgreSqlUsername@$postgreSqlServerName --dbname=$postgreSqlDatabaseName\"${newline}"
     else
         text+="echo \"${headingStyle}sqlConnectionString: ${defaultTextStyle}$sqlConnectionString\"${newline}"
         text+="echo \"${headingStyle}sqlUsername: ${defaultTextStyle}$sqlUsername\"${newline}"
