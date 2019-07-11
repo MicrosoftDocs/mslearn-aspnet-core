@@ -87,6 +87,15 @@ writeVariablesScript() {
     echo "$text" > ~/$variableScript
     chmod +x ~/$variableScript
 }
+writeAzWebappConfig(){
+    mkdir $srcWorkingDirectory/$projectRootDirectory/.azure && pushd $_
+    echo "[defaults]" > config
+    echo "group = $resourceGroupName" >> config
+    echo "sku = FREE" >> config
+    echo "appserviceplan = $webPlanName" >> config
+    echo "location = $defaultLocation" >> config
+    echo "web = $webAppName" >> config
+}
 
 # Grab and run initenvironment.sh
 . <(wget -q -O - $initScript)
@@ -115,20 +124,7 @@ provisionAppServicePlan
     declare -x webAppName=webapp$instanceId
     declare -x projectRootDirectory="ContosoPets.Ui"
     declare -x webAppLabel="ContosoPets.Ui Web App"
-    provisionAppService && sleep 1
-
-    cd $srcWorkingDirectory/$projectRootDirectory
-    # Point to the API
-    sed -i "s|<web-app-name>|apiapp$instanceId|g" appsettings.json
-    
-    # Set the environment variable pointing to Key Vault
-    az webapp config appsettings set \
-        --name $webAppName \
-        --settings ASPNETCORE_HOSTINGSTARTUP__KEYVAULT__CONFIGURATIONVAULT=https://$keyVaultName.vault.azure.net \
-        --output none
-    
-    # Preemptively deploy the UI so subsequent deployments go quicker
-    az webapp up --name $webAppName --plan $webPlanName &> ../webapp-deploy.log &
+    provisionAppService 
 
     ## Key Vault for UI web app
     provisionKeyVault
@@ -160,6 +156,14 @@ provisionAppServicePlan
             --value "$passwordTemp" \
             --output none 
     )
+    (
+        echo "${newline}${headingStyle}Setting Web App environment variable with location of Key Vault...${azCliCommandStyle}"
+        set -x
+        az webapp config appsettings set \
+            --name $webAppName \
+            --settings ASPNETCORE_HOSTINGSTARTUP__KEYVAULT__CONFIGURATIONVAULT=https://$keyVaultName.vault.azure.net \
+            --output none
+    )
 ) &
 
 if [ "$dbType" = "pg" ];
@@ -170,6 +174,13 @@ else
 fi
 
 wait &>/dev/null
+
+# Point to the Web to the API
+cd $srcWorkingDirectory/$projectRootDirectory
+sed -i "s|<web-app-name>|apiapp$instanceId|g" appsettings.json
+
+# Setup az webapp up
+writeAzWebappConfig
 
 # Clean up
 writeVariablesScript
