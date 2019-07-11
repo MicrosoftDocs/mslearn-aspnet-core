@@ -42,6 +42,7 @@ writeVariablesScript() {
     text+="declare subscriptionId=$subscriptionId${newline}"
     text+="declare webAppName=$webAppName${newline}"
     text+="declare webPlanName=$webPlanName${newline}"
+    text+="declare webAppUrl=https://$webAppName.azurewebsites.net${newline}"
     text+="export ASPNETCORE_HOSTINGSTARTUP__KEYVAULT__CONFIGURATIONVAULT=https://$keyVaultName.vault.azure.net${newline}"
     
     if [ "$dbType" = "pg" ];
@@ -65,7 +66,7 @@ writeVariablesScript() {
 
     text+="echo \"${headingStyle}The following variables are used in this module:\"${newline}"
     text+="echo \"${headingStyle}srcWorkingDirectory: ${defaultTextStyle}$srcWorkingDirectory\"${newline}"
-    text+="echo \"${headingStyle}webAppName: ${defaultTextStyle}$webAppName\"${newline}"
+    text+="echo \"${headingStyle}webAppUrl: ${defaultTextStyle}$webAppUrl\"${newline}"
     if [ "$dbType" = "pg" ];
     then
         text+="echo \"${headingStyle}postgreSqlConnectionString: ${defaultTextStyle}$postgreSqlConnectionString\"${newline}"
