@@ -119,6 +119,13 @@ provisionAppServicePlan
     cd $srcWorkingDirectory/$projectRootDirectory
     # Point to the API
     sed -i "s|<web-app-name>|apiapp$instanceId|g" appsettings.json
+    
+    # Set the environment variable pointing to Key Vault
+    az webapp config appsettings set \
+        --name $webAppName \
+        --settings ASPNETCORE_HOSTINGSTARTUP__KEYVAULT__CONFIGURATIONVAULT=https://$keyVaultName.vault.azure.net \
+        --output none 
+    
     # Preemptively deploy the UI so subsequent deployments go quicker
     az webapp up --name $webAppName --plan $webPlanName &> deploy.log &
 
@@ -150,14 +157,6 @@ provisionAppServicePlan
             --vault-name $keyVaultName \
             --name "DbPassword" \
             --value "$passwordTemp" \
-            --output none 
-    )
-    (
-        echo "${newline}${headingStyle}Setting environment variables on web app...${azCliCommandStyle}"
-        set -x
-        az webapp config appsettings set \
-            --name $webAppName \
-            --settings ASPNETCORE_HOSTINGSTARTUP__KEYVAULT__CONFIGURATIONVAULT=https://$keyVaultName.vault.azure.net \
             --output none 
     )
 ) &
