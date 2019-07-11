@@ -41,7 +41,7 @@ writeVariablesScript() {
     text+="declare resourceGroupName=$resourceGroupName${newline}"
     text+="declare subscriptionId=$subscriptionId${newline}"
     text+="declare webAppName=$webAppName${newline}"
-    text+="declare webPlanName=$webPlanName${newline}"
+    text+="export ASPNETCORE_HOSTINGSTARTUP__KEYVAULT__CONFIGURATIONVAULT=https://$keyVaultName.vault.azure.net"
     
     if [ "$dbType" = "pg" ];
     then
@@ -65,7 +65,6 @@ writeVariablesScript() {
     text+="echo \"${headingStyle}The following variables are used in this module:\"${newline}"
     text+="echo \"${headingStyle}srcWorkingDirectory: ${defaultTextStyle}$srcWorkingDirectory\"${newline}"
     text+="echo \"${headingStyle}webAppName: ${defaultTextStyle}$webAppName\"${newline}"
-    text+="echo \"${headingStyle}webPlanName: ${defaultTextStyle}$webPlanName\"${newline}"
     if [ "$dbType" = "pg" ];
     then
         text+="echo \"${headingStyle}postgreSqlConnectionString: ${defaultTextStyle}$postgreSqlConnectionString\"${newline}"
@@ -144,13 +143,21 @@ provisionAppServicePlan
             --output none &
     )
     (
-        sleep 5 # Adding a small wait to resolve a race condition
+        sleep 3 # Adding a small wait to resolve a race condition
         echo "${newline}${headingStyle}Adding database password to Azure Key Vault...${azCliCommandStyle}"
         set -x
         az keyvault secret set \
             --vault-name $keyVaultName \
             --name "DbPassword" \
             --value "$passwordTemp" \
+            --output none 
+    )
+    (
+        echo "${newline}${headingStyle}Setting environment variables on web app...${azCliCommandStyle}"
+        set -x
+        az webapp config appsettings set \
+            --name $webAppName \
+            --settings ASPNETCORE_HOSTINGSTARTUP__KEYVAULT__CONFIGURATIONVAULT=https://$keyVaultName.vault.azure.net \
             --output none 
     )
 ) &
