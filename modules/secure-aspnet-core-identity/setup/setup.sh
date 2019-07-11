@@ -108,7 +108,7 @@ provisionAppServicePlan
 
     # Deploy the app because it's a dependency.
     cd $srcWorkingDirectory/$projectRootDirectory
-    az webapp up --name $webAppName --plan $webPlanName &> deploy.log
+    az webapp up --name $webAppName --plan $webPlanName &> ../apiapp-deploy.log
 ) &
 (   
     # UI web app
@@ -128,7 +128,7 @@ provisionAppServicePlan
         --output none 
     
     # Preemptively deploy the UI so subsequent deployments go quicker
-    az webapp up --name $webAppName --plan $webPlanName &> deploy.log &
+    az webapp up --name $webAppName --plan $webPlanName &> ../webapp-deploy.log &
 
     ## Key Vault for UI web app
     provisionKeyVault
