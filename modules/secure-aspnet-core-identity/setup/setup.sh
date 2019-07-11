@@ -115,7 +115,7 @@ provisionAppServicePlan
     declare -x webAppName=webapp$instanceId
     declare -x projectRootDirectory="ContosoPets.Ui"
     declare -x webAppLabel="ContosoPets.Ui Web App"
-    provisionAppService
+    provisionAppService && sleep 1
 
     cd $srcWorkingDirectory/$projectRootDirectory
     # Point to the API
@@ -125,7 +125,7 @@ provisionAppServicePlan
     az webapp config appsettings set \
         --name $webAppName \
         --settings ASPNETCORE_HOSTINGSTARTUP__KEYVAULT__CONFIGURATIONVAULT=https://$keyVaultName.vault.azure.net \
-        --output none 
+        --output none
     
     # Preemptively deploy the UI so subsequent deployments go quicker
     az webapp up --name $webAppName --plan $webPlanName &> ../webapp-deploy.log &
