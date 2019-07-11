@@ -41,7 +41,8 @@ writeVariablesScript() {
     text+="declare resourceGroupName=$resourceGroupName${newline}"
     text+="declare subscriptionId=$subscriptionId${newline}"
     text+="declare webAppName=$webAppName${newline}"
-    text+="export ASPNETCORE_HOSTINGSTARTUP__KEYVAULT__CONFIGURATIONVAULT=https://$keyVaultName.vault.azure.net"
+    text+="declare webPlanName=$webPlanName${newline}"
+    text+="export ASPNETCORE_HOSTINGSTARTUP__KEYVAULT__CONFIGURATIONVAULT=https://$keyVaultName.vault.azure.net${newline}"
     
     if [ "$dbType" = "pg" ];
     then
