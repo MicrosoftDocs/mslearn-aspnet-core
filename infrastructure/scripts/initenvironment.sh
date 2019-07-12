@@ -181,7 +181,7 @@ provisionResourceGroup() {
 }
 addVariablesToStartup() {
     if ! [[ $(grep $variableScript ~/.bashrc) ]]; then
-        echo "# Next line added at $(date) by Microsoft Learn $moduleName" >> ~/.bashrc
+        echo "${newline}# Next line added at $(date) by Microsoft Learn $moduleName" >> ~/.bashrc
         echo ". ~/$variableScript" >> ~/.bashrc
     fi 
 }
