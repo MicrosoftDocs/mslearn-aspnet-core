@@ -60,7 +60,7 @@ namespace ContosoPets.Ui
 
             app.UseStaticFiles();
             app.UseCookiePolicy();
-            // Add the app.UseAuthentication statement
+            // Add the app.UseAuthentication code
             app.UseMvc();
         }
     }
