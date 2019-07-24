@@ -22,6 +22,7 @@ declare resourceGroupName=""
 declare appServicePlan=appservice$instanceId
 declare webAppName=webapp$instanceId
 declare webPlanName=plan$instanceId
+declare webAppUrl="https://$webAppName.azurewebsites.net"
 
 # Key Vault Declarations
 declare keyVaultName=keyvault$instanceId

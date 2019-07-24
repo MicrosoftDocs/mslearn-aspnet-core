@@ -39,8 +39,7 @@ writeVariablesScript() {
     text+="declare subscriptionId=$subscriptionId${newline}"
     text+="declare webAppName=$webAppName${newline}"
     text+="declare webPlanName=$webPlanName${newline}"
-    text+="declare webAppUrl=https://$webAppName.azurewebsites.net${newline}"
-    
+    text+="declare webAppUrl=$webAppUrl${newline}"
     text+="echo \"${headingStyle}The following variables are used in this module:\"${newline}"
     text+="echo \"${headingStyle}srcWorkingDirectory: ${defaultTextStyle}$srcWorkingDirectory\"${newline}"
     text+="echo \"${headingStyle}webAppUrl: ${defaultTextStyle}$webAppUrl\"${newline}"
