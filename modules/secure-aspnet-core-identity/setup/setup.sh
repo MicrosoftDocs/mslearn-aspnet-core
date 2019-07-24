@@ -17,7 +17,7 @@ declare -x dbType=$1
 declare moduleName="secure-aspnet-core-identity"
 
 # dotnet SDK version
-declare -x dotnetSdkVersion="2.2.300"
+declare -x dotnetSdkVersion="2.2.301"
 
 # Any other declarations we need
 declare -x gitBranch="authentication-stuff"
@@ -65,7 +65,6 @@ writeVariablesScript() {
     fi
 
     text+="echo \"${headingStyle}The following variables are used in this module:\"${newline}"
-    text+="echo \"${headingStyle}srcWorkingDirectory: ${defaultTextStyle}$srcWorkingDirectory\"${newline}"
     text+="echo \"${headingStyle}webAppUrl: ${defaultTextStyle}$webAppUrl\"${newline}"
     if [ "$dbType" = "pg" ];
     then
