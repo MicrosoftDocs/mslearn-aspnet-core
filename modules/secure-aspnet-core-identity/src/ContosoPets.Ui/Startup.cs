@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using QRCoder;
 
 namespace ContosoPets.Ui
 { 
@@ -39,6 +40,9 @@ namespace ContosoPets.Ui
                     $"{cpServicesConfig["BaseAddress"]}{cpServicesConfig["Routes:Products"]}");
                 config.DefaultRequestHeaders.Add("Accept", "application/json");
             });
+
+            services.AddSingleton<QRCodeGenerator>();
+            services.AddSingleton<QRCodeService>();
 
             services.AddMvc()
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
