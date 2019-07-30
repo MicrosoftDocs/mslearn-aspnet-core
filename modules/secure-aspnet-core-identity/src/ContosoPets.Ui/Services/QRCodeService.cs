@@ -1,7 +1,4 @@
 using QRCoder;
-using System.Drawing;
-using System.Drawing.Imaging;
-using System.IO;
 
 namespace ContosoPets.Ui.Services
 {
@@ -14,23 +11,12 @@ namespace ContosoPets.Ui.Services
             _generator = generator;
         }
         
-        public byte[] GetQRCodeAsPng(string textToEncode)
+        public string GetQRCodeAsBase64(string textToEncode)
         {
             QRCodeData qrCodeData = _generator.CreateQrCode(textToEncode, QRCodeGenerator.ECCLevel.Q);
-            var qrCode = new QRCode(qrCodeData);
-            Bitmap qrCodeImage = qrCode.GetGraphic(4);
+            var qrCode = new Base64QRCode(qrCodeData);
 
-            return BitmapToPngBytes(qrCodeImage); //Convert bitmap into a byte array
-        }
-
-        private static byte[] BitmapToPngBytes(Bitmap img)
-        {
-            using (var stream = new MemoryStream())
-            {
-                img.Save(stream, ImageFormat.Png);
-                return stream.ToArray();
-            }
+            return qrCode.GetGraphic(4);
         }
     }
-
 }

@@ -5,11 +5,13 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using System;
 using QRCoder;
+using System;
+using System.Net;
+using System.Net.Mime;
 
 namespace ContosoPets.Ui
-{ 
+{
     public class Startup
     {
         public Startup(IConfiguration configuration)
@@ -32,17 +34,20 @@ namespace ContosoPets.Ui
             services.AddHttpClient<OrderService>(config => {
                config.BaseAddress = new Uri(
                    $"{cpServicesConfig["BaseAddress"]}{cpServicesConfig["Routes:Orders"]}");
-               config.DefaultRequestHeaders.Add("Accept", "application/json");
+               config.DefaultRequestHeaders.Add(
+                   HttpRequestHeader.Accept.ToString(),
+                   MediaTypeNames.Application.Json.ToString());
             });
 
             services.AddHttpClient<ProductService>(config => {
                 config.BaseAddress = new Uri(
                     $"{cpServicesConfig["BaseAddress"]}{cpServicesConfig["Routes:Products"]}");
-                config.DefaultRequestHeaders.Add("Accept", "application/json");
+                config.DefaultRequestHeaders.Add(
+                    HttpRequestHeader.Accept.ToString(),
+                    MediaTypeNames.Application.Json.ToString());
             });
 
-            services.AddSingleton<QRCodeGenerator>();
-            services.AddSingleton<QRCodeService>();
+            services.AddSingleton(new QRCodeService(new QRCodeGenerator()));
 
             services.AddMvc()
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
