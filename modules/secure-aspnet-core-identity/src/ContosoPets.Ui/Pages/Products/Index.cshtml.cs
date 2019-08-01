@@ -5,15 +5,19 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Linq;
+// Add using Microsoft.AspNetCore.Authorization;
 
 namespace ContosoPets.Ui.Pages.Products
 {
+    // Add [Authorize] attribute
     public class IndexModel : PageModel
     {
         private readonly ProductService _productService;
 
         public string AntiforgeryToken => HttpContext.GetAntiforgeryTokenForJs();
         public IEnumerable<Product> Products { get; private set; } = new List<Product>();
+        // Add IsAdmin property
 
         public IndexModel(ProductService productService)
         {
@@ -25,6 +29,7 @@ namespace ContosoPets.Ui.Pages.Products
     
         public async Task<IActionResult> OnDelete(int productId)
         {
+            // Add IsAdmin check
             try
             {
                 await _productService.DeleteProduct(productId);
