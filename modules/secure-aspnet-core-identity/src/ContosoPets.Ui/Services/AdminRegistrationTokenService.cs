@@ -11,7 +11,7 @@ namespace ContosoPets.Ui.Services
         private readonly Lazy<long> _creationKey = new Lazy<long>(() => BitConverter.ToInt64(Guid.NewGuid().ToByteArray(), 7));
         private readonly IServiceProvider _serviceProvider;
 
-        private bool _adminExists;
+        // private bool _adminExists;
 
         public AdminRegistrationTokenService(IServiceProvider serviceProvider)
         {
