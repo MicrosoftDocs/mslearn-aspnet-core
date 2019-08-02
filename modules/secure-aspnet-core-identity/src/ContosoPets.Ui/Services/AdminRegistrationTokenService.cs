@@ -1,4 +1,4 @@
-﻿using ContosoPets.Ui.Areas.Identity.Data;
+﻿// using ContosoPets.Ui.Areas.Identity.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -20,30 +20,30 @@ namespace ContosoPets.Ui.Services
 
         public long CreationKey => _creationKey.Value;
 
-        public async Task<bool> AllowAdminUserCreationAsync()
-        {
-            if (_adminExists)
-            {
-                return false;
-            }
-            else
-            {
-                using (var scope = _serviceProvider.CreateScope())
-                {
-                    var dbContext = scope.ServiceProvider.GetRequiredService<ContosoPetsAuth>();
+        // public async Task<bool> AllowAdminUserCreationAsync()
+        // {
+        //     if (_adminExists)
+        //     {
+        //         return false;
+        //     }
+        //     else
+        //     {
+        //         using (var scope = _serviceProvider.CreateScope())
+        //         {
+        //             var dbContext = scope.ServiceProvider.GetRequiredService<ContosoPetsAuth>();
 
-                    if (await dbContext.Users.AnyAsync(user => user.IsAdmin))
-                    {
-                        // There are already admin users so disable admin creation
-                        _adminExists = true;
-                        return false;
-                    }
+        //             if (await dbContext.Users.AnyAsync(user => user.IsAdmin))
+        //             {
+        //                 // There are already admin users so disable admin creation
+        //                 _adminExists = true;
+        //                 return false;
+        //             }
 
-                    // There are no admin users so enable admin creation
-                    return true;
-                }
-            }
-        }
+        //             // There are no admin users so enable admin creation
+        //             return true;
+        //         }
+        //     }
+        // }
 
     }
 
