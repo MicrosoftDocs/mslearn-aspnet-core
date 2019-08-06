@@ -51,7 +51,7 @@ writeVariablesScript() {
         text+="declare postgreSqlHostName=$postgreSqlHostName${newline}"
         text+="declare postgreSqlUsername=$postgreSqlUsername@$postgreSqlServerName${newline}"
         text+="export PGPASSWORD=$postgreSqlPassword${newline}"
-        text+="declare postgreSqlConnectionString=\"$postgreSqlConnectionString\"${newline}"
+        text+="declare dbConnectionString=\"$postgreSqlConnectionString\"${newline}"
         text+="declare postgreSqlDatabaseName=$postgreSqlDatabaseName${newline}"
         text+="alias db=\"psql --host=$postgreSqlHostName --port=5432 --username=$postgreSqlUsername@$postgreSqlServerName --dbname=$postgreSqlDatabaseName\"${newline}"
     else
@@ -60,7 +60,7 @@ writeVariablesScript() {
         text+="declare sqlUsername=$sqlUsername@$sqlServerName${newline}"
         text+="declare sqlPassword=$sqlPassword${newline}"
         text+="declare databaseName=$databaseName${newline}"
-        text+="declare sqlConnectionString=\"$sqlConnectionString\"${newline}"
+        text+="declare dbConnectionString=\"$sqlConnectionString\"${newline}"
         text+="alias db=\"sqlcmd -U $sqlUsername -P $sqlPassword -S $sqlHostName -d $databaseName\"${newline}"
     fi
 
@@ -68,13 +68,13 @@ writeVariablesScript() {
     text+="echo \"${headingStyle}webAppUrl: ${defaultTextStyle}$webAppUrl\"${newline}"
     if [ "$dbType" = "pg" ];
     then
-        text+="echo \"${headingStyle}postgreSqlConnectionString: ${defaultTextStyle}$postgreSqlConnectionString\"${newline}"
+        text+="echo \"${headingStyle}dbConnectionString: ${defaultTextStyle}$postgreSqlConnectionString\"${newline}"
         text+="echo \"${headingStyle}postgreSqlUsername: ${defaultTextStyle}$postgreSqlUsername\"${newline}"
         text+="echo \"${headingStyle}PGPASSWORD: ${defaultTextStyle}$postgreSqlPassword\"${newline}"
         text+="echo ${newline}"
         text+="echo \"${defaultTextStyle}db ${headingStyle}is an alias for${defaultTextStyle} psql --host=$postgreSqlHostName --port=5432 --username=$postgreSqlUsername@$postgreSqlServerName --dbname=$postgreSqlDatabaseName\"${newline}"
     else
-        text+="echo \"${headingStyle}sqlConnectionString: ${defaultTextStyle}$sqlConnectionString\"${newline}"
+        text+="echo \"${headingStyle}dbConnectionString: ${defaultTextStyle}$sqlConnectionString\"${newline}"
         text+="echo \"${headingStyle}sqlUsername: ${defaultTextStyle}$sqlUsername\"${newline}"
         text+="echo \"${headingStyle}sqlPassword: ${defaultTextStyle}$sqlPassword\"${newline}"
         text+="echo ${newline}"
