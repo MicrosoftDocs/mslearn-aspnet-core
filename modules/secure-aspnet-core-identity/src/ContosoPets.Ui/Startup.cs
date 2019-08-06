@@ -31,14 +31,6 @@ namespace ContosoPets.Ui
 
             IConfigurationSection cpServicesConfig = Configuration.GetSection("ContosoPetsServices");
 
-            services.AddHttpClient<OrderService>(config => {
-               config.BaseAddress = new Uri(
-                   $"{cpServicesConfig["BaseAddress"]}{cpServicesConfig["Routes:Orders"]}");
-               config.DefaultRequestHeaders.Add(
-                   HttpRequestHeader.Accept.ToString(),
-                   MediaTypeNames.Application.Json.ToString());
-            });
-
             services.AddHttpClient<ProductService>(config => {
                 config.BaseAddress = new Uri(
                     $"{cpServicesConfig["BaseAddress"]}{cpServicesConfig["Routes:Products"]}");
