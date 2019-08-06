@@ -132,7 +132,7 @@ provisionAppServicePlan
     declare -x passwordTemp
     if [ "$dbType" = "pg" ];
     then
-        userTemp=$postgreSqlUsername && passwordTemp=$postgreSqlPassword
+        userTemp=$postgreSqlUsername@$postgreSqlServerName && passwordTemp=$postgreSqlPassword
     else
         userTemp=$sqlUsername && passwordTemp=$sqlPassword
     fi
