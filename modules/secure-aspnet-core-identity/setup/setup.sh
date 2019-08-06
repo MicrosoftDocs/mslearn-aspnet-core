@@ -95,6 +95,7 @@ writeAzWebappConfig(){
     echo "appserviceplan = $webPlanName" >> config
     echo "location = $defaultLocation" >> config
     echo "web = $webAppName" >> config
+    popd
 }
 
 # Grab and run initenvironment.sh
