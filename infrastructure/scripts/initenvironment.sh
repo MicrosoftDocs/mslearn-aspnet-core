@@ -38,7 +38,7 @@ declare sqlServerName=azsql$instanceId
 declare sqlHostName=$sqlServerName.database.windows.net
 declare sqlUsername=SqlUser
 declare sqlPassword=Pass.$RANDOM.word
-declare databaseName=ContosoPets
+declare databaseName=ContosoPetsAuth
 declare sqlConnectionString="Data Source=$sqlHostName;Initial Catalog=$databaseName;Connect Timeout=30;Encrypt=True;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False"
 
 # Azure Database for PostgreSQL Declarations
@@ -47,7 +47,7 @@ declare postgreSqlServerName=postgresql$instanceId
 declare postgreSqlHostName=$postgreSqlServerName.postgres.database.azure.com
 declare postgreSqlUsername=pgsqluser
 declare postgreSqlPassword=Pass.$RANDOM.word
-declare postgreSqlDatabaseName=contosopets
+declare postgreSqlDatabaseName=contosopetsauth
 declare postgreSqlConnectionString="Server=$postgreSqlHostName;Database=$postgreSqlDatabaseName;Port=5432;Ssl Mode=Require;"
 
 # Functions
