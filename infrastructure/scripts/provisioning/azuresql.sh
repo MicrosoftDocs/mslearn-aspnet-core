@@ -13,6 +13,7 @@
     az sql db create \
         --name $databaseName \
         --server $sqlServerName \
+        --service-objective BASIC
         --output none
 )
 (
