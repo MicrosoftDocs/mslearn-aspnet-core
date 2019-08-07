@@ -14,7 +14,7 @@
 declare -x moduleName="create-razor-pages-aspnet-core"
 
 # dotnet SDK version
-declare -x dotnetSdkVersion="2.2.301"
+declare -x dotnetSdkVersion="2.2.401"
 
 # Any other declarations we need
 declare -x gitBranch="create-razor-pages-aspnet-core"
