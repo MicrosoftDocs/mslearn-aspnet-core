@@ -3,7 +3,7 @@ using ContosoPets.Ui.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Threading.Tasks;
-// Add using Microsoft.AspNetCore.Authorization;
+//using Microsoft.AspNetCore.Authorization;
 
 namespace ContosoPets.Ui.Pages.Products
 {
