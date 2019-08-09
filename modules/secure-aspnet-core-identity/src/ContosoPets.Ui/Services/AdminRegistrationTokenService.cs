@@ -4,9 +4,9 @@ namespace ContosoPets.Ui.Services
 {
     public class AdminRegistrationTokenService
     {
-        private readonly Lazy<long> _creationKey = 
-            new Lazy<long>(() => BitConverter.ToInt64(Guid.NewGuid().ToByteArray(), 7));
+        private readonly Lazy<ulong> _creationKey = 
+            new Lazy<ulong>(() => BitConverter.ToUInt64(Guid.NewGuid().ToByteArray(), 7));
 
-        public long CreationKey => _creationKey.Value;
+        public ulong CreationKey => _creationKey.Value;
     }
 }

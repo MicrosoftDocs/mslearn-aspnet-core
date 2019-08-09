@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using ContosoPets.Ui.Services;
-using Microsoft.AspNetCore.Http;
+﻿using ContosoPets.Ui.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ContosoPets.Ui.Controllers
@@ -25,9 +20,7 @@ namespace ContosoPets.Ui.Controllers
         }
 
         [HttpGet]
-        public ActionResult<long> Get()
-        {
-            return _adminService.CreationKey;
-        }
+        public ActionResult<ulong> Get() =>
+            _adminService.CreationKey;
     }
 }
