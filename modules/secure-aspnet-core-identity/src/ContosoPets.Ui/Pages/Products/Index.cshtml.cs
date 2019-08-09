@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Linq;
-// Add using Microsoft.AspNetCore.Authorization;
+//using Microsoft.AspNetCore.Authorization;
 
 namespace ContosoPets.Ui.Pages.Products
 {
