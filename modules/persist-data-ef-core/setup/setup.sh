@@ -13,6 +13,12 @@
 # Module name
 declare moduleName="persist-data-ef-core"
 
+<<<<<<< HEAD
+=======
+# dotnet SDK version
+declare -x dotnetSdkVersion="2.2.300"
+
+>>>>>>> origin/create-razor-pages-aspnet-core
 # Any other declarations we need
 declare -x gitBranch="live"
 declare initScript=https://raw.githubusercontent.com/MicrosoftDocs/mslearn-aspnet-core/$gitBranch/infrastructure/scripts/initenvironment.sh
@@ -57,12 +63,19 @@ writeVariablesScript() {
     text+="echo \"${headingStyle}apiKey ${defaultTextStyle}(for Application Insights)${headingStyle}: ${defaultTextStyle}$(cat $apiKeyTempFile)\"${newline}"
     text+="echo ${newline}"
     text+="echo \"${defaultTextStyle}db ${headingStyle}is an alias for${defaultTextStyle} sqlcmd -U $sqlUsername -P $sqlPassword -S $sqlHostName -d $databaseName\"${newline}"
+<<<<<<< HEAD
     text+="if ! [ \$(echo \$PATH | grep ~/.dotnet/tools) ]; then export PATH=\$PATH:~/.dotnet/tools; fi${newline}"
+=======
+>>>>>>> origin/create-razor-pages-aspnet-core
     text+="echo ${newline}"
     text+="cd $srcWorkingDirectory/$projectRootDirectory${newline}"
     text+="code ..${newline}"
     echo "$text" > ~/$variableScript
+<<<<<<< HEAD
     chmod 755 ~/$variableScript
+=======
+    chmod +x ~/$variableScript
+>>>>>>> origin/create-razor-pages-aspnet-core
 }
 
 editSettings(){
@@ -79,12 +92,26 @@ createAliases(){
 
 # Grab and run initenvironment.sh
 . <(wget -q -O - $initScript)
+<<<<<<< HEAD
 
 # Provision stuff here
+=======
+
+
+# Download and build
+downloadAndBuild
+
+# Provision stuff here
+setAzureCliDefaults
+>>>>>>> origin/create-razor-pages-aspnet-core
 provisionResourceGroup
 provisionAzSqlDatabase &
 provisionAppInsights &
 wait &>/dev/null
+<<<<<<< HEAD
+=======
+resetAzureCliDefaults
+>>>>>>> origin/create-razor-pages-aspnet-core
 
 # Clean up
 editSettings

@@ -28,7 +28,11 @@ namespace ContosoPets.Api
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<ContosoPetsContext>(options =>
+<<<<<<< HEAD
                 options.UseInMemoryDatabase("ContosoPets"));
+=======
+                options.UseSqlite("Data Source=contosopets.db"));
+>>>>>>> origin/create-razor-pages-aspnet-core
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
 

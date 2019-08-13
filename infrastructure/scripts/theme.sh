@@ -18,4 +18,9 @@ declare dotnetCliCommandStyle="${plain}${magenta}"
 declare dotnetSayStyle="${magenta}${bold}"
 declare headingStyle="${white}${bold}"
 declare successStyle="${green}${bold}"
+<<<<<<< HEAD
 declare warningStyle="${yellow}${bold}"
+=======
+declare warningStyle="${yellow}${bold}"
+declare errorStyle="${red}${bold}"
+>>>>>>> origin/create-razor-pages-aspnet-core

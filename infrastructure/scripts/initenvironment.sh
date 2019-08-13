@@ -6,6 +6,12 @@
 # Common Declarations
 declare scriptPath=https://raw.githubusercontent.com/MicrosoftDocs/mslearn-aspnet-core/$gitBranch/infrastructure/scripts
 declare provisioningPath=$scriptPath/provisioning
+<<<<<<< HEAD
+=======
+declare toolsPath=$scriptPath/tools
+declare dotnetScriptsPath=$scriptPath/dotnet
+declare binariesPath=https://raw.githubusercontent.com/MicrosoftDocs/mslearn-aspnet-core/$gitBranch/infrastructure/binaries
+>>>>>>> origin/create-razor-pages-aspnet-core
 declare defaultLocation=southcentralus
 declare instanceId=$(($RANDOM * $RANDOM))
 declare gitDirectoriesToClone="modules/$moduleName/setup/ modules/$moduleName/src/"
@@ -13,12 +19,23 @@ declare gitPathToCloneScript=https://raw.githubusercontent.com/MicrosoftDocs/msl
 declare srcWorkingDirectory=~/contoso-pets/src
 declare setupWorkingDirectory=~/contoso-pets/setup
 declare subscriptionId=$(az account show --query id --output tsv)
+<<<<<<< HEAD
 declare dotnetSdkVersion=$(dotnet --version)
+=======
+>>>>>>> origin/create-razor-pages-aspnet-core
 declare resourceGroupName=""
 
 # AppService Declarations
 declare appServicePlan=appservice$instanceId
 declare webAppName=webapp$instanceId
+<<<<<<< HEAD
+=======
+declare webPlanName=plan$instanceId
+declare webAppUrl="https://$webAppName.azurewebsites.net"
+
+# Key Vault Declarations
+declare keyVaultName=keyvault$instanceId
+>>>>>>> origin/create-razor-pages-aspnet-core
 
 # AppInsights Declarations
 declare appInsightsName=appinsights$instanceId
@@ -26,7 +43,11 @@ declare apiKeyTempFile=~/.apiKey.temp
 declare appIdTempFile=~/.appId.temp
 declare instrumentationKeyTempFile=~/.instrumentationKey.temp
 
+<<<<<<< HEAD
 # SQL Database Declarations
+=======
+# Azure SQL Database Declarations
+>>>>>>> origin/create-razor-pages-aspnet-core
 declare sqlServerName=azsql$instanceId
 declare sqlHostName=$sqlServerName.database.windows.net
 declare sqlUsername=SqlUser
@@ -34,6 +55,18 @@ declare sqlPassword=Pass.$RANDOM.word
 declare databaseName=ContosoPets
 declare sqlConnectionString="Data Source=$sqlHostName;Initial Catalog=$databaseName;Connect Timeout=30;Encrypt=True;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False"
 
+<<<<<<< HEAD
+=======
+# Azure Database for PostgreSQL Declarations
+declare postgreSqlSku=B_Gen5_1
+declare postgreSqlServerName=postgresql$instanceId
+declare postgreSqlHostName=$postgreSqlServerName.postgres.database.azure.com
+declare postgreSqlUsername=pgsqluser
+declare postgreSqlPassword=Pass.$RANDOM.word
+declare postgreSqlDatabaseName=contosopets
+declare postgreSqlConnectionString="Server=$postgreSqlHostName;Database=$postgreSqlDatabaseName;Port=5432;Ssl Mode=Require;"
+
+>>>>>>> origin/create-razor-pages-aspnet-core
 # Functions
 setAzureCliDefaults() {
     echo "${headingStyle}Setting default Azure CLI values...${azCliCommandStyle}"
@@ -55,17 +88,62 @@ resetAzureCliDefaults() {
 }
 configureDotNetCli() {
     echo "${newline}${headingStyle}Configuring the .NET Core CLI...${defaultTextStyle}"
+<<<<<<< HEAD
+=======
+    declare installedDotNet=$(dotnet --version)
+
+    if [ "$dotnetSdkVersion" != "$installedDotNet" ];
+    then
+        # Install .NET Core SDK
+        wget -q -O - https://dot.net/v1/dotnet-install.sh | bash /dev/stdin --version $dotnetSdkVersion
+    fi
+
+    # Add a note to .bashrc in case someone is running this in their own Cloud Shell
+    echo "# The following was added by Microsoft Learn $moduleName" >> ~/.bashrc
+
+    # Add .NET Core SDK and .NET Core Global Tools default installation directory to PATH
+    if ! [ $(echo $PATH | grep .dotnet) ]; then 
+        export PATH=~/.dotnet:~/.dotnet/tools:$PATH; 
+        echo "# Add custom .NET Core SDK to PATH" >> ~/.bashrc
+        echo "export PATH=~/.dotnet:~/.dotnet/tools:\$PATH;" >> ~/.bashrc
+    fi
+>>>>>>> origin/create-razor-pages-aspnet-core
 
     # By default, the .NET Core CLI prints Welcome and Telemetry messages on
     # the first run. Suppress those messages by creating an appropriately
     # named file on disk.
     touch ~/.dotnet/$dotnetSdkVersion.dotnetFirstUseSentinel
 
+<<<<<<< HEAD
     # Disable the sending of telemetry to the mothership.
     export DOTNET_CLI_TELEMETRY_OPTOUT=true
 
     # Add ~/.dotnet/tools to the path so .NET Core Global Tool shims can be found
     if ! [ $(echo $PATH | grep ~/.dotnet/tools) ]; then export PATH=$PATH:~/.dotnet/tools; fi
+=======
+    # Suppress priming the NuGet package cache with assemblies and 
+    # XML docs we won't need.
+    export DOTNET_SKIP_FIRST_TIME_EXPERIENCE=true
+    echo "export DOTNET_SKIP_FIRST_TIME_EXPERIENCE=true" >> ~/.bashrc
+    export NUGET_XMLDOC_MODE=skip
+    echo "export NUGET_XMLDOC_MODE=skip" >> ~/.bashrc
+    
+    # Disable the sending of telemetry to the mothership.
+    export DOTNET_CLI_TELEMETRY_OPTOUT=true
+    echo "export DOTNET_CLI_TELEMETRY_OPTOUT=true" >> ~/.bashrc
+    
+    # Add tab completion for .NET Core CLI
+    tabSlug="#dotnet-tab-completion"
+    tabScript=$dotnetScriptsPath/tabcomplete.sh
+    if ! [[ $(grep $tabSlug ~/.bashrc) ]]; then
+        echo $tabSlug >> ~/.bashrc
+        wget -q -O - $tabScript >> ~/.bashrc
+        . <(wget -q -O - $tabScript)
+    fi
+    
+    # Generate developer certificate so ASP.NET Core projects run without complaint
+    dotnet dev-certs https --quiet
+>>>>>>> origin/create-razor-pages-aspnet-core
 }
 downloadAndBuild() {
     # Set location
@@ -81,6 +159,7 @@ downloadAndBuild() {
         set -x
         wget -q -O - $gitPathToCloneScript | bash -s $gitDirectoriesToClone
     )
+<<<<<<< HEAD
     echo "${newline}${headingStyle}Building code...${defaultTextStyle}"
     (
         cd $srcWorkingDirectory/$projectRootDirectory
@@ -88,6 +167,8 @@ downloadAndBuild() {
         set -x
         dotnet build --verbosity quiet
     )
+=======
+>>>>>>> origin/create-razor-pages-aspnet-core
     echo "${defaultTextStyle}"
 }
 # Provision Azure SQL Database
@@ -95,6 +176,14 @@ provisionAzSqlDatabase() {
     declare provisionScript=$provisioningPath/azuresql.sh
     . <(wget -q -O - $provisionScript)
 }
+<<<<<<< HEAD
+=======
+# Provision Azure Database for PostgreSQL
+provisionAzPostgreSqlDatabase() {
+    declare provisionScript=$provisioningPath/azurepostgresql.sh
+    . <(wget -q -O - $provisionScript)
+}
+>>>>>>> origin/create-razor-pages-aspnet-core
 # Provision App Insights
 provisionAppInsights() {
     declare provisionScript=$provisioningPath/appinsights.sh
@@ -105,7 +194,22 @@ provisionAppService() {
     declare provisionScript=$provisioningPath/appservice.sh
     . <(wget -q -O - $provisionScript)
 }
+<<<<<<< HEAD
 # Provision Azure Resource Group
+=======
+# Provision Azure Key Vault
+provisionKeyVault() {
+    declare provisionScript=$provisioningPath/keyvault.sh
+    . <(wget -q -O - $provisionScript)
+}
+# Provision Azure App Service Plan
+provisionAppServicePlan() {
+    declare provisionScript=$provisioningPath/appserviceplan.sh
+    . <(wget -q -O - $provisionScript)
+}
+# Provision Azure Resource Group
+# Should only ever run if we're running in the Cloud Shell without the Learn environment
+>>>>>>> origin/create-razor-pages-aspnet-core
 provisionResourceGroup() {
     if [ "$resourceGroupName" = "$moduleName" ]; then
         (
@@ -118,8 +222,13 @@ provisionResourceGroup() {
     fi
 }
 addVariablesToStartup() {
+<<<<<<< HEAD
     if ! [[ $(grep $moduleName ~/.bashrc) ]]; then
         echo "# Next line added at $(date) by $moduleName" >> ~/.bashrc
+=======
+    if ! [[ $(grep $variableScript ~/.bashrc) ]]; then
+        echo "${newline}# Next line added at $(date) by Microsoft Learn $moduleName" >> ~/.bashrc
+>>>>>>> origin/create-razor-pages-aspnet-core
         echo ". ~/$variableScript" >> ~/.bashrc
     fi 
 }
@@ -128,10 +237,17 @@ displayGreeting() {
     cd ~
 
     # Display installed .NET Core SDK version
+<<<<<<< HEAD
     echo "${headingStyle}Using .NET Core SDK version $dotnetSdkVersion${defaultTextStyle}"
 
     # Install .NET Core global tool to display connection info
     dotnet tool install dotnetsay --global
+=======
+    echo "${defaultTextStyle}Using .NET Core SDK version ${headingStyle}$dotnetSdkVersion${defaultTextStyle}"
+
+    # Install .NET Core global tool to display connection info
+    dotnet tool install dotnetsay --global --verbosity quiet
+>>>>>>> origin/create-razor-pages-aspnet-core
 
     # Greetings!
     greeting="${newline}${defaultTextStyle}Hi there!${newline}"
@@ -199,7 +315,10 @@ checkForCloudShell
 determineResourceGroup
 configureDotNetCli
 displayGreeting
+<<<<<<< HEAD
 downloadAndBuild
 setAzureCliDefaults
+=======
+>>>>>>> origin/create-razor-pages-aspnet-core
 
 # Additional setup in setup.sh occurs next.

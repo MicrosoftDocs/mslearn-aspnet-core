@@ -1,0 +1,23 @@
+﻿@page "{id:int}"
+@model ContosoPets.Ui.Pages.Orders.IndexModel
+@{
+    ViewData["Title"] = "Order History";
+}
+
+<h1>Order History</h1>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th scope="col">Order ID</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var order in Model.Orders)
+        {
+            <tr>
+                <td>@order.Id</td>
+            </tr>
+        }
+    </tbody>
+</table>
