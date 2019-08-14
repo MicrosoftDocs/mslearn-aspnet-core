@@ -1,7 +1,9 @@
 (
-    echo "${newline}${headingStyle}Provisioning Azure App Service Web App and deploying code...${azCliCommandStyle}"
+    echo "${newline}${headingStyle}Provisioning $webAppLabel Web App...${azCliCommandStyle}"
     cd $srcWorkingDirectory/$projectRootDirectory
     set -x
-    az webapp up \
-        --name $webAppName
+    az webapp create \
+        --name $webAppName \
+        --plan $webPlanName \
+        --output none
 )

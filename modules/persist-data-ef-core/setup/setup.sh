@@ -13,6 +13,9 @@
 # Module name
 declare moduleName="persist-data-ef-core"
 
+# dotnet SDK version
+declare -x dotnetSdkVersion="2.2.401"
+
 # Any other declarations we need
 declare -x gitBranch="live"
 declare initScript=https://raw.githubusercontent.com/MicrosoftDocs/mslearn-aspnet-core/$gitBranch/infrastructure/scripts/initenvironment.sh
@@ -57,12 +60,11 @@ writeVariablesScript() {
     text+="echo \"${headingStyle}apiKey ${defaultTextStyle}(for Application Insights)${headingStyle}: ${defaultTextStyle}$(cat $apiKeyTempFile)\"${newline}"
     text+="echo ${newline}"
     text+="echo \"${defaultTextStyle}db ${headingStyle}is an alias for${defaultTextStyle} sqlcmd -U $sqlUsername -P $sqlPassword -S $sqlHostName -d $databaseName\"${newline}"
-    text+="if ! [ \$(echo \$PATH | grep ~/.dotnet/tools) ]; then export PATH=\$PATH:~/.dotnet/tools; fi${newline}"
     text+="echo ${newline}"
     text+="cd $srcWorkingDirectory/$projectRootDirectory${newline}"
     text+="code ..${newline}"
     echo "$text" > ~/$variableScript
-    chmod 755 ~/$variableScript
+    chmod +x ~/$variableScript
 }
 
 editSettings(){
@@ -80,11 +82,17 @@ createAliases(){
 # Grab and run initenvironment.sh
 . <(wget -q -O - $initScript)
 
+
+# Download and build
+downloadAndBuild
+
 # Provision stuff here
+setAzureCliDefaults
 provisionResourceGroup
 provisionAzSqlDatabase &
 provisionAppInsights &
 wait &>/dev/null
+resetAzureCliDefaults
 
 # Clean up
 editSettings
