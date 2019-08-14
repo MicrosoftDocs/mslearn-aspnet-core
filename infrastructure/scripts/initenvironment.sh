@@ -113,6 +113,9 @@ configureDotNetCli() {
         wget -q -O - $tabScript >> ~/.bashrc
         . <(wget -q -O - $tabScript)
     fi
+    
+    # Generate developer certificate so ASP.NET Core projects run without complaint
+    dotnet dev-certs https --quiet
 }
 downloadAndBuild() {
     # Set location
@@ -127,13 +130,6 @@ downloadAndBuild() {
     (
         set -x
         wget -q -O - $gitPathToCloneScript | bash -s $gitDirectoriesToClone
-    )
-    echo "${newline}${headingStyle}Building code...${defaultTextStyle}"
-    (
-        cd $srcWorkingDirectory/$projectRootDirectory
-        echo "${dotnetCliCommandStyle}"
-        set -x
-        dotnet build --verbosity quiet
     )
     echo "${defaultTextStyle}"
 }
