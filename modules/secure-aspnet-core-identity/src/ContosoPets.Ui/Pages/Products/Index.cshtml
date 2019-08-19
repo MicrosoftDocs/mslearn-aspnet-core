@@ -1,10 +1,10 @@
 ﻿@page "{productId:int?}"
 @model ContosoPets.Ui.Pages.Products.IndexModel
 @{
-    ViewData["Title"] = "Admin Index";
+    ViewData["Title"] = "Products Index";
 }
 
-<h1>Product Administration</h1>
+<h1>Products</h1>
 
 <table class="table table-striped">
     <thead>
@@ -21,7 +21,7 @@
                 <td>@product.Name</td>
                 <td>@product.Price.ToString("C")</td>
                 <td>
-                    <a asp-page="Edit" asp-route-id="@product.Id">Edit</a> |
+                    <a asp-page="Edit" asp-route-id="@product.Id">Edit</a> <span>|</span>
                     <a href="#" onclick="deleteProduct('@product.Id', antiForgeryToken())">Delete</a>
                 </td>
             </tr>

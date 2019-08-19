@@ -3,9 +3,11 @@ using ContosoPets.Ui.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Threading.Tasks;
+//using Microsoft.AspNetCore.Authorization;
 
 namespace ContosoPets.Ui.Pages.Products
 {
+    // Add [Authorize(Policy = "Admin")] attribute
     public class CreateModel : PageModel
     {
         private readonly ProductService _productService;
