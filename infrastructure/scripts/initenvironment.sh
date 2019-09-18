@@ -259,7 +259,7 @@ declare themeScript=$scriptPath/theme.sh
 
 # Execute functions
 checkForCloudShell
-if ! [ $suppressAzureResources ]; then
+if ! [ "$suppressAzureResources" ]; then
     determineResourceGroup
 fi
 configureDotNetCli
