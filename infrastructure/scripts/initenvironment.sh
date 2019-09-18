@@ -259,7 +259,9 @@ declare themeScript=$scriptPath/theme.sh
 
 # Execute functions
 checkForCloudShell
-determineResourceGroup
+if ! [ $suppressAzureResources ]; then
+    determineResourceGroup
+fi
 configureDotNetCli
 displayGreeting
 
