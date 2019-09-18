@@ -5,7 +5,7 @@
 # going on within this script. We've provided what we hope are useful
 # comments inline, as well as color-coded relevant shell output.
 # We hope it's useful for you, but if you have any questions or suggestions
-# please open an issue on https:/github.com/MicrosoftDocs/learn-aspnet-core.
+# please open an issue on https:/github.com/MicrosoftDocs/mslearn-aspnet-core.
 #
 
 ## Start
