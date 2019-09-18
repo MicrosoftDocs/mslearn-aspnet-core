@@ -18,7 +18,7 @@ declare -x dotnetSdkVersion="2.2.401"
 # Any other declarations we need
 declare -x gitBranch="web-api-setup"
 declare initScript=https://raw.githubusercontent.com/MicrosoftDocs/mslearn-aspnet-core/$gitBranch/infrastructure/scripts/initenvironment.sh
-declare dotnetBotGreeting="I'm going to configure the .NET Core SDK for you!"
+declare dotnetBotGreeting="I have configured .NET Core SDK $dotnetSdkVersion. Have fun!"
 
 # Grab and run initenvironment.sh
 . <(wget -q -O - $initScript)

@@ -194,7 +194,7 @@ displayGreeting() {
 
     # Greetings!
     if [ "$dotnetBotGreeting" ]; then
-        greeting=$dotnetBotGreeting
+        greeting="${newline}${defaultTextStyle}$dotnetBotGreeting${dotnetSayStyle}"
     else
         greeting="${newline}${defaultTextStyle}Hi there!${newline}"
         greeting+="I'm going to provision some ${azCliCommandStyle}Azure${defaultTextStyle} resources${newline}"
