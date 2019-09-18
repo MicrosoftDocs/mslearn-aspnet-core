@@ -193,10 +193,14 @@ displayGreeting() {
     dotnet tool install dotnetsay --global --verbosity quiet
 
     # Greetings!
-    greeting="${newline}${defaultTextStyle}Hi there!${newline}"
-    greeting+="I'm going to provision some ${azCliCommandStyle}Azure${defaultTextStyle} resources${newline}"
-    greeting+="and get the code you'll need for this module.${dotnetSayStyle}"
-
+    if [ "$dotnetBotGreeting" ]; then
+        greeting = $dotnetBotGreeting
+    else
+        greeting="${newline}${defaultTextStyle}Hi there!${newline}"
+        greeting+="I'm going to provision some ${azCliCommandStyle}Azure${defaultTextStyle} resources${newline}"
+        greeting+="and get the code you'll need for this module.${dotnetSayStyle}"
+    fi
+    
     dotnetsay "$greeting"
 }
 summarize() {
