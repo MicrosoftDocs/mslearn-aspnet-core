@@ -22,15 +22,3 @@ declare dotnetBotGreeting="I'm going to configure the .NET Core SDK for you!"
 
 # Grab and run initenvironment.sh
 . <(wget -q -O - $initScript)
-
-# Clean up
-addVariablesToStartup
-
-# Switch to working directory and launch Cloud Shell Editor
-# Open the parent directory in the file explorer
-
-# We're done! Summarize.
-summarize
-
-# Run the variables script to make sure everything is as expected
-. ~/$variableScript
