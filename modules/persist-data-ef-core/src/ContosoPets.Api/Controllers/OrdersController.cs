@@ -19,7 +19,7 @@ namespace ContosoPets.Api.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<CustomerOrder>>> Get() => 
+        public async Task<ActionResult<List<CustomerOrder>>> Get() =>
             await _orderService.GetAll();
 
         [HttpGet("{id}")]
