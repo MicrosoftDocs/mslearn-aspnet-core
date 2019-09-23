@@ -14,8 +14,7 @@ namespace ContosoPets.Api
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
-                    webBuilder.UseStartup<Startup>()
-                    .UseApplicationInsights();
+                    webBuilder.UseStartup<Startup>();
                 });
     }
 }
