@@ -9,7 +9,6 @@ declare provisioningPath=$scriptPath/provisioning
 declare toolsPath=$scriptPath/tools
 declare dotnetScriptsPath=$scriptPath/dotnet
 declare binariesPath=https://raw.githubusercontent.com/MicrosoftDocs/mslearn-aspnet-core/$gitBranch/infrastructure/binaries
-declare defaultLocation=southcentralus
 declare instanceId=$(($RANDOM * $RANDOM))
 declare gitDirectoriesToClone="modules/$moduleName/setup/ modules/$moduleName/src/"
 declare gitPathToCloneScript=https://raw.githubusercontent.com/MicrosoftDocs/mslearn-aspnet-core/$gitBranch/infrastructure/scripts/sparsecheckout.sh
@@ -17,6 +16,7 @@ declare srcWorkingDirectory=~/contoso-pets/src
 declare setupWorkingDirectory=~/contoso-pets/setup
 declare subscriptionId=$(az account show --query id --output tsv)
 declare resourceGroupName=""
+declare defaultLocation=""
 
 # AppService Declarations
 declare appServicePlan=appservice$instanceId
@@ -228,6 +228,9 @@ determineResourceGroup() {
 
     echo "Using Azure resource group ${azCliCommandStyle}$resourceGroupName${defaultTextStyle}."
 }
+determineResourceLocation() {
+    defaultLocation=$(az group show --name $resourceGroupName | jq '.location' --raw-output)
+}
 checkForCloudShell() {
     # Check to make sure we're in Azure Cloud Shell
     if [ "${AZURE_HTTP_USER_AGENT:0:11}" != "cloud-shell" ]
@@ -261,6 +264,7 @@ declare themeScript=$scriptPath/theme.sh
 checkForCloudShell
 if ! [ "$suppressAzureResources" ]; then
     determineResourceGroup
+    determineResourceLocation
 fi
 configureDotNetCli
 displayGreeting
