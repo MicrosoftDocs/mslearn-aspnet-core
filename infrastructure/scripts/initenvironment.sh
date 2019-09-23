@@ -229,7 +229,7 @@ determineResourceGroup() {
     echo "Using Azure resource group ${azCliCommandStyle}$resourceGroupName${defaultTextStyle}."
 }
 determineResourceLocation() {
-    defaultLocation=$(az group show --name $resourceGroupName | jq '.[].location' --raw-output)
+    defaultLocation=$(az group show --name $resourceGroupName | jq '.location' --raw-output)
 }
 checkForCloudShell() {
     # Check to make sure we're in Azure Cloud Shell
