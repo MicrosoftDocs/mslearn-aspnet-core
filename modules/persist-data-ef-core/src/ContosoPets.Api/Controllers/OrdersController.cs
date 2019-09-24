@@ -7,7 +7,7 @@ using ContosoPets.DataAccess.Services;
 
 namespace ContosoPets.Api.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     [ApiController]
     public class OrdersController : ControllerBase
     {
