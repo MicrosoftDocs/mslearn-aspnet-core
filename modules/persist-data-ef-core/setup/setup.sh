@@ -14,7 +14,7 @@
 declare moduleName="persist-data-ef-core"
 
 # dotnet SDK version
-declare -x dotnetSdkVersion="2.2.401"
+declare -x dotnetSdkVersion="3.0.100"
 
 # Any other declarations we need
 declare -x gitBranch="live"
@@ -86,6 +86,8 @@ createAliases(){
 # Download and build
 downloadAndBuild
 
+
+
 # Provision stuff here
 setAzureCliDefaults
 provisionResourceGroup
@@ -101,9 +103,11 @@ writeVariablesScript
 addVariablesToStartup
 cleanupTempFiles
 
-# Switch to working directory and launch Cloud Shell Editor
-# Open the parent directory in the file explorer
+# Switch to working directory 
 cd $srcWorkingDirectory/$projectRootDirectory
+# Restore EF Scaffolding tool
+dotnet tool restore
+# Launch Cloud Shell Editor on parent directory
 code .. 
 
 # We're done! Summarize.

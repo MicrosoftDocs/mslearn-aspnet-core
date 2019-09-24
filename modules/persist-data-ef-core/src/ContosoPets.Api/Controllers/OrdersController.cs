@@ -7,7 +7,7 @@ using ContosoPets.DataAccess.Services;
 
 namespace ContosoPets.Api.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     [ApiController]
     public class OrdersController : ControllerBase
     {
@@ -19,7 +19,7 @@ namespace ContosoPets.Api.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<CustomerOrder>>> Get() => 
+        public async Task<ActionResult<List<CustomerOrder>>> Get() =>
             await _orderService.GetAll();
 
         [HttpGet("{id}")]
