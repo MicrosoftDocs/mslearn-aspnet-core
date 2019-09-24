@@ -17,7 +17,7 @@ declare moduleName="persist-data-ef-core"
 declare -x dotnetSdkVersion="3.0.100"
 
 # Any other declarations we need
-declare -x gitBranch="ef-core-3.0"
+declare -x gitBranch="live"
 declare initScript=https://raw.githubusercontent.com/MicrosoftDocs/mslearn-aspnet-core/$gitBranch/infrastructure/scripts/initenvironment.sh
 declare -x projectRootDirectory="ContosoPets.Api"
 
