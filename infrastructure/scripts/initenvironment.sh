@@ -190,7 +190,7 @@ displayGreeting() {
     echo "${defaultTextStyle}Using .NET Core SDK version ${headingStyle}$dotnetSdkVersion${defaultTextStyle}"
 
     # Install .NET Core global tool to display connection info
-    dotnet tool install dotnetsay --global --verbosity quiet
+    dotnet tool install dotnetsay --global --version 2.1.4 --verbosity quiet
 
     # Greetings!
     if [ "$dotnetBotGreeting" ]; then
