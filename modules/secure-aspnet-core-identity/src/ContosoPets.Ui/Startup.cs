@@ -50,6 +50,7 @@ namespace ContosoPets.Ui
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapControllers();
                 endpoints.MapRazorPages();
             });
         }
