@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -18,7 +18,6 @@ namespace ContosoPets.Api
             var host = CreateHostBuilder(args).Build();
             SeedDatabase(host);
             host.Run();
-
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
@@ -32,21 +31,19 @@ namespace ContosoPets.Api
         {
             var scopeFactory = host.Services.GetRequiredService<IServiceScopeFactory>();
 
-            using (var scope = scopeFactory.CreateScope())
-            {
-                var context = scope.ServiceProvider.GetRequiredService<ContosoPetsContext>();
+            using var scope = scopeFactory.CreateScope();
+            var context = scope.ServiceProvider.GetRequiredService<ContosoPetsContext>();
 
-                if (context.Database.EnsureCreated())
+            if (context.Database.EnsureCreated())
+            {
+                try
                 {
-                    try
-                    {
-                        SeedData.Initialize(context);
-                    }
-                    catch (Exception ex)
-                    {
-                        var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
-                        logger.LogError(ex, "A database seeding error occurred.");
-                    }
+                    SeedData.Initialize(context);
+                }
+                catch (Exception ex)
+                {
+                    var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
+                    logger.LogError(ex, "A database seeding error occurred.");
                 }
             }
         }

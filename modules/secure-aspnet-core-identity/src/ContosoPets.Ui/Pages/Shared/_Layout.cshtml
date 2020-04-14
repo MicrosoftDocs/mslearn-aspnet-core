@@ -38,13 +38,12 @@
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2019 - Contoso Pets - <a asp-area="" asp-page="/Privacy">Privacy</a>
+            &copy; @DateTime.UtcNow.Year - Contoso Pets - <a asp-area="" asp-page="/Privacy">Privacy</a>
         </div>
     </footer>
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
 
     @RenderSection("Scripts", required: false)
 </body>
