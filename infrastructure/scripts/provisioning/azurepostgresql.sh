@@ -7,6 +7,7 @@
         --admin-password $postgreSqlPassword \
         --sku-name $postgreSqlSku \
         --ssl-enforcement disabled \
+        --version 11 \
         --output none
 )
 (
