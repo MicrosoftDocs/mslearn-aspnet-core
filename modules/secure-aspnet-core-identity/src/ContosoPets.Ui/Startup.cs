@@ -49,6 +49,8 @@ namespace ContosoPets.Ui
             services.AddSingleton(new QRCodeService(new QRCodeGenerator()));
             services.AddSingleton<AdminRegistrationTokenService>();
 
+            // Add call to AddAuthorization
+
             services.AddAntiforgery(options => options.HeaderName = "X-CSRF-TOKEN");
             services.AddRazorPages();
             services.AddControllers();
