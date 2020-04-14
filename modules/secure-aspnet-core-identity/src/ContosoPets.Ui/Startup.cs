@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using QRCoder;
 
 namespace ContosoPets.Ui
 {
@@ -44,6 +45,9 @@ namespace ContosoPets.Ui
                     $"{cpServicesConfig["BaseAddress"]}{cpServicesConfig["Routes:Products"]}");
                 config.DefaultRequestHeaders.Add("Accept", "application/json");
             });
+
+            services.AddSingleton(new QRCodeService(new QRCodeGenerator()));
+            services.AddSingleton<AdminRegistrationTokenService>();
 
             services.AddAntiforgery(options => options.HeaderName = "X-CSRF-TOKEN");
             services.AddRazorPages();
