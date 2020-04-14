@@ -8,7 +8,7 @@ using ContosoPets.Api.Models;
 
 namespace ContosoPets.Api.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     [ApiController]
     public class ProductsController : ControllerBase
     {
@@ -37,7 +37,7 @@ namespace ContosoPets.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Product>> Create(Product product)
+        public async Task<IActionResult> Create(Product product)
         {
             _context.Products.Add(product);
             await _context.SaveChangesAsync();
