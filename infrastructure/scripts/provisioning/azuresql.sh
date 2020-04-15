@@ -5,6 +5,7 @@
         --name $sqlServerName \
         --admin-user $sqlUsername \
         --admin-password $sqlPassword \
+        --location "west us" \
         --output none
 )
 (

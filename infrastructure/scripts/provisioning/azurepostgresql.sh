@@ -8,6 +8,7 @@
         --sku-name $postgreSqlSku \
         --ssl-enforcement disabled \
         --version 11 \
+        --location "west us" \
         --output none
 )
 (
