@@ -31,7 +31,6 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API
         {
             Configuration = configuration;
             Environment = environment;
-
         }
 
         public IConfiguration Configuration { get; }

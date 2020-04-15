@@ -27,7 +27,7 @@ COPY ["src/Services/Payment/Payment.API/Payment.API.csproj", "src/Services/Payme
 COPY ["src/Web/WebSPA/WebSPA.csproj", "src/Web/WebSPA/"]
 COPY ["src/Web/WebStatus/WebStatus.csproj", "src/Web/WebStatus/"]
 COPY ["NuGet.config", "./"]
-COPY ["docker-compose.dcproj", "./"]
+
 COPY ["eShop-Learn.sln", "./"]
 RUN dotnet restore "eShop-Learn.sln"
 
