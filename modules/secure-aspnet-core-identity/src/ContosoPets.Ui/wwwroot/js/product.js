@@ -6,7 +6,7 @@
                 'X-CSRF-TOKEN': xCsrfToken
             }
         })
-        .then(function (response) {
+        .then(response => {
             if (response.status === 204) {
                 location.reload();
             }
@@ -14,7 +14,7 @@
                 throw `Unable to delete product. HTTP status code: ${response.status}`;
             }
         })
-        .catch((error) => {
+        .catch(error => {
             document.getElementById('spanError').innerText = error;
             console.log(`Product ID ${productId}. ${error}`);
         });

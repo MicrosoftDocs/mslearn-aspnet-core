@@ -8,7 +8,7 @@ namespace ContosoPets.Ui.Controllers
     /// allows anonymous access, and this mechanism SHOULD NOT be used for production code 
     /// without securing this endpoint!!! 
     /// </summary>
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     [ApiController]
     public class AdminTokenController : ControllerBase
     {
