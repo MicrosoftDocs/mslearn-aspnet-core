@@ -1,16 +1,14 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using System.Net.Mime;
 using ContosoPets.Ui.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Net.Http.Headers;
 using QRCoder;
+using Http = Microsoft.AspNetCore.Http;
 
 namespace ContosoPets.Ui
 {
@@ -28,21 +26,15 @@ namespace ContosoPets.Ui
             services.Configure<CookiePolicyOptions>(options =>
             {
                 options.CheckConsentNeeded = context => true;
-                options.MinimumSameSitePolicy = SameSiteMode.None;
+                options.MinimumSameSitePolicy = Http.SameSiteMode.None;
             });
 
             IConfigurationSection cpServicesConfig = Configuration.GetSection("ContosoPetsServices");
 
-            services.AddHttpClient<OrderService>(config => {
-               config.BaseAddress = new Uri(
-                   $"{cpServicesConfig["BaseAddress"]}{cpServicesConfig["Routes:Orders"]}");
-               config.DefaultRequestHeaders.Add("Accept", "application/json");
-            });
-
             services.AddHttpClient<ProductService>(config => {
                 config.BaseAddress = new Uri(
                     $"{cpServicesConfig["BaseAddress"]}{cpServicesConfig["Routes:Products"]}");
-                config.DefaultRequestHeaders.Add("Accept", "application/json");
+                config.DefaultRequestHeaders.Add(HeaderNames.Accept, MediaTypeNames.Application.Json);
             });
 
             services.AddSingleton(new QRCodeService(new QRCodeGenerator()));
