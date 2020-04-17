@@ -37,7 +37,6 @@ if [ -d "$DIR" ]; then
     # so let's move the src and setup directories up a level
     pushd ${CHECKOUT_DIRS[0]}
     cd ../..
-    echo "currently in $PWD"
     DELETE_DIR=$PWD 
     popd
     for i in ${CHECKOUT_DIRS[@]}; do

@@ -125,7 +125,7 @@ configureDotNetCli() {
 }
 downloadAndBuild() {
     # Set location
-    cd ~
+    cd $rootLocation
 
     # Set global Git config variables
     git config --global user.name "Microsoft Learn Student"
