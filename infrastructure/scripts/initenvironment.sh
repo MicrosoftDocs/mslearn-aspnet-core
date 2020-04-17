@@ -3,6 +3,8 @@
 # scriptPath
 # projectRootDirectory
 
+
+
 # Common Declarations
 declare scriptPath=https://raw.githubusercontent.com/MicrosoftDocs/mslearn-aspnet-core/$gitBranch/infrastructure/scripts
 declare provisioningPath=$scriptPath/provisioning
@@ -12,8 +14,12 @@ declare binariesPath=https://raw.githubusercontent.com/MicrosoftDocs/mslearn-asp
 declare instanceId=$(($RANDOM * $RANDOM))
 declare gitDirectoriesToClone="modules/$moduleName/setup/ modules/$moduleName/src/"
 declare gitPathToCloneScript=https://raw.githubusercontent.com/MicrosoftDocs/mslearn-aspnet-core/$gitBranch/infrastructure/scripts/sparsecheckout.sh
-declare srcWorkingDirectory=~/contoso-pets/src
-declare setupWorkingDirectory=~/contoso-pets/setup
+if ! [ $rootLocation ]
+then
+    declare rootLocation=~
+fi
+declare srcWorkingDirectory=$rootLocation/aspnet-learn/src
+declare setupWorkingDirectory=$rootLocation/aspnet-learn/setup
 declare subscriptionId=$(az account show --query id --output tsv)
 declare resourceGroupName=""
 declare defaultLocation="centralus"

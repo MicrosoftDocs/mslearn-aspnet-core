@@ -7,7 +7,7 @@
 # and contain the branch to be used, e.g., "live" or "master".
 
 # constants
-DIR="contoso-pets"
+DIR="aspnet-learn"
 REPOS="https://github.com/MicrosoftDocs/mslearn-aspnet-core"
 BRANCH=$gitBranch
 
@@ -32,7 +32,7 @@ if [ -d "$DIR" ]; then
     git checkout $BRANCH --quiet
     git merge --ff-only origin/$BRANCH --quiet
 
-    # Current structure is ~/contoso-pets/modules/persist-data-ef-core/src (for example).
+    # Current structure is ~/aspnet-learn/modules/persist-data-ef-core/src (for example).
     # This is a longer path than we'd like for the best experience,
     # so let's move the src and setup directories up a level
     pushd ${CHECKOUT_DIRS[0]}

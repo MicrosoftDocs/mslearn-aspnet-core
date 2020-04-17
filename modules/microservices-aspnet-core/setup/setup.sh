@@ -21,6 +21,7 @@ declare initScript=https://raw.githubusercontent.com/MicrosoftDocs/mslearn-aspne
 declare dotnetBotGreeting="I have downloaded stuff. Have fun!"
 declare suppressAzureResources=true
 declare suppressConfigureDotNet=true
+declare rootLocation=~/clouddrive
 
 # Grab and run initenvironment.sh
 . <(wget -q -O - $initScript)
