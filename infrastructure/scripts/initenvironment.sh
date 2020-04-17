@@ -85,15 +85,7 @@ configureDotNetCli() {
         wget -q -O - https://dot.net/v1/dotnet-install.sh | bash /dev/stdin --version $dotnetSdkVersion
     fi
 
-    # Add a note to .bashrc in case someone is running this in their own Cloud Shell
-    echo "# The following was added by Microsoft Learn $moduleName" >> ~/.bashrc
-
-    # Add .NET Core SDK and .NET Core Global Tools default installation directory to PATH
-    if ! [ $(echo $PATH | grep .dotnet) ]; then 
-        export PATH=~/.dotnet:~/.dotnet/tools:$PATH; 
-        echo "# Add custom .NET Core SDK to PATH" >> ~/.bashrc
-        echo "export PATH=~/.dotnet:~/.dotnet/tools:\$PATH;" >> ~/.bashrc
-    fi
+    setPathEnvironmentVariableForDotNet
 
     # By default, the .NET Core CLI prints Welcome and Telemetry messages on
     # the first run. Suppress those messages by creating an appropriately
@@ -122,6 +114,17 @@ configureDotNetCli() {
     
     # Generate developer certificate so ASP.NET Core projects run without complaint
     dotnet dev-certs https --quiet
+}
+setPathEnvironmentVariableForDotNet() {
+    # Add a note to .bashrc in case someone is running this in their own Cloud Shell
+    echo "# The following was added by Microsoft Learn $moduleName" >> ~/.bashrc
+
+    # Add .NET Core SDK and .NET Core Global Tools default installation directory to PATH
+    if ! [ $(echo $PATH | grep .dotnet) ]; then 
+        export PATH=~/.dotnet:~/.dotnet/tools:$PATH; 
+        echo "# Add custom .NET Core SDK to PATH" >> ~/.bashrc
+        echo "export PATH=~/.dotnet:~/.dotnet/tools:\$PATH;" >> ~/.bashrc
+    fi
 }
 downloadAndBuild() {
     # Set location
@@ -270,6 +273,8 @@ if ! [ "$suppressAzureResources" ]; then
 fi
 if ! [ "$suppressConfigureDotNet" ]; then
     configureDotNetCli
+else
+    setPathEnvironmentVariableForDotNet
 fi
 displayGreeting
 
