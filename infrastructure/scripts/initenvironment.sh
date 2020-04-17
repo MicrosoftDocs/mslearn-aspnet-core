@@ -262,7 +262,9 @@ checkForCloudShell
 if ! [ "$suppressAzureResources" ]; then
     determineResourceGroup
 fi
-configureDotNetCli
+if ! [ "$suppressConfigureDotNet" ]; then
+    configureDotNetCli
+fi
 displayGreeting
 
 # Additional setup in setup.sh occurs next.

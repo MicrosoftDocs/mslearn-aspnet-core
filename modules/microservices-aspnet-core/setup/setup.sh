@@ -18,8 +18,12 @@ declare -x dotnetSdkVersion="3.1.200"
 # Any other declarations we need
 declare -x gitBranch="microservices"
 declare initScript=https://raw.githubusercontent.com/MicrosoftDocs/mslearn-aspnet-core/$gitBranch/infrastructure/scripts/initenvironment.sh
-declare dotnetBotGreeting="I have configured .NET Core SDK $dotnetSdkVersion. Have fun!"
+declare dotnetBotGreeting="I have downloaded stuff. Have fun!"
 declare suppressAzureResources=true
+declare suppressConfigureDotNet=true
 
 # Grab and run initenvironment.sh
 . <(wget -q -O - $initScript)
+
+# Download and build
+downloadAndBuild
