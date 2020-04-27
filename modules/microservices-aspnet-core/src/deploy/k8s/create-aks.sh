@@ -85,7 +85,7 @@ fi
 
 if [ -z "$eshopClientId" ] || [ -z "$eshopClientSecret" ]
 then
-    spHomepage="https://eShop-Learn-AKS-SP"
+    spHomepage="https://eShop-Learn-AKS-SP"$RANDOM
     eshopClientApp=`az ad sp create-for-rbac --name "$spHomepage" --query "[appId,password]" -otsv`
 
     if [ ! $? -eq 0 ]
