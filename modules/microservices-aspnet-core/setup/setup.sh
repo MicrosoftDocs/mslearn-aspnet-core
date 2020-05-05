@@ -18,7 +18,7 @@ declare -x dotnetSdkVersion="3.1.200"
 # Any other declarations we need
 declare -x gitBranch="microservices-aspnet-core"
 declare initScript=https://raw.githubusercontent.com/MicrosoftDocs/mslearn-aspnet-core/$gitBranch/infrastructure/scripts/initenvironment.sh
-declare dotnetBotGreeting="I have downloaded stuff. Have fun!"
+declare dotnetBotGreeting="I'm going to download and deploy your microservices app!"
 declare suppressAzureResources=true
 declare suppressConfigureDotNet=true
 declare rootLocation=~/clouddrive
