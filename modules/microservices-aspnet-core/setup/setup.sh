@@ -35,3 +35,5 @@ mkdir source
 # Move source files from cloned location to working location due to vendor script assumptions
 mv $srcWorkingDirectory ./source/eShop-Learn
 cd ./source/eShop-Learn
+code .
+~/clouddrive/source/eShop-Learn/deploy/k8s/quickstart.sh --resource-group eshop-learn-rg --location westus
