@@ -3,6 +3,7 @@
     set -x
     az keyvault create \
         --name $keyVaultName \
+        --enable-soft-delete \
         --output none
 )
 (
