@@ -20,7 +20,7 @@ declare moduleName="secure-aspnet-core-identity"
 declare -x dotnetSdkVersion="3.1.201"
 
 # Any other declarations we need
-declare -x gitBranch="live"
+declare -x gitBranch="issue-38"
 declare initScript=https://raw.githubusercontent.com/MicrosoftDocs/mslearn-aspnet-core/$gitBranch/infrastructure/scripts/initenvironment.sh
 declare -x projectRootDirectory="ContosoPets.Ui"
 
