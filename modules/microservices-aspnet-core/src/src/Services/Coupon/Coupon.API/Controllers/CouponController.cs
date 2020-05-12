@@ -22,22 +22,6 @@
             _mapper = mapper;
         }
 
-        [HttpGet("{code}")]
-        [ProducesResponseType((int)HttpStatusCode.NotFound)]
-        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        [ProducesResponseType(typeof(CouponDto), (int)HttpStatusCode.OK)]
-        public async Task<ActionResult<CouponDto>> GetCouponByCodeAsync(string code)
-        {
-            var coupon = await _couponRepository.FindCouponByCodeAsync(code);
-
-            if (coupon is null || coupon.Consumed)
-            {
-                return NotFound();
-            }
-
-            var couponDto = _mapper.Translate(coupon);
-
-            return Ok(couponDto);
-        }
+        /* Add the GetCouponByCodeAsync method */
     }
 }

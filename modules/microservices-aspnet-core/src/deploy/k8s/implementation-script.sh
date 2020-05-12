@@ -1,3 +1,5 @@
+pushd ~/clouddrive/source/eShop-Learn/deploy/k8s
+
 ## Add the discount coupon field in the checkout view.
 sed -i -E "/DISCOUNT-COUPON-COMMENT/s/<!--DISCOUNT-COUPON-COMMENT\*\*(.*)-->/\1/" ../../src/Web/WebSPA/Client/src/modules/orders/orders-new/orders-new.component.html
 
@@ -147,3 +149,5 @@ sed -i -E "/DISCOUNT-COUPON-COMMENT/s/#DISCOUNT-COUPON-COMMENT\*\*//" helm-simpl
 
 ## Add the coupon service as a health check item in the webstatus application
 sed -i -E "/DISCOUNT-COUPON-COMMENT/s/#DISCOUNT-COUPON-COMMENT\*\*//" helm-simple/webstatus/templates/configmap.yaml
+
+popd

@@ -19,8 +19,6 @@ export REGISTRY=$registry
 export TAG=$tag
 export PLATFORM=$platform
 
-pushd ../..
-
 echo
 echo "Building and publishing docker images to $REGISTRY"
 
@@ -32,5 +30,3 @@ az acr build -r $ESHOP_ACRNAME -t $ESHOP_REGISTRY/coupon.api:linux-latest -f src
 echo
 echo "Building image \"webspa\"..."
 az acr build -r $ESHOP_ACRNAME -t $ESHOP_REGISTRY/webspa:linux-latest -f src/Web/WebSPA/Dockerfile.acr .
-
-popd

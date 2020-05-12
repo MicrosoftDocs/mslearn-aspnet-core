@@ -37,3 +37,5 @@ mv $srcWorkingDirectory ./source/eShop-Learn
 cd ./source/eShop-Learn
 code .
 ~/clouddrive/source/eShop-Learn/deploy/k8s/quickstart.sh --resource-group eshop-learn-rg --location westus
+~/clouddrive/source/eShop-Learn/deploy/k8s/create-acr.sh
+cat deployment-urls.txt
