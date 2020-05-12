@@ -55,15 +55,7 @@ echo
 echo "Pod status"
 kubectl get pods
 
-echo
-echo "The eShop-Learn application has been deployed."
-echo
-echo "You can begin exploring these services (when available):"
-echo "- Centralized logging       : http://$lbIp/seq/#/events?autorefresh (See transient failures during startup)"
-echo "- General application status: http://$lbIp/webstatus/ (See overall service status)"
-echo "- Web SPA application       : http://$lbIp/"
-echo
-
+pushd ~/clouddrive/source
 echo "The eShop-Learn application has been deployed." > deployment-urls.txt
 echo "" >> deployment-urls.txt
 echo "You can begin exploring these services (when available):" >> deployment-urls.txt
@@ -71,3 +63,4 @@ echo "- Centralized logging       : http://$lbIp/seq/#/events?autorefresh (See t
 echo "- General application status: http://$lbIp/webstatus/ (See overall service status)" >> deployment-urls.txt
 echo "- Web SPA application       : http://$lbIp/" >> deployment-urls.txt
 echo "" >> deployment-urls.txt
+popd

@@ -186,7 +186,7 @@
             return services;
         }
 
-        public static IServiceCollection AddCustomePolicies(this IServiceCollection services)
+        public static IServiceCollection AddCustomPolicies(this IServiceCollection services)
         {
             services.AddCors(options =>
             {
@@ -200,7 +200,7 @@
             return services;
         }
 
-        public static IServiceCollection AddAppInsight(this IServiceCollection services, IConfiguration configuration)
+        public static IServiceCollection AddAppInsights(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddApplicationInsightsTelemetry(configuration);
             services.AddApplicationInsightsKubernetesEnricher();

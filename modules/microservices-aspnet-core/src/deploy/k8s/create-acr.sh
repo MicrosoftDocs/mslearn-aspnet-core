@@ -1,8 +1,8 @@
 #!/bin/bash
 
-if [ -f ../../../create-aks-exports.txt ]
+if [ -f ~/clouddrive/source/create-aks-exports.txt ]
 then
-  eval $(cat ../../../create-aks-exports.txt)
+  eval $(cat ~/clouddrive/source/create-aks-exports.txt)
 fi
 
 eshopSubs=${ESHOP_SUBS}
