@@ -6,6 +6,7 @@
     using Coupon.API.Infrastructure.Models;
     using Coupon.API.Infrastructure.Repositories;
     using Microsoft.AspNetCore.Authorization;
+    using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
 
     [Authorize]
