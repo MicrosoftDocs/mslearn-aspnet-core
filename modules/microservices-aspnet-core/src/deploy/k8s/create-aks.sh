@@ -146,7 +146,7 @@ fi
 
 echo
 echo "Getting credentials for AKS..."
-az aks get-credentials -n $eshopAksName -g $eshopRg
+az aks get-credentials -n $eshopAksName -g $eshopRg --overwrite-existing
 
 # Ingress controller and load balancer (LB) deployment
 
