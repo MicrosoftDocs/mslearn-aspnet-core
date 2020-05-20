@@ -1,4 +1,4 @@
-pushd ~/clouddrive/source/eShop-Learn/deploy/k8s
+pushd ~/clouddrive/aspnet-learn/src/deploy/k8s
 
 ## Add the discount coupon field in the checkout view.
 sed -i -E "/DISCOUNT-COUPON-COMMENT/s/<!--DISCOUNT-COUPON-COMMENT\*\*(.*)-->/\1/" ../../src/Web/WebSPA/Client/src/modules/orders/orders-new/orders-new.component.html

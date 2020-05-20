@@ -1,8 +1,8 @@
 #!/bin/bash
 
-if [ -f ~/clouddrive/source/create-aks-exports.txt ]
+if [ -f ~/clouddrive/aspnet-learn/create-aks-exports.txt ]
 then
-  eval $(cat ~/clouddrive/source/create-aks-exports.txt)
+  eval $(cat ~/clouddrive/aspnet-learn/create-aks-exports.txt)
 fi
 
 eshopSubs=${ESHOP_SUBS}
@@ -146,7 +146,7 @@ echo "- To login Docker to ACR          : docker login $eshopRegistry -u $eshopA
 echo "- To build images and push to ACR : build-and-push.sh --acr $eshopRegistry" 
 echo 
 echo "Run the following command to update the environment"
-echo 'eval $(cat ~/clouddrive/source/create-acr-exports.txt)'
+echo 'eval $(cat ~/clouddrive/aspnet-learn/create-acr-exports.txt)'
 echo
 
-mv -f create-acr-exports.txt ~/clouddrive/source/
+mv -f create-acr-exports.txt ~/clouddrive/aspnet-learn/

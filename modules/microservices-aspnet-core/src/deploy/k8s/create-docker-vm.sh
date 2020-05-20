@@ -109,8 +109,8 @@ cat create-docker-vm-exports.txt
 
 echo
 echo "Run the following commands to update the environment"
-echo 'eval $(cat ~/clouddrive/source/create-docker-vm-exports.txt)'
+echo 'eval $(cat ~/clouddrive/aspnet-learn/create-docker-vm-exports.txt)'
 echo "source ~/.bashrc"
 echo
 
-mv -f create-docker-vm-exports.txt ~/clouddrive/source/
+mv -f create-docker-vm-exports.txt ~/clouddrive/aspnet-learn/

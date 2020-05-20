@@ -1,13 +1,13 @@
 #!/bin/bash
 
-if [ -f ~/clouddrive/source/create-aks-exports.txt ]
+if [ -f ~/clouddrive/aspnet-learn/create-aks-exports.txt ]
 then
-  eval $(cat ~/clouddrive/source/create-aks-exports.txt)
+  eval $(cat ~/clouddrive/aspnet-learn/create-aks-exports.txt)
 fi
 
-if [ -f ~/clouddrive/source/create-acr-exports.txt ]
+if [ -f ~/clouddrive/aspnet-learn/create-acr-exports.txt ]
 then
-  eval $(cat ~/clouddrive/source/create-acr-exports.txt)
+  eval $(cat ~/clouddrive/aspnet-learn/create-acr-exports.txt)
 fi
 
 if [ -z "$ESHOP_REGISTRY" ]

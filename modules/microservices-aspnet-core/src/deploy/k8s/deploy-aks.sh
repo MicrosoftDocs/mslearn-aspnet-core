@@ -55,7 +55,7 @@ echo
 echo "Pod status"
 kubectl get pods
 
-pushd ~/clouddrive/source
+pushd ~/clouddrive/aspnet-learn
 echo "The eShop-Learn application has been deployed." > deployment-urls.txt
 echo "" >> deployment-urls.txt
 echo "You can begin exploring these services (when available):" >> deployment-urls.txt

@@ -45,12 +45,12 @@ export ESHOP_LOCATION=$eshopLocation
 export ESHOP_REGISTRY=$eshopRegistry
 export ESHOP_QUICKSTART=true
 
-cd ~/clouddrive/source/eShop-Learn/deploy/k8s
+cd ~/clouddrive/aspnet-learn/src/deploy/k8s
 
 # AKS Cluster creation
 
 ./create-aks.sh
 
-eval $(cat ~/clouddrive/source/create-aks-exports.txt)
+eval $(cat ~/clouddrive/aspnet-learn/create-aks-exports.txt)
 
 ./deploy-aks.sh
