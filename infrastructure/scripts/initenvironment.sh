@@ -3,6 +3,8 @@
 # scriptPath
 # projectRootDirectory
 
+
+
 # Common Declarations
 declare scriptPath=https://raw.githubusercontent.com/MicrosoftDocs/mslearn-aspnet-core/$gitBranch/infrastructure/scripts
 declare provisioningPath=$scriptPath/provisioning
@@ -12,8 +14,12 @@ declare binariesPath=https://raw.githubusercontent.com/MicrosoftDocs/mslearn-asp
 declare instanceId=$(($RANDOM * $RANDOM))
 declare gitDirectoriesToClone="modules/$moduleName/setup/ modules/$moduleName/src/"
 declare gitPathToCloneScript=https://raw.githubusercontent.com/MicrosoftDocs/mslearn-aspnet-core/$gitBranch/infrastructure/scripts/sparsecheckout.sh
-declare srcWorkingDirectory=~/contoso-pets/src
-declare setupWorkingDirectory=~/contoso-pets/setup
+if ! [ $rootLocation ]
+then
+    declare rootLocation=~
+fi
+declare srcWorkingDirectory=$rootLocation/aspnet-learn/src
+declare setupWorkingDirectory=$rootLocation/aspnet-learn/setup
 declare subscriptionId=$(az account show --query id --output tsv)
 declare resourceGroupName=""
 declare defaultLocation="centralus"
@@ -79,15 +85,7 @@ configureDotNetCli() {
         wget -q -O - https://dot.net/v1/dotnet-install.sh | bash /dev/stdin --version $dotnetSdkVersion
     fi
 
-    # Add a note to .bashrc in case someone is running this in their own Cloud Shell
-    echo "# The following was added by Microsoft Learn $moduleName" >> ~/.bashrc
-
-    # Add .NET Core SDK and .NET Core Global Tools default installation directory to PATH
-    if ! [ $(echo $PATH | grep .dotnet) ]; then 
-        export PATH=~/.dotnet:~/.dotnet/tools:$PATH; 
-        echo "# Add custom .NET Core SDK to PATH" >> ~/.bashrc
-        echo "export PATH=~/.dotnet:~/.dotnet/tools:\$PATH;" >> ~/.bashrc
-    fi
+    setPathEnvironmentVariableForDotNet
 
     # By default, the .NET Core CLI prints Welcome and Telemetry messages on
     # the first run. Suppress those messages by creating an appropriately
@@ -117,9 +115,20 @@ configureDotNetCli() {
     # Generate developer certificate so ASP.NET Core projects run without complaint
     dotnet dev-certs https --quiet
 }
+setPathEnvironmentVariableForDotNet() {
+    # Add a note to .bashrc in case someone is running this in their own Cloud Shell
+    echo "# The following was added by Microsoft Learn $moduleName" >> ~/.bashrc
+
+    # Add .NET Core SDK and .NET Core Global Tools default installation directory to PATH
+    if ! [ $(echo $PATH | grep .dotnet) ]; then 
+        export PATH=~/.dotnet:~/.dotnet/tools:$PATH; 
+        echo "# Add custom .NET Core SDK to PATH" >> ~/.bashrc
+        echo "export PATH=~/.dotnet:~/.dotnet/tools:\$PATH;" >> ~/.bashrc
+    fi
+}
 downloadAndBuild() {
     # Set location
-    cd ~
+    cd $rootLocation
 
     # Set global Git config variables
     git config --global user.name "Microsoft Learn Student"
@@ -262,7 +271,11 @@ checkForCloudShell
 if ! [ "$suppressAzureResources" ]; then
     determineResourceGroup
 fi
-configureDotNetCli
+if ! [ "$suppressConfigureDotNet" ]; then
+    configureDotNetCli
+else
+    setPathEnvironmentVariableForDotNet
+fi
 displayGreeting
 
 # Additional setup in setup.sh occurs next.
