@@ -9,6 +9,7 @@
 #
 
 ## Start
+cd ~
 
 # Module name
 declare moduleName="microservices-aspnet-core"
