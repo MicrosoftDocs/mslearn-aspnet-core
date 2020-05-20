@@ -74,7 +74,8 @@ then
         echo "ERROR: If resource group has to be created, location is mandatory. Use -l to set it."
         exit 1
     fi
-    echo "Creating RG $eshopRg in location $eshopLocation..."
+    echo "Creating resource group $eshopRg in location $eshopLocation..."
+    echo "az group create -n $eshopRg -l $eshopLocation"
     az group create -n $eshopRg -l $eshopLocation
     if [ ! $? -eq 0 ]
     then
@@ -92,9 +93,14 @@ fi
 
 if [ -z "$eshopClientId" ] || [ -z "$eshopClientSecret" ]
 then
-    spHomepage="https://eShop-Learn-AKS-SP"$RANDOM
-    eshopClientApp=`az ad sp create-for-rbac --name "$spHomepage" --query "[appId,password]" -otsv`
+    echo "Creating service principal..."
 
+    spHomepage="https://eShop-Learn-AKS-SP"$RANDOM
+    eshopClientAppCommand="az ad sp create-for-rbac --name "$spHomepage" --query "[appId,password]" -otsv"
+
+    echo $eshopClientAppCommand
+    eshopClientApp=`$eshopClientAppCommand`
+    
     if [ ! $? -eq 0 ]
     then
         echo "ERROR: Can't create service principal for AKS"
@@ -167,7 +173,7 @@ echo
 echo "Getting load balancer public IP"
 
 k8sLbTag="ingress-nginx/ingress-nginx"
-aksNodeRGCommand=`az aks list --query "[?name=='$eshopAksName'&&resourceGroup=='$eshopRg'].nodeResourceGroup" -otsv`
+aksNodeRGCommand="az aks list --query \"[?name=='$eshopAksName'&&resourceGroup=='$eshopRg'].nodeResourceGroup\" -otsv"
 
 retry=5
 echo $aksNodeRGCommand
@@ -187,7 +193,7 @@ done
 
 while [ "$eshopLbIp" == "" ]
 do
-    eshopLbIpCommand=`az network public-ip list -g $aksNodeRG --query "[?tags.service=='$k8sLbTag'].ipAddress" -otsv`
+    eshopLbIpCommand="az network public-ip list -g $aksNodeRG --query \"[?tags.service=='$k8sLbTag'].ipAddress\" -otsv"
     echo $eshopLbIpCommand
     eshopLbIp=`$eshopLbIpCommand`
     echo "Waiting for the load balancer IP address (Ctrl+C to cancel)..."
