@@ -22,7 +22,8 @@ declare initScript=https://raw.githubusercontent.com/MicrosoftDocs/mslearn-aspne
 declare dotnetBotGreeting="I'm going to download and deploy your microservices app!"
 declare suppressAzureResources=true
 declare suppressConfigureDotNet=true
-declare editorHomeLocation="~/clouddrive/aspnet-learn"
+declare rootLocation="~/clouddrive"
+declare editorHomeLocation="$rootLocation/aspnet-learn"
 
 # Grab and run initenvironment.sh
 . <(wget -q -O - $initScript)
@@ -31,8 +32,8 @@ declare editorHomeLocation="~/clouddrive/aspnet-learn"
 downloadAndBuild
 
 # Set location to ~/clouddrive
-cd $srcWorkingDirectory/
+cd $editorHomeLocation
 code .
-$srcWorkingDirectory/deploy/k8s/quickstart.sh --resource-group eshop-learn-rg --location westus
-$srcWorkingDirectory/deploy/k8s/create-acr.sh
+$editorHomeLocation/src/deploy/k8s/quickstart.sh --resource-group eshop-learn-rg --location westus
+$editorHomeLocation/src/deploy/k8s/create-acr.sh
 cat ~/clouddrive/aspnet-learn/deployment-urls.txt
