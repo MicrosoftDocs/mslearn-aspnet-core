@@ -31,7 +31,7 @@ fi
 
 if [ -z "$lbIp" ]
 then
-    echo "ERROR: LB IP needed. Please use --ip parameter."
+    echo "ERROR: Load Balancer IP needed. Please use --ip parameter."
     exit 1
 fi
 

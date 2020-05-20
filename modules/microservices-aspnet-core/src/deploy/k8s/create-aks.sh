@@ -36,7 +36,7 @@ done
 
 if [ -z "$eshopRg" ]
 then
-    echo "ERROR: RG is mandatory. Use -g to set it"
+    echo "ERROR: resource group is mandatory. Use -g to set it"
     exit 1
 fi
 
@@ -48,7 +48,7 @@ fi
 
 if [ ! -z "$eshopSubs" ]
 then
-    echo "Switching to subs $eshopSubs..."
+    echo "Switching to subscription $eshopSubs..."
     az account set -s $eshopSubs
 fi
 
@@ -58,20 +58,27 @@ then
     exit 1
 fi
 
+# Swallow STDERR so we don't get red text here from expected error if the RG doesn't exist
+exec 3>&2
+exec 2> /dev/null
+
 rg=`az group show -g $eshopRg -o json`
+
+# Reset STDERR
+exec 2>&3
 
 if [ -z "$rg" ]
 then
     if [ -z "eshopSubs" ]
     then
-        echo "ERROR: If RG has to be created, location is mandatory. Use -l to set it."
+        echo "ERROR: If resource group has to be created, location is mandatory. Use -l to set it."
         exit 1
     fi
     echo "Creating RG $eshopRg in location $eshopLocation..."
     az group create -n $eshopRg -l $eshopLocation
     if [ ! $? -eq 0 ]
     then
-        echo "ERROR: Can't create Resource Group"
+        echo "ERROR: Can't create resource group"
         exit 1
     fi
 else
@@ -112,7 +119,7 @@ fi
 eshopAksName="eshop-learn-aks"
 
 echo
-echo "Creating AKS cluster \"$eshopAksName\" in RG \"$eshopRg\" and location \"$eshopLocation\"..."
+echo "Creating AKS cluster \"$eshopAksName\" in resource group \"$eshopRg\" and location \"$eshopLocation\"..."
 aksCreateCommand="az aks create -n $eshopAksName -g $eshopRg -c $eshopNodeCount --vm-set-type VirtualMachineScaleSets -l $eshopLocation --client-secret $eshopClientSecret --service-principal $eshopClientId --generate-ssh-keys -o json"
 
 retry=5
@@ -120,7 +127,7 @@ aks=`$aksCreateCommand`
 while [ ! $? -eq 0 ]&&[ $retry -gt 0 ]&&[ ! -z "$spHomepage" ]
 do
     echo
-    echo "Error creating AKS cluster. Retrying in 5s..."
+    echo "New service principal is not yet ready for AKS cluster creation. This is normal and expected. Retrying in 5s..."
     let retry--
     sleep 5
     echo
@@ -130,7 +137,7 @@ done
 
 if [ ! $? -eq 0 ]
 then
-    echo "ERROR creating AKS cluster!"
+    echo "Error creating AKS cluster!"
     exit 1
 fi
 
@@ -157,15 +164,33 @@ kubectl apply -f ingress-controller/nginx-service-loadbalancer.yaml
 kubectl apply -f ingress-controller/nginx-cm.yaml
 
 echo
-echo "Getting Load Balancer public IP"
+echo "Getting load balancer public IP"
 
 k8sLbTag="ingress-nginx/ingress-nginx"
-aksNodeRG=`az aks list --query "[?name=='$eshopAksName'&&resourceGroup=='$eshopRg'].nodeResourceGroup" -otsv`
+aksNodeRGCommand=`az aks list --query "[?name=='$eshopAksName'&&resourceGroup=='$eshopRg'].nodeResourceGroup" -otsv`
+
+retry=5
+echo $aksNodeRGCommand
+aksNodeRG=`$aksNodeRGCommand`
+while [ ! $? -eq 0 ]&&[ $retry -gt 0 ]&&[ ! -z "$spHomepage" ]
+do
+    echo
+    echo "Unable to obtain load balancer resource group. Retrying in 5s..."
+    let retry--
+    sleep 5
+    echo
+    echo "Retrying..."
+    echo $aksNodeRGCommand
+    aksNodeRG=`$aksNodeRGCommand`
+done
+
 
 while [ "$eshopLbIp" == "" ]
 do
-    eshopLbIp=`az network public-ip list -g $aksNodeRG --query "[?tags.service=='$k8sLbTag'].ipAddress" -otsv`
-    echo "Waiting for the Load Balancer IP address (Ctrl+C to cancel)..."
+    eshopLbIpCommand=`az network public-ip list -g $aksNodeRG --query "[?tags.service=='$k8sLbTag'].ipAddress" -otsv`
+    echo $eshopLbIpCommand
+    eshopLbIp=`$eshopLbIpCommand`
+    echo "Waiting for the load balancer IP address (Ctrl+C to cancel)..."
     sleep 5
 done
 
