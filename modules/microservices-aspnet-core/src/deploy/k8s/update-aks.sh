@@ -27,21 +27,24 @@ for chart in webspa webstatus webshoppingagg
 do
     echo
     echo "Uninstalling chart \"$chart\"..."
+    echo "helm uninstall eshop-$chart"
     helm uninstall eshop-$chart
 done
 
-# Install reconfigured charts
+# Install reconfigured charts from Docker Hub
 for chart in webstatus webshoppingagg
 do
     echo
     echo "Installing chart \"$chart\"..."
+    echo "helm install eshop-$chart --set registry=eshoplearn --set aksLB=$ESHOP_LBIP \"helm-simple/$chart\""
     helm install eshop-$chart --set registry=eshoplearn --set aksLB=$ESHOP_LBIP "helm-simple/$chart"
 done
 
-# Install charts for new and updated applications
+# Install charts for new and updated applications from ACR
 for chart in coupon webspa 
 do
     echo
     echo "Installing chart \"$chart\"..."
+    echo "helm install eshop-$chart --set registry=$ESHOP_REGISTRY --set aksLB=$ESHOP_LBIP \"helm-simple/$chart\""
     helm install eshop-$chart --set registry=$ESHOP_REGISTRY --set aksLB=$ESHOP_LBIP "helm-simple/$chart"
 done
