@@ -178,7 +178,7 @@ aksNodeRGCommand="az aks list --query \"[?name=='$eshopAksName'&&resourceGroup==
 retry=5
 echo $aksNodeRGCommand
 aksNodeRG=`$aksNodeRGCommand`
-while [ ! $? -eq 0 ]&&[ $retry -gt 0 ]&&[ ! -z "$spHomepage" ]
+while [ "$aksNodeRG" == "" ]
 do
     echo
     echo "Unable to obtain load balancer resource group. Retrying in 5s..."
