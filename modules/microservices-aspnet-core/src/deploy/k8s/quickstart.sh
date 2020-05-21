@@ -23,13 +23,13 @@ done
 
 if [ -z "$eshopRg" ]
 then
-    echo "ERROR: RG is mandatory. Use -g to set it"
+    echo "ERROR: Resource group is mandatory. Use -g to set it"
     exit 1
 fi
 
 if [ ! -z "$eshopSubs" ]
 then
-    echo "Switching to subs $eshopSubs..."
+    echo "Switching to subscription $eshopSubs..."
     az account set -s $eshopSubs
 fi
 

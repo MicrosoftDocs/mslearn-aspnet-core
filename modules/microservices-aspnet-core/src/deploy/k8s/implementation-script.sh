@@ -1,11 +1,14 @@
 pushd ~/clouddrive/aspnet-learn/src/deploy/k8s
 
 ## Add the discount coupon field in the checkout view.
+echo "Uncommenting HTML in src/Web/WebSPA/Client/src/modules/orders/orders-new/orders-new.component.html..."
 sed -i -E "/DISCOUNT-COUPON-COMMENT/s/<!--DISCOUNT-COUPON-COMMENT\*\*(.*)-->/\1/" ../../src/Web/WebSPA/Client/src/modules/orders/orders-new/orders-new.component.html
 
 ## Show the discount amount in the order details view.
+echo "Uncommenting HTML in src/Web/WebSPA/Client/src/modules/orders/orders-detail/orders-detail.component.html..."
 sed -i -E "/DISCOUNT-COUPON-COMMENT/s/<!--DISCOUNT-COUPON-COMMENT\*\*(.*)-->/\1/" ../../src/Web/WebSPA/Client/src/modules/orders/orders-detail/orders-detail.component.html
 
+echo "Creating a Helm chart for the coupon service in deploy/k8s/helm-simple/coupon..."
 ## Add the Helm chart to deploy the coupon service to AKS.
 mkdir helm-simple/coupon
 mkdir helm-simple/coupon/templates
@@ -144,10 +147,15 @@ spec:
             servicePort: 80
 EOL
 
+
 ## Add the coupon service endpoints in the aggregator
+echo "Adding coupon service endpoints to the API gateway in deploy/k8s/helm-simple/webshoppingagg/templates/configmap.yaml..."
 sed -i -E "/DISCOUNT-COUPON-COMMENT/s/#DISCOUNT-COUPON-COMMENT\*\*//" helm-simple/webshoppingagg/templates/configmap.yaml
 
 ## Add the coupon service as a health check item in the webstatus application
+echo "Adding coupon service as a WebStatus health check item in deploy/k8s/helm-simple/webstatus/templates/configmap.yaml..."
 sed -i -E "/DISCOUNT-COUPON-COMMENT/s/#DISCOUNT-COUPON-COMMENT\*\*//" helm-simple/webstatus/templates/configmap.yaml
 
 popd
+
+echo "Implementation script done!"

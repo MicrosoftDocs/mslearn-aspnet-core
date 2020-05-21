@@ -29,13 +29,13 @@ done
 
 if [ -z "$eshopRg" ]
 then
-    echo "ERROR: RG is mandatory. Use -g to set it"
+    echo "ERROR: Resource group is mandatory. Use -g to set it"
     exit 1
 fi
 
 if [ ! -z "$eshopSubs" ]
 then
-    echo "Switching to subs $eshopSubs..."
+    echo "Switching to subscription $eshopSubs..."
     az account set -s $eshopSubs
 fi
 
@@ -51,14 +51,14 @@ if [ -z "$rg" ]
 then
     if [ -z "$eshopLocation" ]
     then
-        echo "ERROR: If RG has to be created, location is mandatory. Use -l to set it."
+        echo "ERROR: If resource group has to be created, location is mandatory. Use -l to set it."
         exit 1
     fi
     echo "Creating RG $eshopRg in location $eshopLocation..."
     az group create -n $eshopRg -l $eshopLocation
     if [ ! $? -eq 0 ]
     then
-        echo "ERROR: Can't create Resource Group"
+        echo "ERROR: Can't create resource group"
         exit 1
     fi
 
@@ -87,7 +87,7 @@ then
     fi
 
     echo
-    echo "Creating ACR eshoplearn$eshopIdTag in RG $eshopRg"
+    echo "Creating Azure Container Registry eshoplearn$eshopIdTag in resource group $eshopRg"
     eshopAcrName=`az acr create --name eshoplearn$eshopIdTag -g $eshopRg -l $eshopLocation -o json --sku standard --admin-enabled --query "name" -otsv`
 
     if [ ! $? -eq 0 ]
@@ -130,7 +130,7 @@ echo export ESHOP_ACRPASSWORD=$eshopAcrPassword >> create-acr-exports.txt
 echo export ESHOP_IDTAG=$eshopIdTag >> create-acr-exports.txt
 
 echo 
-echo "Created ACR \"$eshopAcrName\" in RG \"$eshopRg\" in location \"$eshopLocation\"." 
+echo "Created Azure Container Registry \"$eshopAcrName\" in resource group \"$eshopRg\" in location \"$eshopLocation\"." 
 echo 
 echo "Login server: $eshopRegistry" 
 echo "User Login: $eshopAcrUser" 

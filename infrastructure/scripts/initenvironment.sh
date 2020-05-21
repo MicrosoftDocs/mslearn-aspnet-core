@@ -196,8 +196,10 @@ displayGreeting() {
     cd ~
 
     # Display installed .NET Core SDK version
-    echo "${defaultTextStyle}Using .NET Core SDK version ${headingStyle}$dotnetSdkVersion${defaultTextStyle}"
-
+    if ! [ "$suppressConfigureDotNet" ]; then
+        echo "${defaultTextStyle}Using .NET Core SDK version ${headingStyle}$dotnetSdkVersion${defaultTextStyle}"
+    fi
+    
     # Install .NET Core global tool to display connection info
     dotnet tool install dotnetsay --global --version 2.1.4 --verbosity quiet
 

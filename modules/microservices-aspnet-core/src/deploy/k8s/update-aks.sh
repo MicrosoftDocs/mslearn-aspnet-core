@@ -22,6 +22,10 @@ then
     exit 1
 fi
 
+echo "Updating existing AKS deployment..."
+
+pushd ~/clouddrive/aspnet-learn/src/deploy/k8s
+
 # Uninstall charts to be updated
 for chart in webspa webstatus webshoppingagg
 do
@@ -48,3 +52,7 @@ do
     echo "helm install eshop-$chart --set registry=$ESHOP_REGISTRY --set aksLB=$ESHOP_LBIP \"helm-simple/$chart\""
     helm install eshop-$chart --set registry=$ESHOP_REGISTRY --set aksLB=$ESHOP_LBIP "helm-simple/$chart"
 done
+
+popd
+
+echo "Done updating existing AKS deployment!"

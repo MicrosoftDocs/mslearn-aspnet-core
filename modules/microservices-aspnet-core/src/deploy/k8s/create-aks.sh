@@ -232,7 +232,7 @@ fi
 echo export ESHOP_LBIP=$eshopLbIp >> create-aks-exports.txt
 
 echo
-echo "AKS cluster \"$eshopAksName\" created with LB public IP \"$eshopLbIp\"."
+echo "AKS cluster \"$eshopAksName\" created with load balancer public IP \"$eshopLbIp\"."
 echo
 echo "Environment variables"
 echo "---------------------"
