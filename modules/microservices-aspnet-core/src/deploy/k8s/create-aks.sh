@@ -177,7 +177,7 @@ aksNodeRGCommand="az aks list --query \"[?name=='$eshopAksName'&&resourceGroup==
 
 retry=5
 echo $aksNodeRGCommand
-aksNodeRG=`$aksNodeRGCommand`
+aksNodeRG=$(eval $aksNodeRGCommand)
 while [ "$aksNodeRG" == "" ]
 do
     echo
@@ -187,7 +187,7 @@ do
     echo
     echo "Retrying..."
     echo $aksNodeRGCommand
-    aksNodeRG=`$aksNodeRGCommand`
+    aksNodeRG=$(eval $aksNodeRGCommand)
 done
 
 
@@ -195,7 +195,7 @@ while [ "$eshopLbIp" == "" ]
 do
     eshopLbIpCommand="az network public-ip list -g $aksNodeRG --query \"[?tags.service=='$k8sLbTag'].ipAddress\" -otsv"
     echo $eshopLbIpCommand
-    eshopLbIp=`$eshopLbIpCommand`
+    eshopLbIp=$(eval $eshopLbIpCommand)
     echo "Waiting for the load balancer IP address (Ctrl+C to cancel)..."
     sleep 5
 done
