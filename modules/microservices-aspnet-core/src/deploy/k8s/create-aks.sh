@@ -75,7 +75,7 @@ then
         exit 1
     fi
     echo "Creating resource group $eshopRg in location $eshopLocation..."
-    echo "az group create -n $eshopRg -l $eshopLocation"
+    echo "> az group create -n $eshopRg -l $eshopLocation"
     az group create -n $eshopRg -l $eshopLocation
     if [ ! $? -eq 0 ]
     then
@@ -98,7 +98,7 @@ then
     spHomepage="https://eShop-Learn-AKS-SP"$RANDOM
     eshopClientAppCommand="az ad sp create-for-rbac --name "$spHomepage" --query "[appId,password]" -otsv"
 
-    echo $eshopClientAppCommand
+    echo "> $eshopClientAppCommand"
     eshopClientApp=`$eshopClientAppCommand`
     
     if [ ! $? -eq 0 ]
@@ -127,7 +127,7 @@ eshopAksName="eshop-learn-aks"
 echo
 echo "Creating AKS cluster \"$eshopAksName\" in resource group \"$eshopRg\" and location \"$eshopLocation\"..."
 aksCreateCommand="az aks create -n $eshopAksName -g $eshopRg -c $eshopNodeCount --vm-set-type VirtualMachineScaleSets -l $eshopLocation --client-secret $eshopClientSecret --service-principal $eshopClientId --generate-ssh-keys -o json"
-
+echo "> $aksCreateCommand"
 retry=5
 aks=`$aksCreateCommand`
 while [ ! $? -eq 0 ]&&[ $retry -gt 0 ]&&[ ! -z "$spHomepage" ]
@@ -176,7 +176,7 @@ k8sLbTag="ingress-nginx/ingress-nginx"
 aksNodeRGCommand="az aks list --query \"[?name=='$eshopAksName'&&resourceGroup=='$eshopRg'].nodeResourceGroup\" -otsv"
 
 retry=5
-echo $aksNodeRGCommand
+echo "> $aksNodeRGCommand"
 aksNodeRG=$(eval $aksNodeRGCommand)
 while [ "$aksNodeRG" == "" ]
 do
@@ -194,7 +194,7 @@ done
 while [ "$eshopLbIp" == "" ]
 do
     eshopLbIpCommand="az network public-ip list -g $aksNodeRG --query \"[?tags.service=='$k8sLbTag'].ipAddress\" -otsv"
-    echo $eshopLbIpCommand
+    echo "> $eshopLbIpCommand"
     eshopLbIp=$(eval $eshopLbIpCommand)
     echo "Waiting for the load balancer IP address (Ctrl+C to cancel)..."
     sleep 5

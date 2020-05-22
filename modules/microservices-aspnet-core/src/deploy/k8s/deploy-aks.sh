@@ -44,7 +44,9 @@ do
     chart=${dir##*/}
     echo
     echo "Installing chart \"$chart\"..."
-    helm install eshop-$chart --set registry=$acr --set aksLB=$lbIp "helm-simple/$chart"
+    helmCmd="helm install eshop-$chart --set registry=$acr --set aksLB=$lbIp \"helm-simple/$chart\""
+    echo "> $helmCmd"
+    eval $helmCmd
 done
 
 echo
