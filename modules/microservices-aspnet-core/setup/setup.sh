@@ -13,8 +13,6 @@ cd ~
 
 # Module name
 declare moduleName="microservices-aspnet-core"
-# dotnet SDK version
-declare -x dotnetSdkVersion="3.1.200"
 
 # Any other declarations we need
 declare -x gitBranch="microservices-aspnet-core"
@@ -33,7 +31,15 @@ downloadAndBuild
 
 # Set location to ~/clouddrive
 cd $editorHomeLocation
+
+# Launch editor so the user can see the code
 code .
-$editorHomeLocation/src/deploy/k8s/quickstart.sh --resource-group eshop-learn-rg --location westus
-$editorHomeLocation/src/deploy/k8s/create-acr.sh
+
+# Run eshop-learn quickstart to deploy to AKS
+$editorHomeLocation/deploy/k8s/quickstart.sh --resource-group eshop-learn-rg --location westus
+
+# Create ACR resource
+$editorHomeLocation/deploy/k8s/create-acr.sh
+
+# Display URLs to user
 cat ~/clouddrive/aspnet-learn/deployment-urls.txt
