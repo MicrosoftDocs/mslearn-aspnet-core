@@ -24,13 +24,17 @@ echo "Building and publishing docker images to $REGISTRY..."
 
 echo
 echo "Building image \"coupon.api\"..."
-echo "az acr build -r $ESHOP_ACRNAME -t $ESHOP_REGISTRY/coupon.api:linux-latest -f src/Services/Coupon/Coupon.API/Dockerfile ."
-az acr build -r $ESHOP_ACRNAME -t $ESHOP_REGISTRY/coupon.api:linux-latest -f src/Services/Coupon/Coupon.API/Dockerfile .
+couponCmd="az acr build --registry $ESHOP_ACRNAME --image $ESHOP_REGISTRY/coupon.api:linux-latest --file src/Services/Coupon/Coupon.API/Dockerfile ."
+echo $couponCmd
+eval $couponCmd
 
 echo
 echo "Building image \"webspa\"..."
-echo "az acr build -r $ESHOP_ACRNAME -t $ESHOP_REGISTRY/webspa:linux-latest -f src/Web/WebSPA/Dockerfile.acr ."
 # This Dockerfile.acr file is optimized for building to ACR, where you can't take advatage of image layer caching
-az acr build -r $ESHOP_ACRNAME -t $ESHOP_REGISTRY/webspa:linux-latest -f src/Web/WebSPA/Dockerfile.acr .
+webspaCmd="az acr build --registry $ESHOP_ACRNAME --image $ESHOP_REGISTRY/webspa:linux-latest --file src/Web/WebSPA/Dockerfile.acr ."
+echo $webspaCmd
+eval $webspaCmd
 
+echo
+echo
 echo "Done building and publishing docker images to $REGISTRY!"
