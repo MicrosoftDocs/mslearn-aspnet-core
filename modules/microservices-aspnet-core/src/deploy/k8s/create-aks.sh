@@ -126,7 +126,7 @@ eshopAksName="eshop-learn-aks"
 
 echo
 echo "Creating AKS cluster \"$eshopAksName\" in resource group \"$eshopRg\" and location \"$eshopLocation\"..."
-aksCreateCommand="az aks create -n $eshopAksName -g $eshopRg -c $eshopNodeCount --vm-set-type VirtualMachineScaleSets -l $eshopLocation --client-secret $eshopClientSecret --service-principal $eshopClientId --generate-ssh-keys -o json"
+aksCreateCommand="az aks create -n $eshopAksName -g $eshopRg --node-count $eshopNodeCount --node-vm-size Standard_D2_v3 --vm-set-type VirtualMachineScaleSets -l $eshopLocation --client-secret $eshopClientSecret --service-principal $eshopClientId --generate-ssh-keys -o json"
 echo "> $aksCreateCommand"
 retry=5
 aks=`$aksCreateCommand`

@@ -88,7 +88,7 @@ then
 
     echo
     echo "Creating Azure Container Registry eshoplearn$eshopIdTag in resource group $eshopRg"
-    eshopAcrName=`az acr create --name eshoplearn$eshopIdTag -g $eshopRg -l $eshopLocation -o json --sku standard --admin-enabled --query "name" -otsv`
+    eshopAcrName=`az acr create --name eshoplearn$eshopIdTag -g $eshopRg -l $eshopLocation -o json --sku basic --admin-enabled --query "name" -otsv`
 
     if [ ! $? -eq 0 ]
     then
