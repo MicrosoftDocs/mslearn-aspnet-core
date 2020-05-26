@@ -88,7 +88,9 @@ then
 
     echo
     echo "Creating Azure Container Registry eshoplearn$eshopIdTag in resource group $eshopRg"
-    eshopAcrName=`az acr create --name eshoplearn$eshopIdTag -g $eshopRg -l $eshopLocation -o json --sku basic --admin-enabled --query "name" -otsv`
+    acrCommand="az acr create --name eshoplearn$eshopIdTag -g $eshopRg -l $eshopLocation -o json --sku basic --admin-enabled --query \"name\" -otsv"
+    echo "> $acrCommand"
+    eshopAcrName=`$acrCommand`
 
     if [ ! $? -eq 0 ]
     then
@@ -96,7 +98,7 @@ then
         exit 1
     fi
 
-    echo ACR created
+    echo ACR created!
     echo
 fi
 
@@ -117,7 +119,10 @@ eshopAks=`az aks show -n eshop-learn-aks -g $eshopRg`
 
 if [ ! -z "$eshopAks" ]
 then
-    az aks update -n eshop-learn-aks -g $eshopRg --attach-acr $eshopAcrName
+    echo "Attaching ACR to AKS..."
+    attachCmd="az aks update -n eshop-learn-aks -g $eshopRg --attach-acr $eshopAcrName --output none" 
+    echo "> $attachCmd"
+    eval $attachCmd
 fi
 
 echo export ESHOP_SUBS=$eshopSubs > create-acr-exports.txt
@@ -131,22 +136,5 @@ echo export ESHOP_IDTAG=$eshopIdTag >> create-acr-exports.txt
 
 echo 
 echo "Created Azure Container Registry \"$eshopAcrName\" in resource group \"$eshopRg\" in location \"$eshopLocation\"." 
-echo 
-echo "Login server: $eshopRegistry" 
-echo "User Login: $eshopAcrUser" 
-echo "Password: $eshopAcrPassword" 
-echo 
-echo "Environment variables" 
-echo "---------------------" 
-cat create-acr-exports.txt
-echo 
-echo "Commands" 
-echo "--------" 
-echo "- To login Docker to ACR          : docker login $eshopRegistry -u $eshopAcrUser -p $eshopAcrPassword" 
-echo "- To build images and push to ACR : build-and-push.sh --acr $eshopRegistry" 
-echo 
-echo "Run the following command to update the environment"
-echo 'eval $(cat ~/clouddrive/aspnet-learn/create-acr-exports.txt)'
-echo
 
 mv -f create-acr-exports.txt ~/clouddrive/aspnet-learn/
