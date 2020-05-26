@@ -75,8 +75,8 @@ then
         exit 1
     fi
     echo "Creating resource group $eshopRg in location $eshopLocation..."
-    echo "> az group create -n $eshopRg -l $eshopLocation"
-    az group create -n $eshopRg -l $eshopLocation
+    echo "> az group create -n $eshopRg -l $eshopLocation --output none"
+    az group create -n $eshopRg -l $eshopLocation --output none
     if [ ! $? -eq 0 ]
     then
         echo "ERROR: Can't create resource group"

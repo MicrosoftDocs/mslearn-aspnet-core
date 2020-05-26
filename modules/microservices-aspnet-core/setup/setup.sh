@@ -26,10 +26,15 @@ declare editorHomeLocation=$rootLocation/aspnet-learn/src
 
 if [ -d "$rootLocation/aspnet-learn" ]; then
     echo "$rootLocation/aspnet-learn/ already exists!"
+    echo " "
     echo "Before running this script, please remove or rename the existing $rootLocation/aspnet-learn/ directory as follows:"
-    echo "(Remove) rm -r $rootLocation/aspnet-learn/"
-    echo "(Rename) mv $rootLocation/aspnet-learn/ ~/clouddrive/new-name-here/ "
-else 
+    echo "Remove: rm -r $rootLocation/aspnet-learn/"
+    echo "Rename: mv $rootLocation/aspnet-learn/ ~/clouddrive/new-name-here/ "
+    echo " "
+else
+    # Backup .bashrc
+    cp ~/.bashrc ~/.bashrc.bak.$moduleName
+
     # Grab and run initenvironment.sh
     . <(wget -q -O - $initScript)
 
