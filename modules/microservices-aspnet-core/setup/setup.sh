@@ -28,7 +28,7 @@ if [ -d "$rootLocation/aspnet-learn" ]; then
     echo "$rootLocation/aspnet-learn/ already exists!"
     echo "Before running this script, please remove or rename the existing $rootLocation/aspnet-learn/ directory as follows:"
     echo "(Remove) rm -r $rootLocation/aspnet-learn/"
-    echo "(Move) mv $rootLocation/aspnet-learn/ ~/clouddrive/new-name-here/ "
+    echo "(Rename) mv $rootLocation/aspnet-learn/ ~/clouddrive/new-name-here/ "
     exit 1
 fi
 
