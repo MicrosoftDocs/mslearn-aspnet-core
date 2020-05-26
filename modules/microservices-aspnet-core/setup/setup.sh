@@ -29,26 +29,26 @@ if [ -d "$rootLocation/aspnet-learn" ]; then
     echo "Before running this script, please remove or rename the existing $rootLocation/aspnet-learn/ directory as follows:"
     echo "(Remove) rm -r $rootLocation/aspnet-learn/"
     echo "(Rename) mv $rootLocation/aspnet-learn/ ~/clouddrive/new-name-here/ "
-    exit
+else 
+    # Grab and run initenvironment.sh
+    . <(wget -q -O - $initScript)
+
+    # Download and build
+    downloadAndBuild
+
+    # Set location to ~/clouddrive
+    cd $editorHomeLocation
+
+    # Launch editor so the user can see the code
+    code .
+
+    # Run eshop-learn quickstart to deploy to AKS
+    $editorHomeLocation/deploy/k8s/quickstart.sh --resource-group eshop-learn-rg --location westus
+
+    # Create ACR resource
+    $editorHomeLocation/deploy/k8s/create-acr.sh
+
+    # Display URLs to user
+    cat ~/clouddrive/aspnet-learn/deployment-urls.txt
 fi
 
-# Grab and run initenvironment.sh
-. <(wget -q -O - $initScript)
-
-# Download and build
-downloadAndBuild
-
-# Set location to ~/clouddrive
-cd $editorHomeLocation
-
-# Launch editor so the user can see the code
-code .
-
-# Run eshop-learn quickstart to deploy to AKS
-$editorHomeLocation/deploy/k8s/quickstart.sh --resource-group eshop-learn-rg --location westus
-
-# Create ACR resource
-$editorHomeLocation/deploy/k8s/create-acr.sh
-
-# Display URLs to user
-cat ~/clouddrive/aspnet-learn/deployment-urls.txt
