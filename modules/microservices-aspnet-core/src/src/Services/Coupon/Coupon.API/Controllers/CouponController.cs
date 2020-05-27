@@ -23,6 +23,6 @@
             _mapper = mapper;
         }
 
-        /* Add the GetCouponByCodeAsync method */
+        // Add the GetCouponByCodeAsync method
     }
 }

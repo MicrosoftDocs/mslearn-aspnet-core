@@ -1,4 +1,11 @@
 #!/bin/bash
+
+# Color theming
+if [ -f ~/clouddrive/aspnet-learn/setup/theme.sh ]
+then
+  eval $(cat ~/clouddrive/aspnet-learn/src/setup/theme.sh)
+fi
+
 acr=$REGISTRY
 lbIp=$ESHOP_LBIP
 
@@ -25,13 +32,13 @@ done
 
 if [ -z "$acr" ]
 then
-    echo "Must set and export environment variable called REGISTRY with ACR login server or use --acr"
+    echo "${newline}${errorStyle}Must set and export environment variable called REGISTRY with ACR login server or use --acr${defaultTextStyle}${newline}"
     exit 1
 fi
 
 if [ -z "$lbIp" ]
 then
-    echo "ERROR: Load balancer IP needed. Please use --ip parameter."
+    echo "${newline}${errorStyle}ERROR: Load balancer IP needed. Please use --ip parameter.${defaultTextStyle}${newline}"
     exit 1
 fi
 
@@ -45,7 +52,7 @@ do
     echo
     echo "Installing chart \"$chart\"..."
     helmCmd="helm install eshop-$chart --set registry=$acr --set aksLB=$lbIp \"helm-simple/$chart\""
-    echo "> $helmCmd"
+    echo "${newline} > ${genericCommandStyle}$helmCmd${defaultTextStyle}${newline}"
     eval $helmCmd
 done
 

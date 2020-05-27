@@ -1,4 +1,11 @@
 #!/bin/bash
+
+# Color theming
+if [ -f ~/clouddrive/aspnet-learn/setup/theme.sh ]
+then
+  eval $(cat ~/clouddrive/aspnet-learn/src/setup/theme.sh)
+fi
+
 eshopSubs=${ESHOP_SUBS}
 eshopRg=${ESHOP_RG}
 eshopLocation=${ESHOP_LOCATION}
@@ -36,13 +43,13 @@ done
 
 if [ -z "$eshopRg" ]
 then
-    echo "ERROR: resource group is mandatory. Use -g to set it"
+    echo "${newline}${errorStyle}ERROR: resource group is mandatory. Use -g to set it.${defaultTextStyle}${newline}"
     exit 1
 fi
 
 if [ -z "$eshopAcrName" ]&&[ -z "$ESHOP_QUICKSTART" ]
 then
-    echo "ERROR: ACR name is mandatory. Use --acr-name to set it"
+    echo "${newline}${errorStyle}ERROR: ACR name is mandatory. Use --acr-name to set it.${defaultTextStyle}${newline}"
     exit 1
 fi
 
@@ -54,7 +61,7 @@ fi
 
 if [ ! $? -eq 0 ]
 then
-    echo "ERROR: Can't switch to subscription $eshopSubs"
+    echo "${newline}${errorStyle}ERROR: Can't switch to subscription $eshopSubs.${defaultTextStyle}${newline}"
     exit 1
 fi
 
@@ -71,15 +78,15 @@ if [ -z "$rg" ]
 then
     if [ -z "eshopSubs" ]
     then
-        echo "ERROR: If resource group has to be created, location is mandatory. Use -l to set it."
+        echo "${newline}${errorStyle}ERROR: If resource group has to be created, location is mandatory. Use -l to set it.${defaultTextStyle}${newline}"
         exit 1
     fi
     echo "Creating resource group $eshopRg in location $eshopLocation..."
-    echo "> az group create -n $eshopRg -l $eshopLocation --output none"
+    echo "${newline} > ${azCliCommandStyle}az group create -n $eshopRg -l $eshopLocation --output none${defaultTextStyle}${newline}"
     az group create -n $eshopRg -l $eshopLocation --output none
     if [ ! $? -eq 0 ]
     then
-        echo "ERROR: Can't create resource group"
+        echo "${newline}${errorStyle}ERROR: Can't create resource group!${defaultTextStyle}${newline}"
         exit 1
     fi
 else
@@ -98,12 +105,12 @@ then
     spHomepage="https://eShop-Learn-AKS-SP"$RANDOM
     eshopClientAppCommand="az ad sp create-for-rbac --name "$spHomepage" --query "[appId,password]" -otsv"
 
-    echo "> $eshopClientAppCommand"
+    echo "${newline} > ${azCliCommandStyle}$eshopClientAppCommand${defaultTextStyle}${newline}"
     eshopClientApp=`$eshopClientAppCommand`
     
     if [ ! $? -eq 0 ]
     then
-        echo "ERROR: Can't create service principal for AKS"
+        echo "${newline}${errorStyle}ERROR: Can't create service principal for AKS.${defaultTextStyle}${newline}"
         exit 1
     fi
 
@@ -112,7 +119,7 @@ then
 
     if [ "$eshopClientId" == "" ]||[ "$eshopClientSecret" == "" ]
     then
-        echo "ERROR: ClientId (\"$eshopClientId\") or ClientSecret (\"$eshopClientSecret\") missing!"
+        echo "${newline}${errorStyle}ERROR: ClientId (\"$eshopClientId\") or ClientSecret (\"$eshopClientSecret\") missing!${defaultTextStyle}${newline}"
         exit 1
     fi
 
@@ -127,7 +134,7 @@ eshopAksName="eshop-learn-aks"
 echo
 echo "Creating AKS cluster \"$eshopAksName\" in resource group \"$eshopRg\" and location \"$eshopLocation\"..."
 aksCreateCommand="az aks create -n $eshopAksName -g $eshopRg --node-count $eshopNodeCount --node-vm-size Standard_D2_v3 --vm-set-type VirtualMachineScaleSets -l $eshopLocation --client-secret $eshopClientSecret --service-principal $eshopClientId --generate-ssh-keys -o json"
-echo "> $aksCreateCommand"
+echo "${newline} > ${azCliCommandStyle}$aksCreateCommand${defaultTextStyle}${newline}"
 retry=5
 aks=`$aksCreateCommand`
 while [ ! $? -eq 0 ]&&[ $retry -gt 0 ]&&[ ! -z "$spHomepage" ]
@@ -143,7 +150,7 @@ done
 
 if [ ! $? -eq 0 ]
 then
-    echo "Error creating AKS cluster!"
+    echo "${newline}${errorStyle}Error creating AKS cluster!${defaultTextStyle}${newline}"
     exit 1
 fi
 
@@ -176,7 +183,7 @@ k8sLbTag="ingress-nginx/ingress-nginx"
 aksNodeRGCommand="az aks list --query \"[?name=='$eshopAksName'&&resourceGroup=='$eshopRg'].nodeResourceGroup\" -otsv"
 
 retry=5
-echo "> $aksNodeRGCommand"
+echo "${newline} > ${azCliCommandStyle}$aksNodeRGCommand${defaultTextStyle}${newline}"
 aksNodeRG=$(eval $aksNodeRGCommand)
 while [ "$aksNodeRG" == "" ]
 do
@@ -194,7 +201,7 @@ done
 while [ "$eshopLbIp" == "" ]
 do
     eshopLbIpCommand="az network public-ip list -g $aksNodeRG --query \"[?tags.service=='$k8sLbTag'].ipAddress\" -otsv"
-    echo "> $eshopLbIpCommand"
+    echo "${newline} > ${azCliCommandStyle}$eshopLbIpCommand${defaultTextStyle}${newline}"
     eshopLbIp=$(eval $eshopLbIpCommand)
     echo "Waiting for the load balancer IP address (Ctrl+C to cancel)..."
     sleep 5

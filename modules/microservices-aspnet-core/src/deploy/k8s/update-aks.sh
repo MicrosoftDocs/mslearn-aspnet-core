@@ -1,5 +1,11 @@
 #!/bin/bash
 
+# Color theming
+if [ -f ~/clouddrive/aspnet-learn/setup/theme.sh ]
+then
+  eval $(cat ~/clouddrive/aspnet-learn/src/setup/theme.sh)
+fi
+
 if [ -f ~/clouddrive/aspnet-learn/create-aks-exports.txt ]
 then
   eval $(cat ~/clouddrive/aspnet-learn/create-aks-exports.txt)
@@ -31,7 +37,7 @@ for chart in webspa webstatus webshoppingagg
 do
     echo
     echo "Uninstalling chart \"$chart\"..."
-    echo "helm uninstall eshop-$chart"
+    echo "${newline}${genericCommandStyle}helm uninstall eshop-$chart${defaultTextStyle}${newline}"
     helm uninstall eshop-$chart
 done
 
@@ -40,7 +46,7 @@ for chart in webstatus webshoppingagg
 do
     echo
     echo "Installing chart \"$chart\"..."
-    echo "helm install eshop-$chart --set registry=eshoplearn --set aksLB=$ESHOP_LBIP \"helm-simple/$chart\""
+    echo "${newline}${genericCommandStyle}helm install eshop-$chart --set registry=eshoplearn --set aksLB=$ESHOP_LBIP \"helm-simple/$chart\"${defaultTextStyle}${newline}"
     helm install eshop-$chart --set registry=eshoplearn --set aksLB=$ESHOP_LBIP "helm-simple/$chart"
 done
 
@@ -49,7 +55,7 @@ for chart in coupon webspa
 do
     echo
     echo "Installing chart \"$chart\"..."
-    echo "helm install eshop-$chart --set registry=$ESHOP_REGISTRY --set aksLB=$ESHOP_LBIP \"helm-simple/$chart\""
+    echo "${newline}${genericCommandStyle}helm install eshop-$chart --set registry=$ESHOP_REGISTRY --set aksLB=$ESHOP_LBIP \"helm-simple/$chart\"${defaultTextStyle}${newline}"
     helm install eshop-$chart --set registry=$ESHOP_REGISTRY --set aksLB=$ESHOP_LBIP "helm-simple/$chart"
 done
 

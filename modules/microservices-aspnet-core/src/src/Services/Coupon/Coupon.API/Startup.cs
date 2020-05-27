@@ -61,7 +61,6 @@ namespace Coupon.API
                     options.OAuthClientId("couponswaggerui");
                     options.OAuthAppName("eShop-Learn.Coupon.API Swagger UI");
                 })
-                //.UseSerilogRequestLogging()
                 .UseCors("CorsPolicy")
                 .UseRouting()
                 .UseAuthentication()
@@ -69,6 +68,7 @@ namespace Coupon.API
                 .UseEndpoints(endpoints =>
                 {
                     endpoints.MapControllers();
+                    // Add the endpoints.MapHealthChecks code
                 });
 
             ConfigureEventBus(app);

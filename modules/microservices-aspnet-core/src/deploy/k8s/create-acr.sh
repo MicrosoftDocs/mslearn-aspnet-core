@@ -1,5 +1,11 @@
 #!/bin/bash
 
+# Color theming
+if [ -f ~/clouddrive/aspnet-learn/setup/theme.sh ]
+then
+  eval $(cat ~/clouddrive/aspnet-learn/src/setup/theme.sh)
+fi
+
 if [ -f ~/clouddrive/aspnet-learn/create-aks-exports.txt ]
 then
   eval $(cat ~/clouddrive/aspnet-learn/create-aks-exports.txt)
@@ -29,7 +35,7 @@ done
 
 if [ -z "$eshopRg" ]
 then
-    echo "ERROR: Resource group is mandatory. Use -g to set it"
+    echo "${newline}${errorStyle}ERROR: Resource group is mandatory. Use -g to set it${defaultTextStyle}${newline}"
     exit 1
 fi
 
@@ -41,7 +47,7 @@ fi
 
 if [ ! $? -eq 0 ]
 then
-    echo "ERROR: Can't switch to subscription $eshopSubs"
+    echo "${newline}${errorStyle}ERROR: Can't switch to subscription $eshopSubs.${defaultTextStyle}${newline}"
     exit 1
 fi
 
@@ -51,14 +57,14 @@ if [ -z "$rg" ]
 then
     if [ -z "$eshopLocation" ]
     then
-        echo "ERROR: If resource group has to be created, location is mandatory. Use -l to set it."
+        echo "${newline}${errorStyle}ERROR: If resource group has to be created, location is mandatory. Use -l to set it.${defaultTextStyle}${newline}"
         exit 1
     fi
     echo "Creating RG $eshopRg in location $eshopLocation..."
     az group create -n $eshopRg -l $eshopLocation
     if [ ! $? -eq 0 ]
     then
-        echo "ERROR: Can't create resource group"
+        echo "${newline}${errorStyle}ERROR: Can't create resource group${defaultTextStyle}${newline}"
         exit 1
     fi
 
@@ -89,7 +95,7 @@ then
     echo
     echo "Creating Azure Container Registry eshoplearn$eshopIdTag in resource group $eshopRg"
     acrCommand="az acr create --name eshoplearn$eshopIdTag -g $eshopRg -l $eshopLocation -o json --sku basic --admin-enabled --query \"name\" -otsv"
-    echo "> $acrCommand"
+    echo "${newline} > ${azCliCommandStyle}$acrCommand${defaultTextStyle}${newline}"
     eshopAcrName=`$acrCommand`
 
     if [ ! $? -eq 0 ]
@@ -106,7 +112,7 @@ eshopRegistry=`az acr show -n $eshopAcrName --query "loginServer" -otsv`
 
 if [ -z "$eshopRegistry" ]
 then
-    echo "ERROR ACR server $eshopAcrName doesn't exist!"
+    echo "${newline}${errorStyle}ERROR! ACR server $eshopAcrName doesn't exist!${defaultTextStyle}${newline}"
     exit 1
 fi
 
@@ -121,7 +127,7 @@ if [ ! -z "$eshopAks" ]
 then
     echo "Attaching ACR to AKS..."
     attachCmd="az aks update -n eshop-learn-aks -g $eshopRg --attach-acr $eshopAcrName --output none" 
-    echo "> $attachCmd"
+    echo "${newline} > ${azCliCommandStyle}$attachCmd${defaultTextStyle}${newline}"
     eval $attachCmd
 fi
 

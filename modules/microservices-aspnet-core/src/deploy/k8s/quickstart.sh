@@ -1,4 +1,5 @@
 #!/bin/bash
+
 eshopSubs=${ESHOP_SUBS}
 eshopRg=${ESHOP_RG}
 eshopLocation=${ESHOP_LOCATION}
@@ -23,7 +24,7 @@ done
 
 if [ -z "$eshopRg" ]
 then
-    echo "ERROR: Resource group is mandatory. Use -g to set it"
+    echo "${newline}${errorStyle}ERROR: Resource group is mandatory. Use -g to set it.${defaultTextStyle}${newline}"
     exit 1
 fi
 
@@ -35,7 +36,7 @@ fi
 
 if [ ! $? -eq 0 ]
 then
-    echo "ERROR: Can't switch to subscription $eshopSubs"
+    echo "${newline}${errorStyle}ERROR: Can't switch to subscription $eshopSubs.${defaultTextStyle}${newline}"
     exit 1
 fi
 
