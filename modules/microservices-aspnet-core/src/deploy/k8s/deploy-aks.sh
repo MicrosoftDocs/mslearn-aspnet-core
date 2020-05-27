@@ -57,11 +57,14 @@ do
 done
 
 echo
-echo "Helm charts deployed"
+echo "Helm charts deployed!"
+echo 
+echo "${newline} > ${genericCommandStyle}helm list${defaultTextStyle}${newline}"
 helm list
 
-echo
-echo "Pod status"
+echo "Displaying Kubernetes pod status..."
+echo 
+echo "${newline} > ${genericCommandStyle}kubectl get pods${defaultTextStyle}${newline}"
 kubectl get pods
 
 pushd ~/clouddrive/aspnet-learn
