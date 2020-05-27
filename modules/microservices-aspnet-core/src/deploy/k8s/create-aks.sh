@@ -140,7 +140,7 @@ aks=`$aksCreateCommand`
 while [ ! $? -eq 0 ]&&[ $retry -gt 0 ]&&[ ! -z "$spHomepage" ]
 do
     echo
-    echo "New service principal is not yet ready for AKS cluster creation. This is normal and expected. Retrying in 5s..."
+    echo "New service principal is not yet ready for AKS cluster creation. ${bold}This is normal and expected.${defaultTextStyle} Retrying in 5s..."
     let retry--
     sleep 5
     echo
