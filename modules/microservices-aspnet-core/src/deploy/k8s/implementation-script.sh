@@ -3,7 +3,7 @@
 # Color theming
 if [ -f ~/clouddrive/aspnet-learn/setup/theme.sh ]
 then
-  eval $(cat ~/clouddrive/aspnet-learn/setup/theme.sh)
+  . <(cat ~/clouddrive/aspnet-learn/setup/theme.sh)
 fi
 
 pushd ~/clouddrive/aspnet-learn/src/deploy/k8s
