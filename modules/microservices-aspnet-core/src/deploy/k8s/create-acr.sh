@@ -93,14 +93,14 @@ then
     fi
 
     echo
-    echo "Creating Azure Container Registry eshoplearn$eshopIdTag in resource group $eshopRg"
+    echo "Creating Azure Container Registry eshoplearn$eshopIdTag in resource group $eshopRg..."
     acrCommand="az acr create --name eshoplearn$eshopIdTag -g $eshopRg -l $eshopLocation -o json --sku basic --admin-enabled --query \"name\" -otsv"
     echo "${newline} > ${azCliCommandStyle}$acrCommand${defaultTextStyle}${newline}"
     eshopAcrName=`$acrCommand`
 
     if [ ! $? -eq 0 ]
     then
-        echo "ERROR creating ACR!"
+        echo "${newline}${errorStyle}ERROR creating ACR!${defaultTextStyle}${newline}"
         exit 1
     fi
 
