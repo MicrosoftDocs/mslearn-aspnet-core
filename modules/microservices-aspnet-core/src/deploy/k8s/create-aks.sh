@@ -203,18 +203,11 @@ do
     eshopLbIpCommand="az network public-ip list -g $aksNodeRG --query \"[?tags.service=='$k8sLbTag'].ipAddress\" -otsv"
     echo "${newline} > ${azCliCommandStyle}$eshopLbIpCommand${defaultTextStyle}${newline}"
     eshopLbIp=$(eval $eshopLbIpCommand)
-    echo "Waiting for the load balancer IP address (Ctrl+C to cancel)..."
+    echo "Waiting for the load balancer IP address..."
     sleep 5
 done
 
-echo
-echo "NGINX ingress controller installed."
-
-if [ "$spHomepage" != "" ]
-then
-    echo
-    echo "Service principal $spHomepage created with ID \"$eshopClientId\" and password \"$eshopClientSecret\""
-fi
+echo "Done!"
 
 echo export ESHOP_SUBS=$eshopSubs > create-aks-exports.txt
 echo export ESHOP_RG=$eshopRg >> create-aks-exports.txt
@@ -237,18 +230,6 @@ then
 fi
 
 echo export ESHOP_LBIP=$eshopLbIp >> create-aks-exports.txt
-
-echo
-echo "AKS cluster \"$eshopAksName\" created with load balancer public IP \"$eshopLbIp\"."
-echo
-echo "Environment variables"
-echo "---------------------"
-cat create-aks-exports.txt
-echo
-echo "Commands:"
-echo
-echo "- To deploy eShop to AKS: ./deploy-aks.sh --acr $eshopRegistry --ip $eshopLbIp"
-echo
 
 if [ -z "$ESHOP_QUICKSTART" ]
 then
