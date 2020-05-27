@@ -68,11 +68,11 @@ echo "${newline} > ${genericCommandStyle}kubectl get pods${defaultTextStyle}${ne
 kubectl get pods
 
 pushd ~/clouddrive/aspnet-learn
-echo "The eShop-Learn application has been deployed." > deployment-urls.txt
+echo "${newline}${headingStyle}The eShop-Learn application has been deployed.${defaultTextStyle}" > deployment-urls.txt
 echo "" >> deployment-urls.txt
 echo "You can begin exploring these services (when available):" >> deployment-urls.txt
 echo "- Centralized logging       : http://$lbIp/seq/#/events?autorefresh (See transient failures during startup)" >> deployment-urls.txt
 echo "- General application status: http://$lbIp/webstatus/ (See overall service status)" >> deployment-urls.txt
 echo "- Web SPA application       : http://$lbIp/" >> deployment-urls.txt
-echo "" >> deployment-urls.txt
+echo "${newline}" >> deployment-urls.txt
 popd
