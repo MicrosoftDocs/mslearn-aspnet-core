@@ -135,8 +135,6 @@ echo export ESHOP_IDTAG=$eshopIdTag >> create-acr-exports.txt
 
 echo export ESHOP_IDTAG=$eshopIdTag >> create-idtag-exports.txt
 
-echo 
-echo "Created Azure Container Registry \"$eshopAcrName\" in resource group \"$eshopRg\" in location \"$eshopLocation\"." 
 
 mv -f create-acr-exports.txt ~/clouddrive/aspnet-learn/
 mv -f create-idtag-exports.txt ~/clouddrive/aspnet-learn/

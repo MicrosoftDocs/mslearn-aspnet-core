@@ -1,12 +1,5 @@
 #!/bin/bash
-
-# Color theming
-if [ -f ~/clouddrive/aspnet-learn/setup/theme.sh ]
-then
-  . <(cat ~/clouddrive/aspnet-learn/setup/theme.sh)
-fi
-
-eshopSubs=${ESHOP_SUBS}eshopRg=${ESHOP_RG}
+eshopRg=${ESHOP_RG}
 eshopLocation=${ESHOP_LOCATION}
 eshopNodeCount=${ESHOP_NODECOUNT:-1}
 eshopAksName=${ESHOP_AKSNAME:-eshop-learn-aks}
@@ -142,6 +135,14 @@ echo export ESHOP_LOCATION=$eshopLocation >> create-aks-exports.txt
 echo export ESHOP_AKSNAME=$eshopAksName >> create-aks-exports.txt
 echo export ESHOP_AKSNODERG=$aksNodeRG >> create-aks-exports.txt
 echo export ESHOP_LBIP=$eshopLbIp >> create-aks-exports.txt
+
+echo
+echo "AKS cluster \"$eshopAksName\" created with LB public IP \"$eshopLbIp\"."
+echo
+echo "Environment variables"
+echo "---------------------"
+cat create-aks-exports.txt
+echo
 
 if [ -z "$ESHOP_QUICKSTART" ]
 then

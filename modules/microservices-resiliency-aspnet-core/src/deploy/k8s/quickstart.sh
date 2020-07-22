@@ -25,6 +25,9 @@ export ESHOP_RG=$eshopRg
 export ESHOP_LOCATION=$eshopLocation
 export ESHOP_REGISTRY=$eshopRegistry
 
+
+cd ~/clouddrive/aspnet-learn/src/deploy/k8s
+
 # AKS Cluster creation
 
 ./create-aks.sh
