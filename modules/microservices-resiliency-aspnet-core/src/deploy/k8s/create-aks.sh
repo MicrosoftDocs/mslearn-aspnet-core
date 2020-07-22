@@ -123,8 +123,8 @@ echo
 if [ -z "$ESHOP_QUICKSTART" ]
 then
     echo "Run the following command to update the environment"
-    echo 'eval $(cat ~/clouddrive/source/create-aks-exports.txt)'
+    echo 'eval $(cat ~/clouddrive/aspnet-learn/create-aks-exports.txt)'
     echo
 fi
 
-mv -f create-aks-exports.txt ~/clouddrive/source/
+mv -f create-aks-exports.txt ~/clouddrive/aspnet-learn/

@@ -29,6 +29,6 @@ export ESHOP_REGISTRY=$eshopRegistry
 
 ./create-aks.sh
 
-eval $(cat ~/clouddrive/source/create-aks-exports.txt)
+eval $(cat ~/clouddrive/aspnet-learn/create-aks-exports.txt)
 
 ./deploy-application.sh

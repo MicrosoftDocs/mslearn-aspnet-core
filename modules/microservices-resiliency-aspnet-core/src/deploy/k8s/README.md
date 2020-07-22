@@ -65,11 +65,11 @@ The base images for the second batch of modules (#02-07) are built from project 
 
 - The shell scripts are meant to be run from the Azure Cloud Shell.
 - Have been tested locally from Windows Terminal with WSL, but you have to:
-  - Create the folders `~/clouddrive/source`
+  - Create the folders `~/clouddrive/aspnet-learn`
   - [Install kubectl on WSL](https://devkimchi.com/2018/06/05/running-kubernetes-on-wsl/)
   - [Install az cli on WSL](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli-linux?view=azure-cli-latest)
 - Most scripts create output environment variables
-  - Saved in `~/clouddrive/source/{script-name}-exports.txt`
+  - Saved in `~/clouddrive/aspnet-learn/{script-name}-exports.txt`
 
 ### create-aks.sh
 
@@ -87,7 +87,7 @@ Parameters:
 - **--resource-group**: **[mandatory]** Name of the resource group to use or create.
 - **--location**: Location, mandatory if resource-group doesn't exist.
 
-Output environment variables (`~/clouddrive/source/create-aks-exports.txt`):
+Output environment variables (`~/clouddrive/aspnet-learn/create-aks-exports.txt`):
 
 - **ESHOP_RG**: Resource group
 - **ESHOP_LOCATION**: Location
@@ -114,7 +114,7 @@ Parameters:
 - **--certificate**: none/self-signed, creates and installs self-signed certificate
 - **--charts**: Comma separated list of charts to deploy
 
-Output environment variables (`~/clouddrive/source/deploy-application-exports.txt`):
+Output environment variables (`~/clouddrive/aspnet-learn/deploy-application-exports.txt`):
 
 - **ESHOP_LBIP**: Public IP for load balancer
 - **ESHOP_HOST**: Hostname for load balancer (or IP address if none)
@@ -136,7 +136,7 @@ Parameters:
 - **--resource-group**: **[mandatory]** Name of the resource group to use or create.
 - **--location**: Location, mandatory if resource-group doesn't exist.
 
-Output environment variables (`~/clouddrive/source/create-acr-exports.txt`):
+Output environment variables (`~/clouddrive/aspnet-learn/create-acr-exports.txt`):
 
 - **ESHOP_RG**: Resource group
 - **ESHOP_LOCATION**: Location

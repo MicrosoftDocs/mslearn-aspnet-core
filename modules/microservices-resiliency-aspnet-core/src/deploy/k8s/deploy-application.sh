@@ -64,7 +64,7 @@ then
     echo
     echo "Couldn't resolve the host name!"
     echo "Either use the --hostip (for IP addresses), or --hostname (for DNS names), or"
-    echo "run the \"eval $(cat ~/clouddrive/source/deploy-application-exports.txt)\" command to the values from the initial deployment."
+    echo "run the \"eval $(cat ~/clouddrive/aspnet-learn/deploy-application-exports.txt)\" command to the values from the initial deployment."
     echo
     exit 1
 fi
@@ -153,8 +153,8 @@ echo "- Web SPA       : $protocol://$hostName/" >> deploy-application-results.tx
 
 echo
 echo "Run the following command to update the environment"
-echo 'eval $(cat ~/clouddrive/source/deploy-application-exports.txt)'
+echo 'eval $(cat ~/clouddrive/aspnet-learn/deploy-application-exports.txt)'
 echo
 
-mv -f deploy-application-exports.txt ~/clouddrive/source/
-mv -f deploy-application-results.txt ~/clouddrive/source/
+mv -f deploy-application-exports.txt ~/clouddrive/aspnet-learn/
+mv -f deploy-application-results.txt ~/clouddrive/aspnet-learn/

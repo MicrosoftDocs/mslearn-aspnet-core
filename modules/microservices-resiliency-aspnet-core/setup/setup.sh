@@ -12,7 +12,7 @@
 cd ~
 
 # dotnet SDK version
-declare -x dotnetSdkVersion="3.1.300"
+declare -x dotnetSdkVersion="3.1.302"
 
 # Module name
 declare moduleName="microservices-resiliency-aspnet-core"
@@ -56,4 +56,3 @@ else
     # Display URLs to user
     cat ~/clouddrive/aspnet-learn/deployment-urls.txt
 fi
-

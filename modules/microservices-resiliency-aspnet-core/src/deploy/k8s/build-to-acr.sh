@@ -4,9 +4,9 @@ echo
 echo "Building images to ACR"
 echo "======================"
 
-if [ -f ~/clouddrive/source/create-acr-exports.txt ]
+if [ -f ~/clouddrive/aspnet-learn/create-acr-exports.txt ]
 then
-  eval $(cat ~/clouddrive/source/create-acr-exports.txt)
+  eval $(cat ~/clouddrive/aspnet-learn/create-acr-exports.txt)
 fi
 
 if [ -z "$ESHOP_REGISTRY" ] || [ -z "$ESHOP_ACRNAME" ]
