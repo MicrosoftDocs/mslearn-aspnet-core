@@ -147,24 +147,12 @@ echo
 echo "${newline} > ${genericCommandStyle}kubectl get pods${defaultTextStyle}${newline}"
 kubectl get pods
 
-echo
-echo "The eShop-Learn application has been deployed to \"$protocol://$hostName\" (IP: $ESHOP_LBIP)."
-echo
-echo "You can begin exploring these services (when ready):"
-echo "- Centralized logging       : $protocol://$hostName/seq/#/events?autorefresh (See transient failures during startup)"
-echo "- General application status: $protocol://$hostName/webstatus/ (See overall service status)"
-echo "- Web SPA application       : $protocol://$hostName/"
-
-echo "eShop-Learn application deployed to \"$protocol://$hostName\" (IP: $ESHOP_LBIP)." > deploy-application-results.txt
-echo "" >> deploy-application-results.txt
-echo "- Logging       : $protocol://$hostName/seq/#/events?autorefresh" >> deploy-application-results.txt
-echo "- General status: $protocol://$hostName/webstatus/" >> deploy-application-results.txt
-echo "- Web SPA       : $protocol://$hostName/" >> deploy-application-results.txt
-
-echo
-echo "Run the following command to update the environment"
-echo 'eval $(cat ~/clouddrive/aspnet-learn/deploy-application-exports.txt)'
-echo
-
-mv -f deploy-application-exports.txt ~/clouddrive/aspnet-learn/
-mv -f deploy-application-results.txt ~/clouddrive/aspnet-learn/
+pushd ~/clouddrive/aspnet-learn
+echo "The eShop-Learn application has been deployed to \"$protocol://$hostName\" (IP: $ESHOP_LBIP)." > deployment-urls.txt
+echo "" >> deployment-urls.txt
+echo "You can begin exploring these services (when ready):" >> deployment-urls.txt
+echo "- Centralized logging       : $protocol://$hostName/seq/#/events?autorefresh (See transient failures during startup)" >> deployment-urls.txt
+echo "- General application status: $protocol://$hostName/webstatus/ (See overall service status)" >> deployment-urls.txt
+echo "- Web SPA application       : $protocol://$hostName/" >> deployment-urls.txt
+echo "${newline}" >> deployment-urls.txt
+popd
