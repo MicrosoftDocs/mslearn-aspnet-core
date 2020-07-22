@@ -17,7 +17,7 @@ done
 
 if [ -z "$eshopRg" ]
 then
-    echo "ERROR: RG is mandatory. Use -g to set it"
+    echo "${newline}${errorStyle}ERROR: Resource group is mandatory. Use -g to set it.${defaultTextStyle}${newline}"
     exit 1
 fi
 

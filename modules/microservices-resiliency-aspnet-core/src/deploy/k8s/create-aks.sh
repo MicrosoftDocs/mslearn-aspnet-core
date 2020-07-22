@@ -6,7 +6,8 @@ then
   . <(cat ~/clouddrive/aspnet-learn/setup/theme.sh)
 fi
 
-eshopSubs=${ESHOP_SUBS}eshopRg=${ESHOP_RG}
+eshopSubs=${ESHOP_SUBS}
+eshopRg=${ESHOP_RG}
 eshopLocation=${ESHOP_LOCATION}
 eshopNodeCount=${ESHOP_NODECOUNT:-1}
 eshopAksName=${ESHOP_AKSNAME:-eshop-learn-aks}
@@ -27,7 +28,7 @@ done
 
 if [ -z "$eshopRg" ]
 then
-    echo "${newline}${errorStyle}ERROR: resource group is mandatory. Use -g to set it.${defaultTextStyle}${newline}"
+    echo "${newline}${errorStyle}ERROR: Resource group is mandatory. Use -g to set it.${defaultTextStyle}${newline}"
     exit 1
 fi
 

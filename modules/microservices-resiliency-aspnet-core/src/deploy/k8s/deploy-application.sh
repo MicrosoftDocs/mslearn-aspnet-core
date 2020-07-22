@@ -1,4 +1,11 @@
 #!/bin/bash
+
+# Color theming
+if [ -f ~/clouddrive/aspnet-learn/setup/theme.sh ]
+then
+  . <(cat ~/clouddrive/aspnet-learn/setup/theme.sh)
+fi
+
 registry=$REGISTRY
 eshopRegistry=${ESHOP_REGISTRY}
 
@@ -130,11 +137,14 @@ do
 done
 
 echo
-echo "Helm charts deployed"
+echo "Helm charts deployed!"
+echo 
+echo "${newline} > ${genericCommandStyle}helm list${defaultTextStyle}${newline}"
 helm list
 
-echo
-echo "Pod status"
+echo "Displaying Kubernetes pod status..."
+echo 
+echo "${newline} > ${genericCommandStyle}kubectl get pods${defaultTextStyle}${newline}"
 kubectl get pods
 
 echo
