@@ -15,7 +15,7 @@ cd ~
 declare -x dotnetSdkVersion="3.1.300"
 
 # Module name
-declare moduleName="microservices-aspnet-core"
+declare moduleName="experiment"
 
 # Any other declarations we need
 declare -x gitBranch="live"
