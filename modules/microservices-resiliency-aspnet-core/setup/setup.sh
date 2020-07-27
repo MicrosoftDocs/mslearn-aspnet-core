@@ -58,7 +58,10 @@ else
     curl -sL https://run.linkerd.io/install | sh
     export PATH=$PATH:$HOME/.linkerd2/bin
     echo "export PATH=$PATH:$HOME/.linkerd2/bin" >> ~/.bashrc
-
+    echo " "
+    echo " "
+    echo " "
+    
     # Display URLs to user
     cat ~/clouddrive/aspnet-learn/deployment-urls.txt
 fi
