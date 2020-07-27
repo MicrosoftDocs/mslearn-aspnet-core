@@ -6,153 +6,149 @@ then
   . <(cat ~/clouddrive/aspnet-learn/setup/theme.sh)
 fi
 
-registry=$REGISTRY
-eshopRegistry=${ESHOP_REGISTRY}
-
-if [ -z "$registry" ]&&[ ! -z "$eshopRegistry" ]
-then
-    registry=$eshopRegistry
-fi
+eshopSubs=${ESHOP_SUBS}
+eshopRg=${ESHOP_RG}
+eshopLocation=${ESHOP_LOCATION}
+eshopNodeCount=${ESHOP_NODECOUNT:-1}
+eshopAksName=${ESHOP_AKSNAME:-eshop-learn-aks}
 
 while [ "$1" != "" ]; do
     case $1 in
-        --registry)                     shift
-                                        registry=$1
+        -g | --resource-group)          shift
+                                        eshopRg=$1
                                         ;;
-        --hostname)                     shift
-                                        hostName=$1
+        -l | --location)                shift
+                                        eshopLocation=$1
                                         ;;
-        --hostip)                       shift
-                                        hostIp=$1
-                                        ;;
-        --protocol)                     shift
-                                        protocol=$1
-                                        ;;
-        --certificate)                  shift
-                                        certificate=$1
-                                        ;;
-        --charts)                       shift
-                                        charts=$1
-                                        ;;
-       * )                              echo "Invalid param: $1"
+             * )                        echo "Invalid param: $1"
                                         exit 1
     esac
     shift
 done
 
-appPrefix="eshoplearn"
-chartsFolder="./helm-simple"
-defaultRegistry="eshopdev"
-
-if [ -z "$registry" ]
+if [ -z "$eshopRg" ]
 then
-    registry=$defaultRegistry
-    echo
-    echo "Using default registry \"$defaultRegistry\" for images to deploy to AKS."
-    echo "To change this, set and export the environment variable REGISTRY with registry/ACR login server or use the --registry parameter."
-    echo
-fi
-
-if [ ! -z "$hostIp" ]
-then
-    hostName=$hostIp
-fi
-
-if [ -z "$hostName" ]
-then
-    hostName=$ESHOP_LBIP
-elif [ -z "$hostIp" ]
-then
-    useHostName=true
-fi
-
-if [ -z "$hostName" ]
-then
-    echo
-    echo "Couldn't resolve the host name!"
-    echo "Either use the --hostip (for IP addresses), or --hostname (for DNS names), or"
-    echo "run the \"eval $(cat ~/clouddrive/aspnet-learn/deploy-application-exports.txt)\" command to the values from the initial deployment."
-    echo
+    echo "${newline}${errorStyle}ERROR: Resource group is mandatory. Use -g to set it.${defaultTextStyle}${newline}"
     exit 1
 fi
 
-if [ -z "$protocol" ]
+# Swallow STDERR so we don't get red text here from expected error if the RG doesn't exist
+exec 3>&2
+exec 2> /dev/null
+
+rg=`az group show -g $eshopRg -o json`
+
+# Reset STDERR
+exec 2>&3
+
+if [ -z "$rg" ]
 then
-    protocol="http"
-fi
-
-if [ "$certificate" == "self-signed" ]
-then
-    pushd ./certificates
-    ./create-self-signed-certificate.sh
-    popd
-
-    echo
-    echo "Deploying a development self-signed certificate"
-
-    ./deploy-secrets.sh
-fi
-
-echo "export ESHOP_LBIP=$ESHOP_LBIP" > deploy-application-exports.txt
-echo "export ESHOP_HOST=$hostName" >> deploy-application-exports.txt
-echo "export ESHOP_REGISTRY=$ESHOP_REGISTRY" >> deploy-application-exports.txt
-
-if [ "$charts" == "" ]
-then
-    installedCharts=$(helm list -qf $appPrefix-)
-    if [ "$installedCharts" != "" ]
+    if [ -z "$eshopLocation" ]
     then
-        echo "Uninstalling Helm charts..."
-        helm delete $installedCharts
+        echo "${newline}${errorStyle}ERROR: If resource group has to be created, location is mandatory. Use -l to set it.${defaultTextStyle}${newline}"
+        exit 1
     fi
-    chartList=$(ls $chartsFolder)
+    echo "Creating resource group $eshopRg in location $eshopLocation..."
+    echo "${newline} > ${azCliCommandStyle}az group create -n $eshopRg -l $eshopLocation --output none${defaultTextStyle}${newline}"
+    az group create -n $eshopRg -l $eshopLocation --output none
+    if [ ! $? -eq 0 ]
+    then
+        echo "${newline}${errorStyle}ERROR: Can't create resource group!${defaultTextStyle}${newline}"
+        exit 1
+    fi
 else
-    chartList=${charts//,/ }
-    for chart in $chartList
-    do
-        installedChart=$(helm list -qf $appPrefix-$chart)
-        if [ "$installedChart" != "" ]
-        then
-            echo
-            echo "Uninstalling chart ""$chart""..."
-            helm delete $installedChart
-        fi
-    done
+    if [ -z "$eshopLocation" ]
+    then
+        eshopLocation=`az group show -g $eshopRg --query "location" -otsv`
+    fi
+fi
+
+# AKS Cluster creation
+
+echo
+echo "Creating AKS cluster \"$eshopAksName\" in resource group \"$eshopRg\" and location \"$eshopLocation\"..."
+aksCreateCommand="az aks create -n $eshopAksName -g $eshopRg -c $eshopNodeCount --node-vm-size Standard_D2_v3 --vm-set-type VirtualMachineScaleSets -l $eshopLocation --enable-managed-identity --generate-ssh-keys -o json"
+echo "${newline} > ${azCliCommandStyle}$aksCreateCommand${defaultTextStyle}${newline}"
+retry=5
+aks=`$aksCreateCommand`
+while [ ! $? -eq 0 ]&&[ $retry -gt 0 ]
+do
+    echo
+    echo "Not yet ready for AKS cluster creation. ${bold}This is normal and expected.${defaultTextStyle} Retrying in 5s..."
+    let retry--
+    sleep 5
+    echo
+    echo "Retrying AKS cluster creation..."
+    aks=`$aksCreateCommand`
+done
+
+if [ ! $? -eq 0 ]
+then
+    echo "${newline}${errorStyle}Error creating AKS cluster!${defaultTextStyle}${newline}"
+    exit 1
 fi
 
 echo
-echo "Deploying Helm charts from registry \"$registry\" to \"${protocol}://$hostName\"..."
-echo "---------------------"
+echo "AKS cluster created."
 
-for chart in $chartList
+echo
+echo "Getting credentials for AKS..."
+az aks get-credentials -n $eshopAksName -g $eshopRg --overwrite-existing
+
+# Ingress controller and load balancer (LB) deployment
+
+echo
+echo "Installing NGINX ingress controller"
+kubectl apply -f ingress-controller/nginx-controller.yaml
+kubectl apply -f ingress-controller/nginx-loadbalancer.yaml
+
+echo
+echo "Getting Load Balancer public IP"
+
+aksNodeRGCommand="az aks list --query \"[?name=='$eshopAksName'&&resourceGroup=='$eshopRg'].nodeResourceGroup\" -otsv"
+
+retry=5
+echo "${newline} > ${azCliCommandStyle}$aksNodeRGCommand${defaultTextStyle}${newline}"
+aksNodeRG=$(eval $aksNodeRGCommand)
+while [ "$aksNodeRG" == "" ]
 do
     echo
-    echo "Installing chart \"$chart\"..."
-    helm install eshoplearn-$chart "$chartsFolder/$chart" \
-        --set registry=$registry \
-        --set imagePullPolicy=Always \
-        --set useHostName=$useHostName \
-        --set host=$hostName \
-        --set protocol=$protocol 
+    echo "Unable to obtain load balancer resource group. Retrying in 5s..."
+    let retry--
+    sleep 5
+    echo
+    echo "Retrying..."
+    echo $aksNodeRGCommand
+    aksNodeRG=$(eval $aksNodeRGCommand)
+done
+
+
+while [ "$eshopLbIp" == "" ] || [ "$eshopLbIp" == "<pending>" ]
+do
+    eshopLbIp=`kubectl get svc/ingress-nginx -n ingress-nginx -o jsonpath='{.status.loadBalancer.ingress[0].ip}'`
+    if [ "$eshopLbIp" == "" ]
+    then
+        echo "Waiting for the Load Balancer IP address - Ctrl+C to cancel..."
+        sleep 5
+    else
+        echo "Assigned IP address: $eshopLbIp"
+    fi
 done
 
 echo
-echo "Helm charts deployed!"
-echo 
-echo "${newline} > ${genericCommandStyle}helm list${defaultTextStyle}${newline}"
-helm list
+echo "NGINX ingress controller installed."
 
-echo "Displaying Kubernetes pod status..."
-echo 
-echo "${newline} > ${genericCommandStyle}kubectl get pods${defaultTextStyle}${newline}"
-kubectl get pods
+echo export ESHOP_RG=$eshopRg > create-aks-exports.txt
+echo export ESHOP_LOCATION=$eshopLocation >> create-aks-exports.txt
+echo export ESHOP_AKSNAME=$eshopAksName >> create-aks-exports.txt
+echo export ESHOP_AKSNODERG=$aksNodeRG >> create-aks-exports.txt
+echo export ESHOP_LBIP=$eshopLbIp >> create-aks-exports.txt
 
-pushd ~/clouddrive/aspnet-learn
-echo "The eShop-Learn application has been deployed to \"$protocol://$hostName\" (IP: $ESHOP_LBIP)." > deployment-urls.txt
-echo "" >> deployment-urls.txt
-echo "You can begin exploring these services (when ready):" >> deployment-urls.txt
-echo "- Centralized logging       : $protocol://$hostName/seq/#/events?autorefresh (See transient failures during startup)" >> deployment-urls.txt
-echo "- General application status: $protocol://$hostName/webstatus/ (See overall service status)" >> deployment-urls.txt
-echo "- Web SPA application       : $protocol://$hostName/" >> deployment-urls.txt
-echo "${newline}" >> deployment-urls.txt
-popd
+if [ -z "$ESHOP_QUICKSTART" ]
+then
+    echo "Run the following command to update the environment"
+    echo 'eval $(cat ~/clouddrive/aspnet-learn/create-aks-exports.txt)'
+    echo
+fi
+
+mv -f create-aks-exports.txt ~/clouddrive/aspnet-learn/
