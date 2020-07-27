@@ -15,10 +15,10 @@ cd ~
 declare -x dotnetSdkVersion="3.1.300"
 
 # Module name
-declare moduleName="experiment"
+declare moduleName="microservices-aspnet-core"
 
 # Any other declarations we need
-declare -x gitBranch="live"
+declare -x gitBranch="experiment"
 declare initScript=https://raw.githubusercontent.com/MicrosoftDocs/mslearn-aspnet-core/$gitBranch/infrastructure/scripts/initenvironment.sh
 declare suppressAzureResources=true
 declare rootLocation=~/clouddrive
