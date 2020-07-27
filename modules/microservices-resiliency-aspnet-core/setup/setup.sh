@@ -53,6 +53,12 @@ else
     # Create ACR resource
     $editorHomeLocation/deploy/k8s/create-acr.sh
 
+    # Install Linkerd
+    echo "${newline}${headingStyle}Installing Linkerd...${defaultTextStyle}${newline}"
+    curl -sL https://run.linkerd.io/install | sh
+    export PATH=$PATH:$HOME/.linkerd2/bin
+    echo "export PATH=$PATH:$HOME/.linkerd2/bin" >> ~/.bashrc
+
     # Display URLs to user
     cat ~/clouddrive/aspnet-learn/deployment-urls.txt
 fi
