@@ -96,36 +96,7 @@ else
     fi
 fi
 
-# Service Principal creation / validation
 
-if [ -z "$eshopClientId" ] || [ -z "$eshopClientSecret" ]
-then
-    echo "Creating service principal..."
-
-    spHomepage="https://eShop-Learn-AKS-SP"$RANDOM
-    eshopClientAppCommand="az ad sp create-for-rbac --name "$spHomepage" --query "[appId,password]" -otsv"
-
-    echo "${newline} > ${azCliCommandStyle}$eshopClientAppCommand${defaultTextStyle}${newline}"
-    eshopClientApp=`$eshopClientAppCommand`
-    
-    if [ ! $? -eq 0 ]
-    then
-        echo "${newline}${errorStyle}ERROR: Can't create service principal for AKS.${defaultTextStyle}${newline}"
-        exit 1
-    fi
-
-    eshopClientId=`echo "$eshopClientApp" | head -1`
-    eshopClientSecret=`echo "$eshopClientApp" | tail -1`
-
-    if [ "$eshopClientId" == "" ]||[ "$eshopClientSecret" == "" ]
-    then
-        echo "${newline}${errorStyle}ERROR: ClientId (\"$eshopClientId\") or ClientSecret (\"$eshopClientSecret\") missing!${defaultTextStyle}${newline}"
-        exit 1
-    fi
-
-    echo
-    echo "Service principal \"$spHomepage\" created with ID \"$eshopClientId\" and password \"$eshopClientSecret\""
-fi
 
 # AKS Cluster creation
 
@@ -133,14 +104,14 @@ eshopAksName="eshop-learn-aks"
 
 echo
 echo "Creating AKS cluster \"$eshopAksName\" in resource group \"$eshopRg\" and location \"$eshopLocation\"..."
-aksCreateCommand="az aks create -n $eshopAksName -g $eshopRg --node-count $eshopNodeCount --node-vm-size Standard_D2_v3 --vm-set-type VirtualMachineScaleSets -l $eshopLocation --client-secret $eshopClientSecret --service-principal $eshopClientId --generate-ssh-keys -o json"
+aksCreateCommand="az aks create -n $eshopAksName -g $eshopRg --node-count $eshopNodeCount --node-vm-size Standard_D2_v3 --vm-set-type VirtualMachineScaleSets -l $eshopLocation --enable-managed-identity --generate-ssh-keys -o json"
 echo "${newline} > ${azCliCommandStyle}$aksCreateCommand${defaultTextStyle}${newline}"
 retry=5
 aks=`$aksCreateCommand`
 while [ ! $? -eq 0 ]&&[ $retry -gt 0 ]&&[ ! -z "$spHomepage" ]
 do
     echo
-    echo "New service principal is not yet ready for AKS cluster creation. ${bold}This is normal and expected.${defaultTextStyle} Retrying in 5s..."
+    echo "Not yet ready for AKS cluster creation. ${bold}This is normal and expected.${defaultTextStyle} Retrying in 5s..."
     let retry--
     sleep 5
     echo
