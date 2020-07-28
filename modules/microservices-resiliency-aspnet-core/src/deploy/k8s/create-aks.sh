@@ -98,7 +98,7 @@ az aks get-credentials -n $eshopAksName -g $eshopRg --overwrite-existing
 # Ingress controller and load balancer (LB) deployment
 
 echo
-echo "Installing NGINX ingress controller"
+echo "Installing Nginx ingress controller..."
 kubectl apply -f ingress-controller/nginx-controller.yaml
 kubectl apply -f ingress-controller/nginx-loadbalancer.yaml
 
@@ -136,7 +136,7 @@ do
 done
 
 echo
-echo "NGINX ingress controller installed."
+echo "Nginx ingress controller installed."
 
 echo export ESHOP_RG=$eshopRg > create-aks-exports.txt
 echo export ESHOP_LOCATION=$eshopLocation >> create-aks-exports.txt
