@@ -49,7 +49,7 @@ then
         echo "${newline}${errorStyle}ERROR: If resource group has to be created, location is mandatory. Use -l to set it.${defaultTextStyle}${newline}"
         exit 1
     fi
-    echo "Creating RG $eshopRg in location $eshopLocation..."
+    echo "Creating resource group \"$eshopRg\" in location \"$eshopLocation\"..."
     az group create -n $eshopRg -l $eshopLocation
     if [ ! $? -eq 0 ]
     then
@@ -57,7 +57,7 @@ then
         exit 1
     fi
 
-    echo "Created RG \"$eshopRg\" in location \"$eshopLocation\"."
+    echo "Created resource group \"$eshopRg\" in location \"$eshopLocation\"."
 
 else
     if [ -z "$eshopLocation" ]
@@ -82,7 +82,7 @@ then
     fi
 
     echo
-    echo "Creating Azure Container Registry eshoplearn$eshopIdTag in resource group $eshopRg..."
+    echo "Creating Azure Container Registry \"eshoplearn$eshopIdTag\" in resource group \"$eshopRg\"..."
     acrCommand="az acr create --name eshoplearn$eshopIdTag -g $eshopRg -l $eshopLocation -o json --sku basic --admin-enabled --query \"name\" -otsv"
     echo "${newline} > ${azCliCommandStyle}$acrCommand${defaultTextStyle}${newline}"
     eshopAcrName=`$acrCommand`

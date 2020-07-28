@@ -48,7 +48,7 @@ then
         echo "${newline}${errorStyle}ERROR: If resource group has to be created, location is mandatory. Use -l to set it.${defaultTextStyle}${newline}"
         exit 1
     fi
-    echo "Creating resource group $eshopRg in location $eshopLocation..."
+    echo "Creating resource group \"$eshopRg\" in location \"$eshopLocation\"..."
     echo "${newline} > ${azCliCommandStyle}az group create -n $eshopRg -l $eshopLocation --output none${defaultTextStyle}${newline}"
     az group create -n $eshopRg -l $eshopLocation --output none
     if [ ! $? -eq 0 ]
@@ -103,7 +103,7 @@ kubectl apply -f ingress-controller/nginx-controller.yaml
 kubectl apply -f ingress-controller/nginx-loadbalancer.yaml
 
 echo
-echo "Getting Load Balancer public IP"
+echo "Getting Load Balancer public IP..."
 
 aksNodeRGCommand="az aks list --query \"[?name=='$eshopAksName'&&resourceGroup=='$eshopRg'].nodeResourceGroup\" -otsv"
 
