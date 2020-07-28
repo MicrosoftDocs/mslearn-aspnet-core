@@ -6,6 +6,11 @@ then
   . <(cat ~/clouddrive/aspnet-learn/setup/theme.sh)
 fi
 
+if [ -f ~/clouddrive/aspnet-learn/deploy-application-exports.txt ]
+then
+  eval $(cat ~/clouddrive/aspnet-learn/deploy-application-exports.txt)
+fi
+
 registry=$REGISTRY
 eshopRegistry=${ESHOP_REGISTRY}
 
@@ -93,9 +98,11 @@ then
     ./deploy-secrets.sh
 fi
 
+pushd ~/clouddrive/aspnet-learn
 echo "export ESHOP_LBIP=$ESHOP_LBIP" > deploy-application-exports.txt
 echo "export ESHOP_HOST=$hostName" >> deploy-application-exports.txt
 echo "export ESHOP_REGISTRY=$ESHOP_REGISTRY" >> deploy-application-exports.txt
+popd
 
 if [ "$charts" == "" ]
 then
