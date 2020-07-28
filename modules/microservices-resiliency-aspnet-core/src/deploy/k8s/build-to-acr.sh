@@ -1,5 +1,11 @@
 #!/bin/bash
 
+# Color theming
+if [ -f ~/clouddrive/aspnet-learn/setup/theme.sh ]
+then
+  . <(cat ~/clouddrive/aspnet-learn/setup/theme.sh)
+fi
+
 echo
 echo "Building images to ACR"
 echo "======================"
@@ -55,9 +61,11 @@ do
 
     echo
     echo "Building image \"$image\" for service \"$service\" with \"$dockerfile.acr\"..."
-    az acr build -r $ESHOP_ACRNAME -t $ESHOP_REGISTRY/$image:linux-latest -f $dockerfile.acr .
+    serviceCmd="az acr build -r $ESHOP_ACRNAME -t $ESHOP_REGISTRY/$image:linux-latest -f $dockerfile.acr ."
+    echo "${newline} > ${azCliCommandStyle}$serviceCmd${defaultTextStyle}${newline}"
+    eval $serviceCmd
 done
-
+    
 popd
 
 popd
