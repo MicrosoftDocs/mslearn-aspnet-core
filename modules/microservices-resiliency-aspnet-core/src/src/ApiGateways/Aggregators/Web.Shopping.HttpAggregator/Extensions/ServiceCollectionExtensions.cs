@@ -1,3 +1,19 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Http;
+using Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator.Config;
+using Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator.Filters.Basket.API.Infrastructure.Filters;
+using Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator.Infrastructure;
+using Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator.Services;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.OpenApi.Models;
+using Newtonsoft.Json.Converters;
+using Serilog;
+using System;
+using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
+// Add the using statements
+
 namespace Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator.Extensions
 {
     public static class ServiceCollectionExtensions
@@ -31,9 +47,9 @@ namespace Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator.Extensions
         {
             services.AddOptions();
             services.Configure<UrlsConfig>(configuration.GetSection("urls"));
-
             services.AddControllers()
-                .AddNewtonsoftJson(options => options.SerializerSettings.Converters.Add(new StringEnumConverter()));
+                    .AddNewtonsoftJson(options => 
+                        options.SerializerSettings.Converters.Add(new StringEnumConverter()));
 
             services.AddSwaggerGen(options =>
             {
@@ -41,39 +57,37 @@ namespace Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator.Extensions
                 {
                     Title = "Shopping Aggregator for Web Clients",
                     Version = "v1",
-                    Description = "Shopping Aggregator for Web Clients"
+                    Description = "Shopping Aggregator for Web Clients",
                 });
 
                 options.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
                 {
                     Type = SecuritySchemeType.OAuth2,
-                    Flows = new OpenApiOAuthFlows()
+                    Flows = new OpenApiOAuthFlows
                     {
-                        Implicit = new OpenApiOAuthFlow()
+                        Implicit = new OpenApiOAuthFlow
                         {
                             AuthorizationUrl = new Uri($"{configuration.GetValue<string>("IdentityUrlExternal")}/connect/authorize"),
                             TokenUrl = new Uri($"{configuration.GetValue<string>("IdentityUrlExternal")}/connect/token"),
-
                             Scopes = new Dictionary<string, string>()
                             {
                                 { "webshoppingagg", "Shopping Aggregator for Web Clients" }
-                            }
+                            },
                         }
                     }
                 });
 
                 options.OperationFilter<AuthorizeCheckOperationFilter>();
             });
-            services.AddSwaggerGenNewtonsoftSupport();
 
+            services.AddSwaggerGenNewtonsoftSupport();
             services.AddCors(options =>
             {
-                options.AddPolicy("CorsPolicy",
-                    builder => builder
-                    .SetIsOriginAllowed((host) => true)
-                    .AllowAnyMethod()
-                    .AllowAnyHeader()
-                    .AllowCredentials());
+                options.AddPolicy("CorsPolicy", builder => 
+                    builder.SetIsOriginAllowed((host) => true)
+                        .AllowAnyMethod()
+                        .AllowAnyHeader()
+                        .AllowCredentials());
             });
 
             return services;
@@ -85,7 +99,6 @@ namespace Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator.Extensions
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             //register http services
-
             services.AddHttpClient<IBasketService, BasketService>()
                 .AddHttpMessageHandler<HttpClientAuthorizationDelegatingHandler>();
 
