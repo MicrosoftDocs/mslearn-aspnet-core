@@ -93,7 +93,7 @@ then
         exit 1
     fi
 
-    echo ACR created!
+    echo ACR instance created!
     echo
 fi
 
