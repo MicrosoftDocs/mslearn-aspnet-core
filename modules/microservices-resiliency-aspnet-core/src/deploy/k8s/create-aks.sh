@@ -64,32 +64,46 @@ else
 fi
 
 # AKS Cluster creation
+# Swallow STDERR so we don't get red text here from expected error if the RG doesn't exist
+exec 3>&2
+exec 2> /dev/null
 
-echo
-echo "Creating AKS cluster \"$eshopAksName\" in resource group \"$eshopRg\" and location \"$eshopLocation\"..."
-aksCreateCommand="az aks create -n $eshopAksName -g $eshopRg -c $eshopNodeCount --node-vm-size Standard_D2_v3 --vm-set-type VirtualMachineScaleSets -l $eshopLocation --enable-managed-identity --generate-ssh-keys -o json"
-echo "${newline} > ${azCliCommandStyle}$aksCreateCommand${defaultTextStyle}${newline}"
-retry=5
-aks=`$aksCreateCommand`
-while [ ! $? -eq 0 ]&&[ $retry -gt 0 ]
-do
-    echo
-    echo "Not yet ready for AKS cluster creation. ${bold}This is normal and expected.${defaultTextStyle} Retrying in 5s..."
-    let retry--
-    sleep 5
-    echo
-    echo "Retrying AKS cluster creation..."
-    aks=`$aksCreateCommand`
-done
+existingAks=`az aks show -n $eshopAksName -g $eshopRg -o json`
 
-if [ ! $? -eq 0 ]
+# Reset STDERR
+exec 2>&3
+
+if [ -z "$existingAks" ]
 then
-    echo "${newline}${errorStyle}Error creating AKS cluster!${defaultTextStyle}${newline}"
-    exit 1
-fi
+    echo
+    echo "Creating AKS cluster \"$eshopAksName\" in resource group \"$eshopRg\" and location \"$eshopLocation\"..."
+    aksCreateCommand="az aks create -n $eshopAksName -g $eshopRg -c $eshopNodeCount --node-vm-size Standard_D2_v3 --vm-set-type VirtualMachineScaleSets -l $eshopLocation --enable-managed-identity --generate-ssh-keys -o json"
+    echo "${newline} > ${azCliCommandStyle}$aksCreateCommand${defaultTextStyle}${newline}"
+    retry=5
+    aks=`$aksCreateCommand`
+    while [ ! $? -eq 0 ]&&[ $retry -gt 0 ]
+    do
+        echo
+        echo "Not yet ready for AKS cluster creation. ${bold}This is normal and expected.${defaultTextStyle} Retrying in 5s..."
+        let retry--
+        sleep 5
+        echo
+        echo "Retrying AKS cluster creation..."
+        aks=`$aksCreateCommand`
+    done
 
-echo
-echo "AKS cluster created."
+    if [ ! $? -eq 0 ]
+    then
+        echo "${newline}${errorStyle}Error creating AKS cluster!${defaultTextStyle}${newline}"
+        exit 1
+    fi
+
+    echo
+    echo "AKS cluster created."
+else
+    echo
+    echo "Reusing existing AKS resource."
+fi
 
 echo
 echo "Getting credentials for AKS..."
