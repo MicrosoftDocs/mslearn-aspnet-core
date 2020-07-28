@@ -9,6 +9,8 @@ then
   eval $(cat ~/clouddrive/aspnet-learn/create-acr-exports.txt)
 fi
 
+pushd ~/clouddrive/aspnet-learn/src/deploy/k8s
+
 if [ -z "$ESHOP_REGISTRY" ] || [ -z "$ESHOP_ACRNAME" ]
 then
     echo "One or more required environment variables are missing:"
@@ -55,5 +57,7 @@ do
     echo "Building image \"$image\" for service \"$service\" with \"$dockerfile.acr\"..."
     az acr build -r $ESHOP_ACRNAME -t $ESHOP_REGISTRY/$image:linux-latest -f $dockerfile.acr .
 done
+
+popd
 
 popd
