@@ -22,6 +22,30 @@ namespace Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator.Extensions
 
         // Add the GetCircuitBreakerPolicy method
 
+        public static IServiceCollection AddApplicationServices(this IServiceCollection services)
+        {
+            //register delegating handlers
+            services.AddTransient<HttpClientAuthorizationDelegatingHandler>();
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
+            //register http services
+            services.AddHttpClient<IBasketService, BasketService>()
+                .AddHttpMessageHandler<HttpClientAuthorizationDelegatingHandler>();
+
+            services.AddHttpClient<ICatalogService, CatalogService>();
+
+            services.AddHttpClient<IOrderApiClient, OrderApiClient>()
+                .AddHttpMessageHandler<HttpClientAuthorizationDelegatingHandler>();
+
+            services.AddHttpClient<IOrderingService, OrderingService>()
+                .AddHttpMessageHandler<HttpClientAuthorizationDelegatingHandler>();
+
+            services.AddHttpClient<ICouponService, CouponService>()
+                .AddHttpMessageHandler<HttpClientAuthorizationDelegatingHandler>();
+
+            return services;
+        }        
+
         public static IServiceCollection AddCustomAuthentication(this IServiceCollection services, IConfiguration configuration)
         {
             JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Remove("sub");
@@ -89,29 +113,6 @@ namespace Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator.Extensions
                         .AllowAnyHeader()
                         .AllowCredentials());
             });
-
-            return services;
-        }
-        public static IServiceCollection AddApplicationServices(this IServiceCollection services)
-        {
-            //register delegating handlers
-            services.AddTransient<HttpClientAuthorizationDelegatingHandler>();
-            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-
-            //register http services
-            services.AddHttpClient<IBasketService, BasketService>()
-                .AddHttpMessageHandler<HttpClientAuthorizationDelegatingHandler>();
-
-            services.AddHttpClient<ICatalogService, CatalogService>();
-
-            services.AddHttpClient<IOrderApiClient, OrderApiClient>()
-                .AddHttpMessageHandler<HttpClientAuthorizationDelegatingHandler>();
-
-            services.AddHttpClient<IOrderingService, OrderingService>()
-                .AddHttpMessageHandler<HttpClientAuthorizationDelegatingHandler>();
-
-            services.AddHttpClient<ICouponService, CouponService>()
-                .AddHttpMessageHandler<HttpClientAuthorizationDelegatingHandler>();
 
             return services;
         }
