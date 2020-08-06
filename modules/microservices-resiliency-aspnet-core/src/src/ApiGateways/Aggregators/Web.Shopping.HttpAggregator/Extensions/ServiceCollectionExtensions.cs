@@ -28,7 +28,10 @@ namespace Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator.Extensions
             services.AddTransient<HttpClientAuthorizationDelegatingHandler>();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
-            //register http services
+            //register HTTP services
+            services.AddHttpClient<ICouponService, CouponService>()
+                .AddHttpMessageHandler<HttpClientAuthorizationDelegatingHandler>();
+
             services.AddHttpClient<IBasketService, BasketService>()
                 .AddHttpMessageHandler<HttpClientAuthorizationDelegatingHandler>();
 
@@ -38,9 +41,6 @@ namespace Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator.Extensions
                 .AddHttpMessageHandler<HttpClientAuthorizationDelegatingHandler>();
 
             services.AddHttpClient<IOrderingService, OrderingService>()
-                .AddHttpMessageHandler<HttpClientAuthorizationDelegatingHandler>();
-
-            services.AddHttpClient<ICouponService, CouponService>()
                 .AddHttpMessageHandler<HttpClientAuthorizationDelegatingHandler>();
 
             return services;
