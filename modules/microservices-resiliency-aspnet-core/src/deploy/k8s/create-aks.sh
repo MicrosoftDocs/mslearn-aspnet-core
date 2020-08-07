@@ -84,7 +84,7 @@ then
     while [ ! $? -eq 0 ]&&[ $retry -gt 0 ]
     do
         echo
-        echo "Not yet ready for AKS cluster creation. ${bold}This is normal and expected.${defaultTextStyle} Retrying in 5s..."
+        echo "Unable to create AKS cluster. ${defaultTextStyle} Retrying in 5s..."
         let retry--
         sleep 5
         echo
