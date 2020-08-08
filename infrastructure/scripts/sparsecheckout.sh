@@ -42,7 +42,7 @@ if [ -d "$DIR" ]; then
     for i in ${CHECKOUT_DIRS[@]}; do
         mv ${i} ./
         while [ ! $? -eq 0 ]; do
-            echo "Couldn't move files to working directory. This is likely due to write cache latency. Retrying..."
+            echo "Couldn't move files to working directory. Retrying..."
             sleep 5
             mv ${i} ./
         done
