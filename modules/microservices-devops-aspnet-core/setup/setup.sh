@@ -18,11 +18,12 @@ declare -x dotnetSdkVersion="3.1.300"
 declare moduleName="microservices-aspnet-core"
 
 # Any other declarations we need
-declare -x gitBranch="live"
+declare -x gitBranch="microservices-devops-aspnet-core"
 declare initScript=https://raw.githubusercontent.com/MicrosoftDocs/mslearn-aspnet-core/$gitBranch/infrastructure/scripts/initenvironment.sh
 declare suppressAzureResources=true
 declare rootLocation=~/clouddrive
 declare editorHomeLocation=$rootLocation/aspnet-learn/src
+declare suppressShallowClone=true
 
 if [ -d "$rootLocation/aspnet-learn" ]; then
     echo "$rootLocation/aspnet-learn/ already exists!"
@@ -38,8 +39,20 @@ else
     # Grab and run initenvironment.sh
     . <(wget -q -O - $initScript)
 
-    # Download and build
-    downloadAndBuild
+    # Clone the thing
+    # Set location
+    cd $rootLocation
+
+    # Set global Git config variables
+    git config --global user.name "Microsoft Learn Student"
+    git config --global user.email learn@contoso.com
+
+    echo 
+    echo "${headingStyle}Please enter the full URL of the GitHub repo to clone.${defaultTextStyle}"
+    echo 
+    read -p 'Repo URL: ' repoUrl
+
+    git clone $repoUrl
 
     # Set location to ~/clouddrive
     cd $editorHomeLocation
@@ -48,10 +61,10 @@ else
     code .
 
     # Run eshop-learn quickstart to deploy to AKS
-    $editorHomeLocation/deploy/k8s/quickstart.sh --resource-group eshop-learn-rg --location westus
+    # $editorHomeLocation/deploy/k8s/quickstart.sh --resource-group eshop-learn-rg --location westus
 
     # Create ACR resource
-    $editorHomeLocation/deploy/k8s/create-acr.sh
+    # $editorHomeLocation/deploy/k8s/create-acr.sh
 
     # Display URLs to user
     cat ~/clouddrive/aspnet-learn/deployment-urls.txt
