@@ -22,7 +22,7 @@ declare -x gitBranch="microservices-devops-aspnet-core"
 declare initScript=https://raw.githubusercontent.com/MicrosoftDocs/mslearn-aspnet-core/$gitBranch/infrastructure/scripts/initenvironment.sh
 declare suppressAzureResources=true
 declare rootLocation=~/clouddrive
-declare editorHomeLocation=$rootLocation/aspnet-learn/src
+declare editorHomeLocation=$rootLocation/aspnet-learn/
 declare suppressShallowClone=true
 
 if [ -d "$rootLocation/aspnet-learn" ]; then
@@ -52,7 +52,7 @@ else
     echo 
     read -p 'Repo URL: ' repoUrl
 
-    git clone $repoUrl
+    git clone $repoUrl aspnet-learn
 
     # Set location to ~/clouddrive
     cd $editorHomeLocation
@@ -67,6 +67,6 @@ else
     # $editorHomeLocation/deploy/k8s/create-acr.sh
 
     # Display URLs to user
-    cat ~/clouddrive/aspnet-learn/deployment-urls.txt
+    cat ~/clouddrive/deployment-urls.txt
 fi
 
