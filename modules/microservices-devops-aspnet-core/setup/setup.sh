@@ -48,8 +48,9 @@ else
     git config --global user.email learn@contoso.com
 
     echo 
-    echo "${headingStyle}Please enter the full URL of the GitHub repo to clone.${defaultTextStyle}"
-    echo 
+    echo "${headingStyle}Please enter the URL of your GitHub repo to clone.${defaultTextStyle}"
+    echo "Example: https://github.com/<your username>/mslearn-microservices-devops-aspnet-core" 
+    echo
     read -p 'Repo URL: ' repoUrl
 
     git clone $repoUrl aspnet-learn
