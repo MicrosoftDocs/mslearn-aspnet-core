@@ -61,9 +61,6 @@ else
     # Set location to ~/clouddrive
     cd $editorHomeLocation
 
-    # Launch editor so the user can see the code
-    code .
-
     # Run eshop-learn quickstart to deploy to AKS
     $editorHomeLocation/deploy/k8s/quickstart.sh --resource-group eshop-learn-rg --location westus
 
