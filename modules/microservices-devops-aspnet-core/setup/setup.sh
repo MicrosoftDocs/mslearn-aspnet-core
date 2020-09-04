@@ -70,9 +70,10 @@ else
     # Create ACR resource
     $editorHomeLocation/deploy/k8s/create-acr.sh
 
+    echo "${defaultTextStyle}${newline}${newline}"
+
     # Display URLs to user
     cat ~/clouddrive/aspnet-learn-temp/deployment-urls.txt
-    echo 
 
     # Display config values for exercise
     cat ~/clouddrive/aspnet-learn-temp/config.txt
