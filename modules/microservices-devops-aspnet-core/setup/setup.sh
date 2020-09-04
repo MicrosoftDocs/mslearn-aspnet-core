@@ -43,6 +43,9 @@ else
     # Set location
     cd $rootLocation
 
+    # Make a folder to keep temp files
+    mkdir aspnet-learn-temp
+
     # Set global Git config variables
     git config --global user.name "Microsoft Learn Student"
     git config --global user.email learn@contoso.com
@@ -68,6 +71,10 @@ else
     $editorHomeLocation/deploy/k8s/create-acr.sh
 
     # Display URLs to user
-    cat ~/clouddrive/aspnet-learn/deployment-urls.txt
+    cat ~/clouddrive/aspnet-learn-temp/deployment-urls.txt
+    echo 
+
+    # Display config values for exercise
+    cat ~/clouddrive/aspnet-learn-temp/config.txt
 fi
 
