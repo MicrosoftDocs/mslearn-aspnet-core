@@ -100,6 +100,10 @@ configureDotNetCli() {
     # Disable the sending of telemetry to the mothership.
     export DOTNET_CLI_TELEMETRY_OPTOUT=true
     echo "export DOTNET_CLI_TELEMETRY_OPTOUT=true" >> ~/.bashrc
+
+    # Disable add'l welcome messages and logo stuff
+    export DOTNET_NOLOGO=true
+    echo "export DOTNET_NOLOGO=true" >> ~/.bashrc
     
     # Add tab completion for .NET Core CLI
     tabSlug="#dotnet-tab-completion"
