@@ -23,6 +23,7 @@ declare initScript=https://raw.githubusercontent.com/MicrosoftDocs/mslearn-aspne
 declare suppressAzureResources=true
 declare rootLocation=~/clouddrive
 declare editorHomeLocation=$rootLocation/aspnet-learn/
+declare editorHomeLocationTemp=$rootLocation/aspnet-learn-temp/
 declare suppressShallowClone=true
 
 if [ -d "$rootLocation/aspnet-learn" ]; then
@@ -70,9 +71,8 @@ else
     echo "${defaultTextStyle}${newline}${newline}"
 
     # Display URLs to user
-    cat ~/clouddrive/aspnet-learn-temp/deployment-urls.txt
+    cat $editorHomeLocationTemp/deployment-urls.txt
 
     # Display config values for exercise
-    cat ~/clouddrive/aspnet-learn-temp/config.txt
+    cat $editorHomeLocationTemp/config.txt
 fi
-
