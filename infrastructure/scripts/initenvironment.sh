@@ -94,14 +94,16 @@ configureDotNetCli() {
 
     # Suppress priming the NuGet package cache with assemblies and 
     # XML docs we won't need.
-    export DOTNET_SKIP_FIRST_TIME_EXPERIENCE=true
-    echo "export DOTNET_SKIP_FIRST_TIME_EXPERIENCE=true" >> ~/.bashrc
     export NUGET_XMLDOC_MODE=skip
     echo "export NUGET_XMLDOC_MODE=skip" >> ~/.bashrc
     
     # Disable the sending of telemetry to the mothership.
     export DOTNET_CLI_TELEMETRY_OPTOUT=true
     echo "export DOTNET_CLI_TELEMETRY_OPTOUT=true" >> ~/.bashrc
+
+    # Disable add'l welcome messages and logo stuff
+    export DOTNET_NOLOGO=true
+    echo "export DOTNET_NOLOGO=true" >> ~/.bashrc
     
     # Add tab completion for .NET Core CLI
     tabSlug="#dotnet-tab-completion"
@@ -127,20 +129,22 @@ setPathEnvironmentVariableForDotNet() {
     fi
 }
 downloadAndBuild() {
-    # Set location
-    cd $rootLocation
+    if ! [ "$suppressShallowClone" ]; then
+        # Set location
+        cd $rootLocation
 
-    # Set global Git config variables
-    git config --global user.name "Microsoft Learn Student"
-    git config --global user.email learn@contoso.com
-    
-    # Download the sample project, restore NuGet packages, and build
-    echo "${newline}${headingStyle}Downloading code...${defaultTextStyle}"
-    (
-        set -x
-        wget -q -O - $gitPathToCloneScript | bash -s $gitDirectoriesToClone
-    )
-    echo "${defaultTextStyle}"
+        # Set global Git config variables
+        git config --global user.name "Microsoft Learn Student"
+        git config --global user.email learn@contoso.com
+        
+        # Download the sample project, restore NuGet packages, and build
+        echo "${newline}${headingStyle}Downloading code...${defaultTextStyle}"
+        (
+            set -x
+            wget -q -O - $gitPathToCloneScript | bash -s $gitDirectoriesToClone
+        )
+        echo "${defaultTextStyle}"
+    fi
 }
 # Provision Azure SQL Database
 provisionAzSqlDatabase() {
