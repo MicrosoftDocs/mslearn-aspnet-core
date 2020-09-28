@@ -12,7 +12,7 @@
 cd ~
 
 # dotnet SDK version
-declare -x dotnetSdkVersion="3.1.302"
+declare -x dotnetSdkVersion="3.1.401"
 
 # Module name
 declare moduleName="microservices-resiliency-aspnet-core"
