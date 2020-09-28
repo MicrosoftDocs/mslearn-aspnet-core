@@ -1,0 +1,22 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: basket
+  labels:
+    app: eshop
+    service: basket
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+spec:
+  rules:
+{{- if .Values.useHostName }}
+  - host: {{ .Values.host }}
+    http:
+{{- else }}
+  - http:
+{{- end }}
+      paths:
+      - path: /basket-api
+        backend:
+          serviceName: basket-api
+          servicePort: 80
