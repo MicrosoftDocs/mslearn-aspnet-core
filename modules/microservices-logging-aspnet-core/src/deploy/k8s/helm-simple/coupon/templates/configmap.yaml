@@ -6,6 +6,7 @@ metadata:
     app: eshop
     service: coupon
 data:
+  #APPINSIGHTS_INSTRUMENTATIONKEY: <key>
   ASPNETCORE_ENVIRONMENT: Development
   ASPNETCORE_URLS: http://0.0.0.0:80
   AzureServiceBusEnabled: "False"
