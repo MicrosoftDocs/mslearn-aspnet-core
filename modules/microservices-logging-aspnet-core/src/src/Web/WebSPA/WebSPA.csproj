@@ -12,7 +12,6 @@
     <LangVersion>preview</LangVersion>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     <DockerfileContext>..\..\..</DockerfileContext>
-    <DockerComposeProjectPath>..\..\..\docker-compose.dcproj</DockerComposeProjectPath>
     <SpaRoot>Client\</SpaRoot>
   </PropertyGroup>
 
