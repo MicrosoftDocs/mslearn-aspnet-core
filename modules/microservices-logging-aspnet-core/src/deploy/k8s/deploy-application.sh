@@ -6,12 +6,12 @@ then
   . <(cat ~/clouddrive/aspnet-learn/setup/theme.sh)
 fi
 
-if [ -f ~/clouddrive/aspnet-learn/deploy-application-exports.txt ]
+if [ -f ~/clouddrive/aspnet-learn/create-acr-exports.txt ]
 then
-  eval $(cat ~/clouddrive/aspnet-learn/deploy-application-exports.txt)
+  eval $(cat ~/clouddrive/aspnet-learn/create-acr-exports.txt)
 fi
 
-pushd ~/clouddrive/aspnet-learn/src/deploy/k8s
+pushd ~/clouddrive/aspnet-learn/src/deploy/k8s > /dev/null
 
 registry=$REGISTRY
 eshopRegistry=${ESHOP_REGISTRY}
@@ -90,9 +90,9 @@ fi
 
 if [ "$certificate" == "self-signed" ]
 then
-    pushd ./certificates
+    pushd ./certificates > /dev/null
     ./create-self-signed-certificate.sh
-    popd
+    popd > /dev/null
 
     echo
     echo "Deploying a development self-signed certificate"
@@ -100,11 +100,11 @@ then
     ./deploy-secrets.sh
 fi
 
-pushd ~/clouddrive/aspnet-learn
+pushd ~/clouddrive/aspnet-learn > /dev/null
 echo "export ESHOP_LBIP=$ESHOP_LBIP" > deploy-application-exports.txt
 echo "export ESHOP_HOST=$hostName" >> deploy-application-exports.txt
 echo "export ESHOP_REGISTRY=$ESHOP_REGISTRY" >> deploy-application-exports.txt
-popd
+popd > /dev/null
 
 if [ "$charts" == "" ]
 then
@@ -156,7 +156,7 @@ echo
 echo "${newline} > ${genericCommandStyle}kubectl get pods${defaultTextStyle}${newline}"
 kubectl get pods
 
-pushd ~/clouddrive/aspnet-learn
+pushd ~/clouddrive/aspnet-learn > /dev/null
 echo "The eShop-Learn application has been deployed to \"$protocol://$hostName\" (IP: $ESHOP_LBIP)." > deployment-urls.txt
 echo "" >> deployment-urls.txt
 echo "You can begin exploring these services (when ready):" >> deployment-urls.txt
@@ -164,6 +164,6 @@ echo "- Centralized logging       : $protocol://$hostName/seq/#/events?autorefre
 echo "- General application status: $protocol://$hostName/webstatus/ (See overall service status)" >> deployment-urls.txt
 echo "- Web SPA application       : $protocol://$hostName/" >> deployment-urls.txt
 echo "${newline}" >> deployment-urls.txt
-popd
+popd > /dev/null
 
-popd
+popd > /dev/null
