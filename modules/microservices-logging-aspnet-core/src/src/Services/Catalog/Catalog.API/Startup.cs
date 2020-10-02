@@ -1,8 +1,8 @@
 ﻿using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using Catalog.API.Grpc;
-using global::Catalog.API.Infrastructure.Filters;
-using global::Catalog.API.IntegrationEvents;
+using Catalog.API.Infrastructure.Filters;
+using Catalog.API.IntegrationEvents;
 using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
