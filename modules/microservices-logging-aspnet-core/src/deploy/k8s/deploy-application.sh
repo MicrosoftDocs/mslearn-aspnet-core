@@ -112,7 +112,9 @@ then
     if [ "$installedCharts" != "" ]
     then
         echo "Uninstalling Helm charts..."
-        helm delete $installedCharts
+        helmCmd="helm delete $installedCharts"
+        echo "${newline} > ${genericCommandStyle}$helmCmd${defaultTextStyle}${newline}"
+        eval $helmCmd
     fi
     chartList=$(ls $chartsFolder)
 else
@@ -124,7 +126,9 @@ else
         then
             echo
             echo "Uninstalling chart ""$chart""..."
-            helm delete $installedChart
+            helmCmd="helm delete $installedChart"
+            echo "${newline} > ${genericCommandStyle}$helmCmd${defaultTextStyle}${newline}"
+            eval $helmCmd
         fi
     done
 fi
@@ -137,12 +141,9 @@ for chart in $chartList
 do
     echo
     echo "Installing chart \"$chart\"..."
-    helm install eshoplearn-$chart "$chartsFolder/$chart" \
-        --set registry=$registry \
-        --set imagePullPolicy=Always \
-        --set useHostName=$useHostName \
-        --set host=$hostName \
-        --set protocol=$protocol 
+    helmCmd="helm install eshoplearn-$chart "$chartsFolder/$chart" --set registry=$registry --set imagePullPolicy=Always --set useHostName=$useHostName --set host=$hostName --set protocol=$protocol"
+    echo "${newline} > ${genericCommandStyle}$helmCmd${defaultTextStyle}${newline}"
+    eval $helmCmd
 done
 
 echo

@@ -15,7 +15,7 @@ then
   eval $(cat ~/clouddrive/aspnet-learn/create-acr-exports.txt)
 fi
 
-pushd ~/clouddrive/aspnet-learn/src/deploy/k8s
+pushd ~/clouddrive/aspnet-learn/src/deploy/k8s > /dev/null
 
 if [ -z "$ESHOP_REGISTRY" ] || [ -z "$ESHOP_ACRNAME" ]
 then
@@ -49,7 +49,7 @@ else
     serviceList=${services//,/ }
 fi
 
-pushd ../..
+pushd ../..  > /dev/null
 
 for service in $serviceList
 do
@@ -66,6 +66,5 @@ do
     eval $serviceCmd
 done
     
-popd
-
-popd
+popd > /dev/null
+popd > /dev/null

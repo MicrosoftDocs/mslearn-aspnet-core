@@ -1,5 +1,4 @@
 ﻿using Catalog.API.Extensions;
-//using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
