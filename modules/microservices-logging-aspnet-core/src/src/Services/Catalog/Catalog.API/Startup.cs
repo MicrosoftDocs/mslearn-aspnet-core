@@ -1,39 +1,21 @@
 ﻿using Autofac;
 using Autofac.Extensions.DependencyInjection;
+using Catalog.API.Extensions;
 using Catalog.API.Grpc;
-using Catalog.API.Infrastructure.Filters;
-using Catalog.API.IntegrationEvents;
 using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Azure.ServiceBus;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Diagnostics;
-using Microsoft.eShopOnContainers.BuildingBlocks.EventBus;
 using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Abstractions;
-using Microsoft.eShopOnContainers.BuildingBlocks.EventBusRabbitMQ;
-using Microsoft.eShopOnContainers.BuildingBlocks.EventBusServiceBus;
-using Microsoft.eShopOnContainers.BuildingBlocks.IntegrationEventLogEF;
-using Microsoft.eShopOnContainers.BuildingBlocks.IntegrationEventLogEF.Services;
-using Microsoft.eShopOnContainers.Services.Catalog.API.Infrastructure;
 using Microsoft.eShopOnContainers.Services.Catalog.API.IntegrationEvents.EventHandling;
 using Microsoft.eShopOnContainers.Services.Catalog.API.IntegrationEvents.Events;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
-using Microsoft.OpenApi.Models;
-using Newtonsoft.Json.Converters;
-using RabbitMQ.Client;
+//using Prometheus;
 using System;
-using System.Data.Common;
 using System.IO;
-using System.Reflection;
-using Catalog.API.Extensions;
 
 namespace Microsoft.eShopOnContainers.Services.Catalog.API
 {
@@ -66,7 +48,6 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory)
         {
-
             // Add the counter code
 
             var pathBase = Configuration["PATH_BASE"];
@@ -78,10 +59,10 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API
             }
 
             app.UseSwagger()
-             .UseSwaggerUI(c =>
-             {
-                 c.SwaggerEndpoint($"{ (!string.IsNullOrEmpty(pathBase) ? pathBase : string.Empty) }/swagger/v1/swagger.json", "Catalog.API V1");
-             });
+               .UseSwaggerUI(c =>
+               {
+                   c.SwaggerEndpoint($"{ (!string.IsNullOrEmpty(pathBase) ? pathBase : string.Empty) }/swagger/v1/swagger.json", "Catalog.API V1");
+               });
 
             app.UseCors("CorsPolicy");
             app.UseRouting();
@@ -94,7 +75,7 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API
                 endpoints.MapControllers();
                 endpoints.MapGet("/_proto/", async ctx =>
                 {
-                    ctx.Response.ContentType = "text/plain";
+                    ctx.Response.ContentType = MediaTypeNames.Text.Plain;
                     using var fs = new FileStream(Path.Combine(env.ContentRootPath, "Proto", "catalog.proto"), FileMode.Open, FileAccess.Read);
                     using var sr = new StreamReader(fs);
                     while (!sr.EndOfStream)
@@ -107,7 +88,7 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API
                     }
                 });
                 endpoints.MapGrpcService<CatalogService>();
-                endpoints.MapHealthChecks("/hc", new HealthCheckOptions()
+                endpoints.MapHealthChecks("/hc", new HealthCheckOptions
                 {
                     Predicate = _ => true,
                     ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
