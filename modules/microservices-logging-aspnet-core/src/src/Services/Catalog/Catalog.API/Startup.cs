@@ -16,6 +16,7 @@ using Microsoft.Extensions.Logging;
 //using Prometheus;
 using System;
 using System.IO;
+using System.Net.Mime;
 
 namespace Microsoft.eShopOnContainers.Services.Catalog.API
 {
