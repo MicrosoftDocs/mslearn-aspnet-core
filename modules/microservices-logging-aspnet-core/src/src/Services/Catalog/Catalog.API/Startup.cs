@@ -28,7 +28,6 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 using Newtonsoft.Json.Converters;
-//using Prometheus;
 using RabbitMQ.Client;
 using System;
 using System.Data.Common;
@@ -67,16 +66,8 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory)
         {
-            //var counter = Metrics.CreateCounter("catalogapi_path_counter", "Counts requests to the Catalog API endpoints", new CounterConfiguration
-            //{
-            //    LabelNames = new[] { "method", "endpoint" }
-            //});
 
-            //app.Use((context, next) =>
-            //{
-            //    counter.WithLabels(context.Request.Method, context.Request.Path).Inc();
-            //    return next();
-            //});
+            // Add the counter code
 
             var pathBase = Configuration["PATH_BASE"];
 
@@ -94,7 +85,9 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API
 
             app.UseCors("CorsPolicy");
             app.UseRouting();
-            //app.UseMetricServer();// Use the Prometheus middleware
+
+            // Add the metrics server middleware
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapDefaultControllerRoute();
