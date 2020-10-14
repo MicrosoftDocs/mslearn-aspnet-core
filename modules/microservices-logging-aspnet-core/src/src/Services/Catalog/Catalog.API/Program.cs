@@ -87,7 +87,7 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API
         private static Serilog.ILogger CreateSerilogLogger(IConfiguration configuration)
         {
             var seqServerUrl = configuration["Serilog:SeqServerUrl"];
-            var logstashUrl = configuration["Serilog:LogstashgUrl"];
+            var logstashUrl = configuration["Serilog:LogstashUrl"];
 
             return new LoggerConfiguration()
                 .MinimumLevel.Verbose()
