@@ -12,7 +12,7 @@
 cd ~
 
 # dotnet SDK version
-declare -x dotnetSdkVersion="3.1.401"
+declare -x dotnetSdkVersion="3.1.403"
 
 # Module name
 declare moduleName="microservices-logging-aspnet-core"
