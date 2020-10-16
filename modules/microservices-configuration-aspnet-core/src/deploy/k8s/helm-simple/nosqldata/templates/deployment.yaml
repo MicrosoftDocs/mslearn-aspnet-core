@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nosqldata
+  labels:
+    app: eshop
+    service: nosqldata
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      service: nosqldata
+  template:
+    metadata:
+      labels:
+        app: eshop
+        service: nosqldata
+    spec:
+      containers:
+        - name: nosqldata
+          image: mongo
+          ports:
+            - name: mongodb
+              containerPort: 27017
+              protocol: TCP
