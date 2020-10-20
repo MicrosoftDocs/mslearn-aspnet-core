@@ -82,10 +82,7 @@ namespace eShopConContainers.WebSPA
                 app.UseDeveloperExceptionPage();
             }
 
-            //if (Configuration.UseFeatureManagement())
-            //{
-            //    app.UseAzureAppConfiguration();
-            //}
+            // Add the UseAzureAppConfiguration code
 
             // Here, we add Angular default Antiforgery cookie name on first load.
             // https://angular.io/guide/http#security-xsrf-protection
