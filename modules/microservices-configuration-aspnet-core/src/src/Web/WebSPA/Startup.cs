@@ -133,7 +133,7 @@ namespace eShopConContainers.WebSPA
                 {
                     Predicate = r => r.Name.Contains("self")
                 });
-                endpoints.MapHealthChecks("/hc", new HealthCheckOptions()
+                endpoints.MapHealthChecks("/hc", new HealthCheckOptions
                 {
                     Predicate = _ => true,
                     ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
