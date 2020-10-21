@@ -10,7 +10,7 @@ namespace WebSPA.Infrastructure.Middlewares
 {
     public class FeatureManagementMiddleware
     {
-        private static readonly JsonSerializerOptions _serializerOptions = new JsonSerializerOptions()
+        private static readonly JsonSerializerOptions _serializerOptions = new JsonSerializerOptions
         {
             PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
             DictionaryKeyPolicy = JsonNamingPolicy.CamelCase,
@@ -18,7 +18,6 @@ namespace WebSPA.Infrastructure.Middlewares
         };
 
         const string FEATURENAME_QUERY_PARAMETER_NAME = "featureName";
-        const string DEFAULT_MIME_TYPE = MediaTypeNames.Application.Json;
         
         private readonly RequestDelegate _next;
         
@@ -30,21 +29,19 @@ namespace WebSPA.Infrastructure.Middlewares
         public async Task Invoke(HttpContext context, IFeatureManager featureManager)
         {
             var evaluationsResponse = new List<EvaluationResponse>();
-
-            var featureNames = context.Request
-                .Query[FEATURENAME_QUERY_PARAMETER_NAME];
+            var featureNames = context.Request.Query[FEATURENAME_QUERY_PARAMETER_NAME];
 
             foreach (var featureName in featureNames)
             {
-                var isEnabled = await featureManager
-                        .IsEnabledAsync(featureName);
+                var isEnabled = await featureManager.IsEnabledAsync(featureName);
 
-                evaluationsResponse.Add(new EvaluationResponse()
+                evaluationsResponse.Add(new EvaluationResponse
                 {
                     Name = featureName,
                     Enabled = isEnabled
                 });
             }
+
             await WriteResponse(context, evaluationsResponse);
         }
 
@@ -53,7 +50,7 @@ namespace WebSPA.Infrastructure.Middlewares
             await WriteAsync(
                 currentContext,
                 JsonSerializer.Serialize(response, options: _serializerOptions),
-                DEFAULT_MIME_TYPE,
+                MediaTypeNames.Application.Json,
                 StatusCodes.Status200OK);
         }
 
