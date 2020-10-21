@@ -37,8 +37,6 @@ namespace eShopConContainers.WebSPA
 
         public void ConfigureServices(IServiceCollection services)
         {
-            RegisterAppInsights(services);
-
             // Add the AddFeatureManagement code
 
             services
@@ -157,12 +155,6 @@ namespace eShopConContainers.WebSPA
                     spa.UseAngularCliServer(npmScript: "start");
                 }
             });
-        }
-
-        private void RegisterAppInsights(IServiceCollection services)
-        {
-            services.AddApplicationInsightsTelemetry(Configuration);
-            services.AddApplicationInsightsKubernetesEnricher();
         }
     }
 }
