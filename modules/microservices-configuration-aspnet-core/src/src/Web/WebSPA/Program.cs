@@ -19,7 +19,7 @@ namespace eShopConContainers.WebSPA
             WebHost.CreateDefaultBuilder(args)
              .UseStartup<Startup>()
                 .UseContentRoot(Directory.GetCurrentDirectory())
-                .ConfigureAppConfiguration((builderContext, configBuilder) =>
+                .ConfigureAppConfiguration((_, configBuilder) =>
                 {
                     configBuilder.AddEnvironmentVariables();
                     //var settings = configBuilder.Build();
