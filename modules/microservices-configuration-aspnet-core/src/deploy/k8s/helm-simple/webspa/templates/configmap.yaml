@@ -22,3 +22,5 @@ data:
   SignalrHubUrl: {{ .Values.protocol }}://{{ .Values.host }}/apigateway
   UseCustomizationData: "True"
   UseLoadTest: "False"
+  #UseFeatureManagement: "True"
+  #FeatureManagement__Coupons: "True"  
