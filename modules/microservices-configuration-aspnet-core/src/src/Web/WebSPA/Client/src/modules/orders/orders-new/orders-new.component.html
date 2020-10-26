@@ -84,14 +84,12 @@
                 </div>
             </article>
 
-            <!-- <div *featureFlag="'coupons'" class="d-flex align-items-center justify-content-end mt-4 mb-4 text-uppercase"> -->
-            <div class="d-flex align-items-center justify-content-end mt-4 mb-4 text-uppercase">
+            <div id="subtotalDiv" class="d-flex align-items-center justify-content-end mt-4 mb-4 text-uppercase">
                 <div>Subtotal</div>
                 <div class="ml-3">${{order.total | number:'.2-2'}}</div>
             </div>
 
-            <!-- <div *featureFlag="'coupons'" class="d-flex flex-nowrap justify-content-between align-items-center mb-3 mt-3"> -->
-            <div class="d-flex flex-nowrap justify-content-between align-items-center mb-3 mt-3">
+            <div id="discountCodeDiv" class="d-flex flex-nowrap justify-content-between align-items-center mb-3 mt-3">
                 <div>
                     <div *ngIf="!coupon">
                         <div class="u-text-uppercase">Have a discount code?</div>
