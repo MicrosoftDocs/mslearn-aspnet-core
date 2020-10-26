@@ -1,5 +1,5 @@
 pushd ~/clouddrive/aspnet-learn/src/src/Web/WebSPA/Client/src/modules/orders > /dev/null
-sed -i 's/id="subtotalDiv"/*featureFlag="'coupons'"/' orders-detail/orders-detail.component.html
+sed -i 's/id="subtotalDiv"/*featureFlag="'\''coupons'\''"/' orders-detail/orders-detail.component.html
 sed -i 's/id="subtotalDiv"/*featureFlag="'\''coupons'\''"/' orders-detail/orders-detail.component.html
 sed -i 's/id="subtotalDiv"/*featureFlag="'\''coupons'\''"/' orders-new/orders-new.component.html
 sed -i 's/id="subtotalDiv"/*featureFlag="'\''coupons'\''"/' orders-new/orders-new.component.html
