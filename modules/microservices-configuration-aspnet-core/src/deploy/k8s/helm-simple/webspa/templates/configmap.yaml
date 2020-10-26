@@ -23,4 +23,5 @@ data:
   UseCustomizationData: "True"
   UseLoadTest: "False"
   #UseFeatureManagement: "True"
-  #FeatureManagement__Coupons: "True"  
+  #FeatureManagement__Coupons: "True"
+  #AppConfig__Endpoint: <connection-string>
