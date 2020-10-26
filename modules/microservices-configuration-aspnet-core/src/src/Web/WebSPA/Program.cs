@@ -1,23 +1,22 @@
-﻿using Microsoft.AspNetCore;
-using Microsoft.AspNetCore.Hosting;
-using System.IO;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Serilog;
 using System;
+using System.IO;
+using System.Threading.Tasks;
 
 namespace eShopConContainers.WebSPA
 {
     public class Program
     {
-        public static void Main(string[] args)
-        {
-            BuildWebHost(args).Run();
-        }
+        public static Task Main(string[] args) =>
+            CreateHostBuilder(args).Build().RunAsync();
 
-        public static IWebHost BuildWebHost(string[] args) =>
-            WebHost.CreateDefaultBuilder(args)
-             .UseStartup<Startup>()
+        public static IHostBuilder CreateHostBuilder(string[] args) =>
+            Host.CreateDefaultBuilder(args)
+                .ConfigureWebHostDefaults(webBuilder => webBuilder.UseStartup<Startup>())
                 .UseContentRoot(Directory.GetCurrentDirectory())
                 .ConfigureAppConfiguration((_, configBuilder) =>
                 {
@@ -38,12 +37,12 @@ namespace eShopConContainers.WebSPA
                     //    });
                     //}
                 })
-                .ConfigureLogging((hostingContext, builder) =>
+                .ConfigureLogging((hostingContext, logBuilder) =>
                 {
-                    builder.AddConfiguration(hostingContext.Configuration.GetSection("Logging"));
-                    builder.AddConsole();
-                    builder.AddDebug();
-                    builder.AddAzureWebAppDiagnostics();
+                    logBuilder.AddConfiguration(hostingContext.Configuration.GetSection("Logging"));
+                    logBuilder.AddConsole();
+                    logBuilder.AddDebug();
+                    logBuilder.AddAzureWebAppDiagnostics();
                 })
                 .UseSerilog((builderContext, config) =>
                 {
@@ -53,7 +52,6 @@ namespace eShopConContainers.WebSPA
                         .WriteTo.Seq("http://seq")
                         .ReadFrom.Configuration(builderContext.Configuration)
                         .WriteTo.Console();
-                })
-                .Build();
+                });
     }
 }
