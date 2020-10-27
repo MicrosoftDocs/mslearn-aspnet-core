@@ -16,9 +16,7 @@ namespace WebSPA.Infrastructure.Middlewares
             DictionaryKeyPolicy = JsonNamingPolicy.CamelCase,
             WriteIndented = false
         };
-
-        const string FEATURENAME_QUERY_PARAMETER_NAME = "featureName";
-        
+       
         private readonly RequestDelegate _next;
         
         public FeatureManagementMiddleware(RequestDelegate next)
@@ -29,7 +27,7 @@ namespace WebSPA.Infrastructure.Middlewares
         public async Task Invoke(HttpContext context, IFeatureManager featureManager)
         {
             var evaluationsResponse = new List<EvaluationResponse>();
-            var featureNames = context.Request.Query[FEATURENAME_QUERY_PARAMETER_NAME];
+            var featureNames = context.Request.Query["featureName"];
 
             foreach (var featureName in featureNames)
             {
