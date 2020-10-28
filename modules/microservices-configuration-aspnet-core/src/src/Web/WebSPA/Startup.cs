@@ -56,17 +56,11 @@ namespace eShopOnContainers.WebSPA
                     Configuration["DPConnectionString"]), "DataProtection-Keys");
             }
 
-            // Add Antiforgery services and configure the header name that angular will use by default.
             services.AddAntiforgery(options => options.HeaderName = "X-XSRF-TOKEN");
-
-            // Add controllers support and add a global AutoValidateAntiforgeryTokenFilter that will make the app check for an Antiforgery token on all "mutating" requests (POST, PUT, DELETE).
-            // The AutoValidateAntiforgeryTokenFilter is an internal class registered when we register views, so we need to register controllers and views also.
             services.AddControllersWithViews(options =>
                         options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute()))
                     .AddJsonOptions(options => 
                         options.JsonSerializerOptions.PropertyNameCaseInsensitive = true);
-
-            // Setup where the compiled version of our SPA will be, when in production.
             services.AddSpaStaticFiles(configuration => configuration.RootPath = "wwwroot");
         }
 
@@ -82,10 +76,6 @@ namespace eShopOnContainers.WebSPA
 
             // Add the UseAzureAppConfiguration code
 
-            // Here, we add Angular default Antiforgery cookie name on first load.
-            // https://angular.io/guide/http#security-xsrf-protection
-            // This cookie will be read by Angular app and its value will be sent 
-            // back to the app as the header configured in .AddAntiforgery().
             app.Use(next => context =>
             {
                 string path = context.Request.Path.Value;
@@ -93,8 +83,6 @@ namespace eShopOnContainers.WebSPA
                 if (string.Equals(path, "/", StringComparison.OrdinalIgnoreCase) ||
                     string.Equals(path, "/index.html", StringComparison.OrdinalIgnoreCase))
                 {
-                    // The request token has to be sent as a JavaScript-readable cookie, 
-                    // and Angular uses it by default.
                     var tokens = antiforgery.GetAndStoreTokens(context);
                     context.Response.Cookies.Append("XSRF-TOKEN", tokens.RequestToken,
                         new CookieOptions() { HttpOnly = false });
@@ -103,7 +91,6 @@ namespace eShopOnContainers.WebSPA
                 return next(context);
             });
 
-            // Seed Data
             WebContextSeed.Seed(app, env, loggerFactory);
 
             var pathBase = Configuration["PATH_BASE"];
@@ -116,8 +103,6 @@ namespace eShopOnContainers.WebSPA
 
             app.UseDefaultFiles();
             app.UseStaticFiles();
-
-            // this will make the app to respond with the index.html and the rest of the assets present on the configured folder (at AddSpaStaticFiles() (wwwroot))
             if (!env.IsDevelopment())
             {
                 app.UseSpaStaticFiles();
@@ -140,18 +125,12 @@ namespace eShopOnContainers.WebSPA
                 });
             });
 
-            // Handles all still unattended (by any other middleware) requests by returning the default page of the SPA (wwwroot/index.html).
             app.UseSpa(spa =>
             {
-                // To learn more about options for serving an Angular SPA from ASP.NET Core,
-                // see https://go.microsoft.com/fwlink/?linkid=864501
-
-                // the root of the angular app. (Where the package.json lives)
                 spa.Options.SourcePath = "Client";
 
                 if (env.IsDevelopment())
                 { 
-                    // use the SpaServices extension method for angular, that will make the application to run "ng serve" for us, when in development.
                     spa.UseAngularCliServer(npmScript: "start");
                 }
             });
