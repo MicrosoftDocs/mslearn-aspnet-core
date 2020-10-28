@@ -6,7 +6,8 @@ namespace Microsoft.AspNetCore.Builder
 {
     public static class EndpointRouteBuilderExtensions
     {
-        public static IEndpointConventionBuilder MapFeatureManagement(this IEndpointRouteBuilder endpoints)
+        public static IEndpointConventionBuilder MapFeatureManagement(
+            this IEndpointRouteBuilder endpoints)
         {
             if (endpoints == null)
             {
