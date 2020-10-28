@@ -18,7 +18,7 @@ using StackExchange.Redis;
 using System;
 using WebSPA.Infrastructure;
 
-namespace eShopConContainers.WebSPA
+namespace eShopOnContainers.WebSPA
 {
     public class Startup
     {

@@ -7,7 +7,7 @@ using System;
 using System.IO;
 using System.Threading.Tasks;
 
-namespace eShopConContainers.WebSPA
+namespace eShopOnContainers.WebSPA
 {
     public class Program
     {
@@ -18,12 +18,7 @@ namespace eShopConContainers.WebSPA
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder => webBuilder.UseStartup<Startup>())
                 .UseContentRoot(Directory.GetCurrentDirectory())
-                .ConfigureAppConfiguration((_, configBuilder) =>
-                {
-                    configBuilder.AddEnvironmentVariables();
-                    
-                    // Add the AddAzureAppConfiguration code
-                })
+                // Add the AddAzureAppConfiguration code
                 .ConfigureLogging((hostingContext, logBuilder) =>
                 {
                     logBuilder.AddConfiguration(hostingContext.Configuration.GetSection("Logging"));
