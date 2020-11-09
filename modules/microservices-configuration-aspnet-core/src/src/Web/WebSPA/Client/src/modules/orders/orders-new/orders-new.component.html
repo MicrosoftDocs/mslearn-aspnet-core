@@ -91,19 +91,19 @@
 
             <div id="discountCodeDiv" class="d-flex flex-nowrap justify-content-between align-items-center mb-3 mt-3">
                 <div>
-                    <div *ngIf="!coupon">
-                        <div class="u-text-uppercase">Have a discount code?</div>
+                    <div *ngIf="!coupon">                        
+                        <a class="text-link" target="_blank" href="/couponstatus">See Available Coupons</a>
                         <div class="d-flex flex-nowrap justify-content-between align-items-center mt-1">
-                            <input
-                            #discountcode
-                            class="esh-orders_new-coupon mr-2 form-control"
-                            type="text"
-                            placeholder="Coupon number"
-                            (keydown)="keyDownValidationCoupon($event, discountcode.value)">
-                            <button
-                                type="button"
-                                (click)="checkValidationCoupon(discountcode.value)"
-                                class="btn btn-secondary u-minwidth-unset">Apply</button>
+                            <input #discountcode
+                                   class="esh-orders_new-coupon mr-2 form-control"
+                                   type="text"
+                                   placeholder="Coupon number"
+                                   (keydown)="keyDownValidationCoupon($event, discountcode.value)">
+                            <button type="button"
+                                    (click)="checkValidationCoupon(discountcode.value)"
+                                    class="btn btn-secondary u-minwidth-unset">
+                                Apply
+                            </button>
                         </div>
                         <div class="mt-1" *ngIf="couponValidationMessage">{{couponValidationMessage}}</div>
                     </div>

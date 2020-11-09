@@ -32,5 +32,18 @@ namespace Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator.Services
 
             return response;
         }
+
+        public async Task<HttpResponseMessage> GetAllAvailableCouponsAsync()
+        {
+            _logger.LogInformation("----- WebAggregator --> Coupon-API: Requested all available coupon");
+
+            var url = new Uri($"{_urls.Coupon}/api/v1/coupon");
+
+            var response = await _httpClient.GetAsync(url);
+
+            _logger.LogInformation("----- WebAggregator <-- Coupon-API [Available Coupon]: {@response}", response);
+
+            return response;
+        }
     }
 }

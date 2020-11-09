@@ -1,0 +1,42 @@
+﻿@{
+    ViewData["Title"] = "Error Page";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Error</title>
+    <link rel="stylesheet" href="~/assets/lib/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/assets/css/site.css" />
+</head>
+<body>
+    <header class="es-header">
+        <div class="container">
+            <article class="d-flex align-content-center justify-content-between">
+                <section>
+                    <a routerLink="catalog">
+                        <img class="esh-app-header-brand" src="~/assets/images/logo_color.svg" />
+                    </a>
+                </section>
+            </article>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="feature-heading-text-display">You're not authorized to access. Please sign in.</div>
+    </div>
+    <footer class="footer">
+        <div class="container">
+            <article class="d-flex w-100 h-100 justify-content-between align-items-center">
+                <section>
+                    <img class="footer-brand" src="~/assets/images/logo.svg">
+                </section>
+                <section> © e-Shoponcontainers. All rights reserved </section>
+            </article>
+        </div>
+    </footer>
+</body>
+</html>

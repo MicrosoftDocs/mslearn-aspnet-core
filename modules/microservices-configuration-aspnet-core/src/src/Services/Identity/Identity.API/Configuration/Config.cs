@@ -322,6 +322,20 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API.Configuration
                     {
                         "coupon"
                     }
+                },
+                new Client
+                {
+                    ClientId = "couponapi",
+                    ClientName = "Coupon API",
+                    AllowedGrantTypes = GrantTypes.ClientCredentials,                    
+                    ClientSecrets = new List<Secret>
+                    {
+                        new Secret("secret".Sha256())
+                    },                    
+                    AllowedScopes =
+                    {
+                        "coupon"
+                    }
                 }
             };
         }

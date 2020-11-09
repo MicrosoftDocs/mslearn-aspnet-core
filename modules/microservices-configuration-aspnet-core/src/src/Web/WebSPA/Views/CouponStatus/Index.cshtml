@@ -1,0 +1,110 @@
+﻿@{
+    ViewData["Title"] = "Coupon Status Page";
+
+    var allAvailableCoupons = ViewData["coupons"] as IList<Coupon>;
+}
+@using WebSPA.ViewModels;
+<!-- TO DO : Uncomment to use feature management functionality -->
+@addTagHelper *, Microsoft.FeatureManagement.AspNetCore
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Coupon Status</title>
+    <link rel="stylesheet" href="~/assets/lib/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/assets/css/site.css" />
+    <script>
+        function copyToClipboard(id) {                                    
+            var copyText = document.getElementById(id);
+
+            var textArea = document.createElement("textarea");
+            textArea.value = copyText.textContent;            
+            document.body.appendChild(textArea);
+            textArea.select();
+            document.execCommand("Copy");
+            textArea.remove();
+
+            alert("Copied code: " + copyText.textContent);
+        }
+    </script>
+</head>
+<body>
+    <header class="es-header">
+        <div class="container">
+            <article class="d-flex align-content-center justify-content-between">
+                <section>
+                    <a routerLink="catalog">
+                        <img class="esh-app-header-brand" src="~/assets/images/logo_color.svg" />
+                    </a>
+                </section>
+            </article>
+        </div>
+    </header>
+
+    <div class="container">
+        <feature name="Default">
+            <div class="feature-heading-text-display">You're not subscribed to this feature !</div>
+        </feature>
+        <feature name="Coupons">
+            @if (allAvailableCoupons != null && allAvailableCoupons.Count > 0)
+            {
+                <div class="feature-heading-text-display">
+                    List of available Coupons !
+                </div>
+
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>
+                                Amount #
+                            </th>
+                            <th>
+                                Code
+                            </th>
+                            <th>
+                            </th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var eachCoupon in allAvailableCoupons)
+                        {
+                            var id = "messageText_" + @eachCoupon.Discount;
+                            <tr>
+                                <td>
+                                    @eachCoupon.Discount
+                                </td>
+                                <td>
+                                    <span id="@id">@eachCoupon.Code</span>
+                                </td>
+                                <td>
+                                    <button id="copyButton" class="btn btn-default" onclick="copyToClipboard('@id')">Copy Code</button>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+            else
+            {
+                <div class="text-center">
+                    <p>No coupons left to consume.</p>
+                </div>
+            }
+        </feature>
+    </div>
+    <footer class="footer">
+        <div class="container">
+            <article class="d-flex w-100 h-100 justify-content-between align-items-center">
+                <section>
+                    <img class="footer-brand" src="~/assets/images/logo.svg">
+                </section>
+                <section> © e-Shoponcontainers. All rights reserved </section>
+            </article>
+        </div>
+    </footer>
+</body>
+</html>

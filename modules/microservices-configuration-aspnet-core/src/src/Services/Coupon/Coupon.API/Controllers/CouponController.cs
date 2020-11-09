@@ -33,7 +33,8 @@
             _exceptionTrigger = exceptionTrigger;
         }
 
-        [HttpGet("{code}")]
+        
+        [HttpGet("{code}")]        
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         [ProducesResponseType(typeof(CouponDto), (int)HttpStatusCode.OK)]
@@ -61,6 +62,26 @@
             }
 
             var couponDto = _mapper.Translate(coupon);
+
+            return Ok(couponDto);
+        }
+        
+        [HttpGet]        
+        [ProducesResponseType((int)HttpStatusCode.NotFound)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType(typeof(CouponDto), (int)HttpStatusCode.OK)]
+        public async Task<ActionResult<CouponDto>> GetAllAvailableCouponAsync()
+        {
+            _logger.LogInformation("----- Get all available coupons");
+
+            var allCoupons = await _couponRepository.GetAllAvailableCouponsAsync();
+
+            if (allCoupons is null || !allCoupons.GetEnumerator().MoveNext())
+            {
+                return Ok("No coupon available for consumption !");
+            }
+
+            var couponDto = _mapper.Translate(allCoupons);
 
             return Ok(couponDto);
         }

@@ -17,6 +17,7 @@ using Microsoft.Extensions.Logging;
 using StackExchange.Redis;
 using System;
 using WebSPA.Infrastructure;
+using WebSPA.Server.Services;
 
 namespace eShopOnContainers.WebSPA
 {
@@ -62,6 +63,15 @@ namespace eShopOnContainers.WebSPA
                     .AddJsonOptions(options => 
                         options.JsonSerializerOptions.PropertyNameCaseInsensitive = true);
             services.AddSpaStaticFiles(configuration => configuration.RootPath = "wwwroot");
+            
+            //Enable Feature Management
+            
+            // TO DO [Uncomment below line]: Enable Azure App Configuration
+            //services.AddAzureAppConfiguration();
+
+            services.AddControllersWithViews();
+            services.AddRazorPages();
+            services.AddHttpClientServices(Configuration);     
         }
 
         public void Configure(IApplicationBuilder app, 
@@ -109,8 +119,10 @@ namespace eShopOnContainers.WebSPA
             }
             app.UseRouting();
             app.UseEndpoints(endpoints =>
-            {
-                // Add the MapFeatureManagement code
+            {               
+                endpoints.MapControllerRoute(
+                   name: "CouponStatus",
+                   pattern: "{controller=CouponStatus}/{action=Index}/{id?}");
 
                 endpoints.MapDefaultControllerRoute();
                 endpoints.MapControllers();
@@ -136,4 +148,15 @@ namespace eShopOnContainers.WebSPA
             });
         }
     }
+
+    static class ServiceCollectionExtensions
+    {
+        public static IServiceCollection AddHttpClientServices(this IServiceCollection services, IConfiguration configuration)
+        {
+            services.AddHttpClient<ICouponService, CouponService>();
+            services.AddHttpClient<IAuthService, AuthService>();
+
+            return services;
+        }        
+    }    
 }

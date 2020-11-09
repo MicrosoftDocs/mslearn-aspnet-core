@@ -1,5 +1,6 @@
 ﻿namespace Coupon.API.Infrastructure.Repositories
 {
+    using System.Collections.Generic;
     using System.Threading.Tasks;
     using Coupon.API.Infrastructure.Models;
     using MongoDB.Driver;
@@ -37,6 +38,12 @@
         {
             var filter = Builders<Coupon>.Filter.Eq("Code", code);
             return await _couponContext.Coupons.Find(filter).FirstOrDefaultAsync();
+        }
+
+        public async Task<IEnumerable<Coupon>> GetAllAvailableCouponsAsync()
+        {
+            var filter = Builders<Coupon>.Filter.Eq("Consumed", false);
+            return await _couponContext.Coupons.Find(filter).ToListAsync<Coupon>();
         }
     }
 }
