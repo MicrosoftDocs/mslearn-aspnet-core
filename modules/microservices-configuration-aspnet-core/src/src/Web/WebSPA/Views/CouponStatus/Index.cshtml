@@ -4,10 +4,7 @@
     var allAvailableCoupons = ViewData["coupons"] as IList<Coupon>;
 }
 @using WebSPA.ViewModels;
-
-
-@*@addTagHelper *, Microsoft.FeatureManagement.AspNetCore*@
-
+@* Add the addTagHelper directive *@
 
 <!DOCTYPE html>
 <html lang="en">
@@ -47,51 +44,13 @@
     </header>
 
     <div class="container">
-        @*<feature name="Coupons" negate="true">
+        @* Add the feature Tag Helper markup *@
+        <feature name="Coupons" negate="true">
             <div class="feature-heading-text-display">You're not subscribed to this feature.</div>
         </feature>
-        <feature name="Coupons">*@
-            @if (allAvailableCoupons != null && allAvailableCoupons.Count > 0)
-            {
-                <div class="feature-heading-text-display">
-                    List of available coupons
-                </div>
-
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>Amount #</th>
-                            <th>Code</th>
-                            <th></th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var eachCoupon in allAvailableCoupons)
-                        {
-                            var id = "messageText_" + @eachCoupon.Discount;
-                            <tr>
-                                <td>
-                                    @eachCoupon.Discount
-                                </td>
-                                <td>
-                                    <span id="@id">@eachCoupon.Code</span>
-                                </td>
-                                <td>
-                                    <button id="copyButton" class="btn btn-default" onclick="copyToClipboard('@id')">Copy Code</button>
-                                </td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
-            }
-            else
-            {
-                <div class="text-center">
-                    <p>No coupons left to consume.</p>
-                </div>
-            }
-        @*</feature>*@
+        <feature name="Coupons">
+            <partial name="_AvailableCoupons" model="allAvailableCoupons" />
+        </feature>
     </div>
     <footer class="footer">
         <div class="container">

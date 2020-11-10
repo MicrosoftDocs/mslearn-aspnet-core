@@ -1,0 +1,42 @@
+@model IList<WebSPA.ViewModels.Coupon>
+
+@if (Model != null && Model.Count > 0)
+{
+    <div class="feature-heading-text-display">
+        List of available coupons
+    </div>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Amount #</th>
+                <th>Code</th>
+                <th></th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var eachCoupon in Model)
+            {
+                var id = "messageText_" + @eachCoupon.Discount;
+                <tr>
+                    <td>
+                        @eachCoupon.Discount
+                    </td>
+                    <td>
+                        <span id="@id">@eachCoupon.Code</span>
+                    </td>
+                    <td>
+                        <button id="copyButton" class="btn btn-default" onclick="copyToClipboard('@id')">Copy Code</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <div class="text-center">
+        <p>No coupons left to consume.</p>
+    </div>
+}
