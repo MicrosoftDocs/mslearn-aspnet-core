@@ -13,7 +13,6 @@
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Logging;
 
-    [Authorize]
     [ApiController]
     [Route("api/v1/[controller]")]
     public class CouponController : ControllerBase
@@ -35,7 +34,8 @@
             _exceptionTrigger = exceptionTrigger;
         }
 
-        [HttpGet("{code}")]        
+        [HttpGet("{code}")]
+        [Authorize]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         [ProducesResponseType(typeof(CouponDto), (int)HttpStatusCode.OK)]
@@ -67,7 +67,8 @@
             return Ok(couponDto);
         }
         
-        [HttpGet]        
+        [HttpGet]
+        [AllowAnonymous]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         [ProducesResponseType(typeof(List<CouponDto>), (int)HttpStatusCode.OK)]

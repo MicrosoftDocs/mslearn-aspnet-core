@@ -14,7 +14,6 @@ using Newtonsoft.Json;
 namespace Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator.Controllers
 {
     [Route("api/v1/[controller]")]
-    [Authorize]
     [ApiController]
     public class CouponController : ControllerBase
     {
@@ -32,6 +31,7 @@ namespace Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator.Controllers
 
         [HttpGet]
         [Route("{code}")]
+        [Authorize]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
         [ProducesResponseType(typeof(CouponData), (int)HttpStatusCode.OK)]
         public async Task<ActionResult<CouponData>> CheckCouponAsync(string code)

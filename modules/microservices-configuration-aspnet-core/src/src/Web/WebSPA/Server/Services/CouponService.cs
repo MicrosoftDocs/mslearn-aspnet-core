@@ -38,7 +38,7 @@ namespace WebSPA.Server.Services
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "shit's broke");
+                _logger.LogError(ex, ex.Message);
                 throw ex;
             }
 

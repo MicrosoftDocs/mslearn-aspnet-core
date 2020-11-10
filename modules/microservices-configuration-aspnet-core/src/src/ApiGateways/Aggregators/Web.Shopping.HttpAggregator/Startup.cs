@@ -160,8 +160,6 @@ namespace Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator
                         }
                     }
                 });
-
-                options.OperationFilter<AuthorizeCheckOperationFilter>();
             });
             services.AddSwaggerGenNewtonsoftSupport();
 
