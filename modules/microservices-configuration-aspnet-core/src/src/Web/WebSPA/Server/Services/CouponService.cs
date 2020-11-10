@@ -13,50 +13,32 @@ namespace WebSPA.Server.Services
 {
     public class CouponService : ICouponService
     {
-        private readonly ILogger<AuthService> _logger;
         private readonly IConfiguration _configuration;
         private readonly HttpClient _httpClient;
-
         private readonly string _remoteServiceBaseUrl;
+        private readonly ILogger<CouponService> _logger;
 
-        private readonly IAuthService _authService;
-        
-
-        public CouponService(ILogger<AuthService> logger, HttpClient httpClient, IConfiguration configuration, IAuthService authService)
+        public CouponService(HttpClient httpClient, IConfiguration configuration, ILogger<CouponService> logger)
         {
-            _logger = logger;
             _httpClient = httpClient;
             _configuration = configuration;
-
+            _logger = logger;
             _remoteServiceBaseUrl = $"{_configuration.GetValue<string>("purchaseUrl")}/cp/api/v1/coupon/";
-
-            _authService = authService;
-
         }
 
         public async Task<List<Coupon>> GetAllAvailableCouponsAsync()
         {
-            List<Coupon> allCoupons = new List<Coupon>();
+            var allCoupons = new List<Coupon>();
 
             try
             {
-                var token = await _authService.GetAccessTokenAsync();
-
-                _logger.LogInformation("Token : " + token);
-
-                if (!String.IsNullOrEmpty(token))
-                {
-                    _httpClient.DefaultRequestHeaders.Add("Authorization", "Bearer " + token);
-
-                    var responseString = await _httpClient.GetStringAsync(_remoteServiceBaseUrl);
-
-                    allCoupons = JsonConvert.DeserializeObject<List<Coupon>>(responseString);                    
-                }
-                
+                _logger.LogInformation(_remoteServiceBaseUrl);
+                var responseString = await _httpClient.GetStringAsync(_remoteServiceBaseUrl);
+                allCoupons = JsonConvert.DeserializeObject<List<Coupon>>(responseString);                    
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex.ToString());
+                _logger.LogError(ex, "shit's broke");
                 throw ex;
             }
 

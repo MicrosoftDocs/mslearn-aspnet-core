@@ -64,14 +64,11 @@ namespace eShopOnContainers.WebSPA
                         options.JsonSerializerOptions.PropertyNameCaseInsensitive = true);
             services.AddSpaStaticFiles(configuration => configuration.RootPath = "wwwroot");
             
-            //Enable Feature Management
+            // Add the AddFeatureManagement code
             
-            // TO DO [Uncomment below line]: Enable Azure App Configuration
-            //services.AddAzureAppConfiguration();
-
             services.AddControllersWithViews();
             services.AddRazorPages();
-            services.AddHttpClientServices(Configuration);     
+            services.AddHttpClient<ICouponService, CouponService>();
         }
 
         public void Configure(IApplicationBuilder app, 
@@ -119,7 +116,9 @@ namespace eShopOnContainers.WebSPA
             }
             app.UseRouting();
             app.UseEndpoints(endpoints =>
-            {               
+            {
+                // Add the MapFeatureManagement code
+
                 endpoints.MapControllerRoute(
                    name: "CouponStatus",
                    pattern: "{controller=CouponStatus}/{action=Index}/{id?}");
@@ -148,15 +147,4 @@ namespace eShopOnContainers.WebSPA
             });
         }
     }
-
-    static class ServiceCollectionExtensions
-    {
-        public static IServiceCollection AddHttpClientServices(this IServiceCollection services, IConfiguration configuration)
-        {
-            services.AddHttpClient<ICouponService, CouponService>();
-            services.AddHttpClient<IAuthService, AuthService>();
-
-            return services;
-        }        
-    }    
 }

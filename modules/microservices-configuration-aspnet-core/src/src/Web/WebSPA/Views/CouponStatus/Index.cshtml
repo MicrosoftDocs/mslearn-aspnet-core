@@ -45,27 +45,22 @@
     </header>
 
     <div class="container">
-        <feature name="Default">
-            <div class="feature-heading-text-display">You're not subscribed to this feature !</div>
+        <feature name="Coupons" negate="true">
+            <div class="feature-heading-text-display">You're not subscribed to this feature.</div>
         </feature>
         <feature name="Coupons">
             @if (allAvailableCoupons != null && allAvailableCoupons.Count > 0)
             {
                 <div class="feature-heading-text-display">
-                    List of available Coupons !
+                    List of available coupons
                 </div>
 
                 <table class="table">
                     <thead>
                         <tr>
-                            <th>
-                                Amount #
-                            </th>
-                            <th>
-                                Code
-                            </th>
-                            <th>
-                            </th>
+                            <th>Amount #</th>
+                            <th>Code</th>
+                            <th></th>
                             <th></th>
                         </tr>
                     </thead>

@@ -69,14 +69,6 @@
     <PackageReference Include="Microsoft.Azure.AppConfiguration.AspNetCore" Version="4.0.0" />
     <PackageReference Include="serilog.sinks.seq" Version="4.0.0" />
   </ItemGroup>
-  <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">
-    <Exec Command="node --version" ContinueOnError="true">
-      <Output TaskParameter="ExitCode" PropertyName="ErrorCode" />
-    </Exec>
-    <Exec WorkingDirectory="$(SpaRoot)" Command="npm install" />
-    <Error Condition="'$(ErrorCode)' != '0'" Text="Node.js is required to build and run this project. To continue, please install Node.js from https://nodejs.org/, and then restart your command prompt or IDE." />
-    <Message Importance="high" Text="Restoring dependencies using 'npm'. This may take several minutes..." />
-  </Target>
   <ProjectExtensions>
     <VisualStudio>
       <UserProperties package_1json__JSONSchema="http://json.schemastore.org/project-1.0.0-beta4" />

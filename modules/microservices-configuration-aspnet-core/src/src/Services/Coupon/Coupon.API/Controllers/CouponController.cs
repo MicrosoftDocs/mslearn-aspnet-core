@@ -1,7 +1,9 @@
 ﻿namespace Coupon.API.Controllers
 {
     using System;
+    using System.Collections.Generic;
     using System.Data;
+    using System.Linq;
     using System.Net;
     using System.Threading.Tasks;
     using Coupon.API.Dtos;
@@ -33,7 +35,6 @@
             _exceptionTrigger = exceptionTrigger;
         }
 
-        
         [HttpGet("{code}")]        
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
@@ -69,8 +70,8 @@
         [HttpGet]        
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        [ProducesResponseType(typeof(CouponDto), (int)HttpStatusCode.OK)]
-        public async Task<ActionResult<CouponDto>> GetAllAvailableCouponAsync()
+        [ProducesResponseType(typeof(List<CouponDto>), (int)HttpStatusCode.OK)]
+        public async Task<ActionResult<List<CouponDto>>> GetAllAvailableCouponAsync()
         {
             _logger.LogInformation("----- Get all available coupons");
 
@@ -78,12 +79,20 @@
 
             if (allCoupons is null || !allCoupons.GetEnumerator().MoveNext())
             {
-                return Ok("No coupon available for consumption !");
+                return Ok("No coupon available for consumption.");
             }
 
-            var couponDto = _mapper.Translate(allCoupons);
+            var returnList = new List<CouponDto>();
+            
+            allCoupons.ToList().ForEach(c => 
+                returnList.Add(new CouponDto() 
+                                { 
+                                    Code = c.Code, 
+                                    Discount=c.Discount 
+                                }
+                                ));
 
-            return Ok(couponDto);
+            return Ok(returnList);
         }
     }
 }

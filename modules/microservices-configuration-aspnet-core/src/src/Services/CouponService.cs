@@ -27,7 +27,7 @@ namespace WebCouponStatus.Services
             _remoteServiceBaseUrl = $"{_configuration.GetValue<string>("CouponUrl")}/api/v1/coupon/";
         }
 
-        public async Task<List<CouponDto>> GetAllAvailableCoupons()
+        public async Task<List<CouponDto>> GetAllAvailableCouponsAsync()
         {
             var responseString = await _httpClient.GetStringAsync(_remoteServiceBaseUrl);
 
