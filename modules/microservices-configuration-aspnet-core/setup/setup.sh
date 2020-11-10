@@ -53,6 +53,12 @@ else
     # Create ACR resource
     $editorHomeLocation/deploy/k8s/create-acr.sh
 
+    # Upload customized coupon and webshoppingagg images
+    $editorHomeLocation/deploy/k8s/build-to-acr.sh --services coupon.api,webshoppingagg
+
+    # Deploy customized coupon and webshoppingagg images
+    $editorHomeLocation/deploy/k8s/deploy-application.sh --charts coupon,webshoppingagg
+
     # Display URLs to user
     cat ~/clouddrive/aspnet-learn/deployment-urls.txt
 fi

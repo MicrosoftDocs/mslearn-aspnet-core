@@ -44,13 +44,7 @@
     </header>
 
     <div class="container">
-        @* Add the feature Tag Helper markup *@
-        <feature name="Coupons" negate="true">
-            <div class="feature-heading-text-display">You're not subscribed to this feature.</div>
-        </feature>
-        <feature name="Coupons">
-            <partial name="_AvailableCoupons" model="allAvailableCoupons" />
-        </feature>
+        <partial name="_AvailableCoupons" model="allAvailableCoupons" />
     </div>
     <footer class="footer">
         <div class="container">
