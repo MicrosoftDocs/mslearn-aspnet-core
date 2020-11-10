@@ -67,7 +67,6 @@ namespace eShopOnContainers.WebSPA
             // Add the AddFeatureManagement code
             
             services.AddControllersWithViews();
-            services.AddRazorPages();
             services.AddHttpClient<ICouponService, CouponService>();
         }
 
