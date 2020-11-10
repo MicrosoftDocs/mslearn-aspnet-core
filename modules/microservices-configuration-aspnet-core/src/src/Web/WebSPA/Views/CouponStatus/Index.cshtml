@@ -5,7 +5,9 @@
 }
 @using WebSPA.ViewModels;
 <!-- TO DO : Uncomment to use feature management functionality -->
-@addTagHelper *, Microsoft.FeatureManagement.AspNetCore
+
+@*@addTagHelper *, Microsoft.FeatureManagement.AspNetCore*@
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -45,10 +47,10 @@
     </header>
 
     <div class="container">
-        <feature name="Coupons" negate="true">
+        @*<feature name="Coupons" negate="true">
             <div class="feature-heading-text-display">You're not subscribed to this feature.</div>
         </feature>
-        <feature name="Coupons">
+        <feature name="Coupons">*@
             @if (allAvailableCoupons != null && allAvailableCoupons.Count > 0)
             {
                 <div class="feature-heading-text-display">
@@ -89,7 +91,7 @@
                     <p>No coupons left to consume.</p>
                 </div>
             }
-        </feature>
+        @*</feature>*@
     </div>
     <footer class="footer">
         <div class="container">
