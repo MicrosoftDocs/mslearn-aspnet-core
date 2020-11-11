@@ -18,8 +18,11 @@ declare -x dotnetSdkVersion="5.0.100"
 # Any other declarations we need
 declare -x gitBranch="web-api-updates"
 declare initScript=https://raw.githubusercontent.com/MicrosoftDocs/mslearn-aspnet-core/$gitBranch/infrastructure/scripts/initenvironment.sh
-declare dotnetBotGreeting="I have configured .NET Core SDK $dotnetSdkVersion. Have fun!"
+declare dotnetBotGreeting="I have configured .NET SDK $dotnetSdkVersion. Have fun!"
 declare suppressAzureResources=true
 
 # Grab and run initenvironment.sh
 . <(wget -q -O - $initScript)
+
+# If they reconnect, bring them back here.
+echo "cd ~/aspnet-learn/src/ContosoPets.Api && code ." >> ~/.bashrc
