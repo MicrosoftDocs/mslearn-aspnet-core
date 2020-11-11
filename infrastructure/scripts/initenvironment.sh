@@ -106,6 +106,10 @@ configureDotNetCli() {
     export DOTNET_NOLOGO=true
     echo "export DOTNET_NOLOGO=true" >> ~/.bashrc
     
+    # Disable HTTP REPL telemetry
+    export DOTNET_HTTPREPL_TELEMETRY_OPTOUT=true
+    echo "export DOTNET_HTTPREPL_TELEMETRY_OPTOUT=true" >> ~/.bashrc
+
     # Add tab completion for .NET Core CLI
     tabSlug="#dotnet-tab-completion"
     tabScript=$dotnetScriptsPath/tabcomplete.sh

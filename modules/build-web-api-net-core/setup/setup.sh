@@ -23,7 +23,3 @@ declare suppressAzureResources=true
 
 # Grab and run initenvironment.sh
 . <(wget -q -O - $initScript)
-
-# Disable HTTP REPL telemetry
-export DOTNET_HTTPREPL_TELEMETRY_OPTOUT=true
-echo "export DOTNET_HTTPREPL_TELEMETRY_OPTOUT=true" >> ~/.bashrc
