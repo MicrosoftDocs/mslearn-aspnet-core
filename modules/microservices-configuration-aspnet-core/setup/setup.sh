@@ -47,18 +47,15 @@ else
     # Launch editor so the user can see the code
     code .
     
-    # Create ACR resource
-    $editorHomeLocation/deploy/k8s/create-acr.sh
-
-    # Upload customized coupon and webshoppingagg images
-    echo "Uploading custom images to ACR in background..."
-    $editorHomeLocation/deploy/k8s/build-to-acr.sh --services coupon.api,webshoppingagg --resource-group eshop-learn-rg --location westus & >/dev/null
-
     # Run eshop-learn quickstart to deploy to AKS
     $editorHomeLocation/deploy/k8s/quickstart.sh --resource-group eshop-learn-rg --location westus
 
-    echo "Waiting for background tasks to finish..."
-    wait
+    # Create ACR resource
+    $editorHomeLocation/deploy/k8s/create-acr.sh
+    
+    # Upload customized coupon and webshoppingagg images
+    echo "Uploading custom images to ACR in background..."
+    $editorHomeLocation/deploy/k8s/build-to-acr.sh --services coupon.api,webshoppingagg --resource-group eshop-learn-rg --location westus & >/dev/null
 
     # Deploy customized coupon and webshoppingagg images
     $editorHomeLocation/deploy/k8s/deploy-application.sh --charts coupon,webshoppingagg
