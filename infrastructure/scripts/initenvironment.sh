@@ -128,6 +128,14 @@ setPathEnvironmentVariableForDotNet() {
         echo "export PATH=~/.dotnet:~/.dotnet/tools:\$PATH;" >> ~/.bashrc
     fi
 }
+setDotnetToolsEnvironmentVariable() {
+    # Add .NET Global Tools directory variable
+    if ! [ $(echo $DOTNET_ROOT | grep .dotnet) ]; then 
+        export DOTNET_ROOT=~/.dotnet
+        echo "# Add DOTNET_ROOT variable" >> ~/.bashrc
+        echo "export DOTNET_ROOT=~/.dotnet" >> ~/.bashrc
+    fi
+}
 downloadAndBuild() {
     if ! [ "$suppressShallowClone" ]; then
         # Set location

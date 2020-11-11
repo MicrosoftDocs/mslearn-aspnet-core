@@ -13,13 +13,17 @@
 # Module name
 declare moduleName="build-web-api-net-core"
 # dotnet SDK version
-declare -x dotnetSdkVersion="3.1.202"
+declare -x dotnetSdkVersion="5.0.100"
 
 # Any other declarations we need
-declare -x gitBranch="live"
+declare -x gitBranch="web-api-updates"
 declare initScript=https://raw.githubusercontent.com/MicrosoftDocs/mslearn-aspnet-core/$gitBranch/infrastructure/scripts/initenvironment.sh
 declare dotnetBotGreeting="I have configured .NET Core SDK $dotnetSdkVersion. Have fun!"
 declare suppressAzureResources=true
 
 # Grab and run initenvironment.sh
 . <(wget -q -O - $initScript)
+
+# Disable HTTP REPL telemetry
+export DOTNET_HTTPREPL_TELEMETRY_OPTOUT=true
+echo "export DOTNET_HTTPREPL_TELEMETRY_OPTOUT=true" >> ~/.bashrc
