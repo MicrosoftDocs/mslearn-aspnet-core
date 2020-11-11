@@ -86,6 +86,7 @@ configureDotNetCli() {
     fi
 
     setPathEnvironmentVariableForDotNet
+    setDotnetRootEnvironmentVariable
 
     # By default, the .NET Core CLI prints Welcome and Telemetry messages on
     # the first run. Suppress those messages by creating an appropriately
@@ -128,7 +129,7 @@ setPathEnvironmentVariableForDotNet() {
         echo "export PATH=~/.dotnet:~/.dotnet/tools:\$PATH;" >> ~/.bashrc
     fi
 }
-setDotnetToolsEnvironmentVariable() {
+setDotnetRootEnvironmentVariable() {
     # Add .NET Global Tools directory variable
     if ! [ $(echo $DOTNET_ROOT | grep .dotnet) ]; then 
         export DOTNET_ROOT=~/.dotnet
@@ -213,7 +214,7 @@ displayGreeting() {
     fi
     
     # Install .NET Core global tool to display connection info
-    dotnet tool install dotnetsay --global --version 2.1.4 --verbosity quiet
+    dotnet tool install dotnetsay --global --version 2.1.7 --verbosity quiet
 
     # Greetings!
     if [ "$dotnetBotGreeting" ]; then
