@@ -11,7 +11,7 @@
 ## Start
 
 # Module name
-declare moduleName="build-web-api-net-core"
+declare moduleName="build-web-api-aspnet-core"
 # dotnet SDK version
 declare -x dotnetSdkVersion="5.0.100"
 
