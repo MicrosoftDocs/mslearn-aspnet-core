@@ -23,13 +23,14 @@ declare errorStyle="${red}${bold}"
 
 echo
 echo
-echo "${headingStyle}eShopOnContainers API Test${defaultTextStyle}"
+echo "${headingStyle}Contoso Pets API Test${defaultTextStyle}"
 echo
 
 # Invalid POST
 curlCmd="curl -i -k -H \"Content-Type: application/json\" -d \"{\\\"name\\\":\\\"PlushSquirrel\\\",\\\"price\\\":0.00}\" https://localhost:5001/products"
 
-echo "Testing ${red}invalid ${headingStyle}POST${defaultTextStyle}..."
+echo
+echo "Testing HTTP ${red}invalid ${headingStyle}POST${defaultTextStyle}..."
 echo
 echo "> ${yellow}$curlCmd${defaultTextStyle}"
 echo
@@ -39,7 +40,8 @@ echo
 # Valid POST
 curlCmd="curl -i -k -H \"Content-Type: application/json\" -d \"{\\\"name\\\":\\\"PlushSquirrel\\\",\\\"price\\\":12.99}\" https://localhost:5001/products"
 
-echo "Testing ${green}valid ${headingStyle}POST${defaultTextStyle}..."
+echo
+echo "Testing HTTP ${green}valid ${headingStyle}POST${defaultTextStyle}..."
 echo
 echo "> ${yellow}$curlCmd${defaultTextStyle}"
 echo
@@ -49,7 +51,8 @@ echo
 # GET
 curlCmd="curl -k -s https://localhost:5001/products/3 | jq"
 
-echo "Testing ${headingStyle}GET${defaultTextStyle}..."
+echo
+echo "Testing HTTP ${headingStyle}GET${defaultTextStyle}..."
 echo
 echo "> ${yellow}$curlCmd${defaultTextStyle}"
 echo
@@ -59,7 +62,8 @@ echo
 # PUT
 curlCmd="curl -i -k -X PUT -H \"Content-Type: application/json\" -d \"{\\\"id\\\":2,\\\"name\\\":\\\"Knotted Rope\\\",\\\"price\\\":14.99}\" https://localhost:5001/products/2"
 
-echo "Testing ${headingStyle}PUT${defaultTextStyle}..."
+echo
+echo "Testing HTTP ${headingStyle}PUT${defaultTextStyle}..."
 echo
 echo "> ${yellow}$curlCmd${defaultTextStyle}"
 echo
@@ -69,17 +73,19 @@ echo
 # DELETE
 curlCmd="curl -i -k -X DELETE https://localhost:5001/products/1"
 
-echo "Testing ${headingStyle}DELETE${defaultTextStyle}..."
+echo
+echo "Testing HTTP ${headingStyle}DELETE${defaultTextStyle}..."
 echo
 echo "> ${yellow}$curlCmd${defaultTextStyle}"
 echo
 eval $curlCmd
 echo
 
-# Verification
+# One more for verification
 curlCmd="curl -k -s https://localhost:5001/products | jq"
 
-echo "Testing ${headingStyle}GET${defaultTextStyle}..."
+echo
+echo "Testing HTTP ${headingStyle}GET${defaultTextStyle}..."
 echo
 echo "> ${yellow}$curlCmd${defaultTextStyle}"
 echo
