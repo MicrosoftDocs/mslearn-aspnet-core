@@ -27,7 +27,7 @@ echo "${headingStyle}eShopOnContainers API Test${defaultTextStyle}"
 echo
 
 # Invalid POST
-curlCmd="curl -i -k -H "Content-Type: application/json" -d "{\"name\":\"Plush Squirrel\",\"price\":0.00}" https://localhost:5001/products"
+curlCmd="curl -i -k -H \"Content-Type: application/json\" -d \"{\\\"name\\\":\\\"Plush Squirrel\\\",\\\"price\\\":0.00}\" https://localhost:5001/products"
 
 echo "Testing ${red}invalid ${headingStyle}POST${defaultTextStyle}..."
 echo
@@ -37,7 +37,7 @@ eval $curlCmd
 echo
 
 # Valid POST
-curlCmd="curl -i -k -H "Content-Type: application/json" -d "{\"name\":\"Plush Squirrel\",\"price\":12.99}" https://localhost:5001/products"
+curlCmd="curl -i -k -H \"Content-Type: application/json\" -d "{\\\"name\\\":\\\"Plush Squirrel\\\",\\\"price\\\":12.99}" https://localhost:5001/products"
 
 echo "Testing ${green}valid ${headingStyle}POST${defaultTextStyle}..."
 echo
@@ -57,7 +57,7 @@ eval $curlCmd
 echo
 
 # PUT
-curlCmd="curl -i -k -X PUT -H "Content-Type: application/json" -d "{\"id\":2,\"name\":\"Knotted Rope\",\"price\":14.99}" https://localhost:5001/products/2"
+curlCmd="curl -i -k -X PUT -H \"Content-Type: application/json\" -d "{\\\"id\\\":2,\\\"name\\\":\\\"Knotted Rope\\\",\\\"price\\\":14.99}" https://localhost:5001/products/2"
 
 echo "Testing ${headingStyle}PUT${defaultTextStyle}..."
 echo
