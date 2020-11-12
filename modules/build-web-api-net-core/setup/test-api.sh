@@ -57,7 +57,7 @@ eval $curlCmd
 echo
 
 # PUT
-curlCmd="curl -i -k -X PUT -H \"Content-Type: application/json\" -d "{\\\"id\\\":2,\\\"name\\\":\\\"Knotted Rope\\\",\\\"price\\\":14.99}\" https://localhost:5001/products/2"
+curlCmd="curl -i -k -X PUT -H \"Content-Type: application/json\" -d \"{\\\"id\\\":2,\\\"name\\\":\\\"Knotted Rope\\\",\\\"price\\\":14.99}\" https://localhost:5001/products/2"
 
 echo "Testing ${headingStyle}PUT${defaultTextStyle}..."
 echo
