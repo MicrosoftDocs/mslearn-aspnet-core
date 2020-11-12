@@ -25,4 +25,5 @@ declare suppressAzureResources=true
 . <(wget -q -O - $initScript)
 
 # If they reconnect, bring them back here.
+echo >> ~/.bashrc
 echo "cd ~/aspnet-learn/src/ContosoPets.Api && code ." >> ~/.bashrc
