@@ -87,4 +87,5 @@ eval $curlCmd
 echo
 
 echo "${successStyle}Done!${defaultTextStyle}"
+echo
 
