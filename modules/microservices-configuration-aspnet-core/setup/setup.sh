@@ -54,8 +54,8 @@ else
     $editorHomeLocation/deploy/k8s/create-acr.sh
     
     # Upload customized coupon and webshoppingagg images
-    echo "Uploading custom images to ACR in background..."
-    $editorHomeLocation/deploy/k8s/build-to-acr.sh --services coupon.api,webshoppingagg --resource-group eshop-learn-rg --location westus & >/dev/null
+    echo "Uploading custom images..."
+    $editorHomeLocation/deploy/k8s/build-to-acr.sh --services coupon.api,webshoppingagg
 
     # Deploy customized coupon and webshoppingagg images
     $editorHomeLocation/deploy/k8s/deploy-application.sh --charts coupon,webshoppingagg
