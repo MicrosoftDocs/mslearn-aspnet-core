@@ -105,14 +105,6 @@ configureDotNetCli() {
     # Disable add'l welcome messages and logo stuff
     export DOTNET_NOLOGO=true
     echo "export DOTNET_NOLOGO=true" >> ~/.bashrc
-    
-    # Disable HTTP REPL telemetry
-    export DOTNET_HTTPREPL_TELEMETRY_OPTOUT=true
-    echo "export DOTNET_HTTPREPL_TELEMETRY_OPTOUT=true" >> ~/.bashrc
-
-    # Suppress the HTTP REPL first time experience banner
-    export DOTNET_HTTPREPL_SKIP_FIRST_TIME_EXPERIENCE=true
-    echo "export DOTNET_HTTPREPL_SKIP_FIRST_TIME_EXPERIENCE=true" >> ~/.bashrc
 
     # Add tab completion for .NET CLI
     tabSlug="#dotnet-tab-completion"
