@@ -49,15 +49,20 @@ eval $curlCmd
 echo
 
 # GET
-curlCmd="curl -k -s https://localhost:5001/products/3 | jq"
+curlDisplayCmd="curl -i -k -s https://localhost:5001/products/3"
+curlHeadersCmd="curl -sD - -o /dev/null -k https://localhost:5001/products/3"
+curlJsonCmd="curl -k -s https://localhost:5001/products/3 | jq"
 
 echo
 echo "Testing HTTP ${headingStyle}GET${defaultTextStyle}..."
 echo
-echo "> ${yellow}$curlCmd${defaultTextStyle}"
+echo "> ${yellow}$curlDisplayCmd${defaultTextStyle}"
 echo
-eval $curlCmd
+eval $curlHeadersCmd
 echo
+eval $curlJsonCmd
+echo
+
 
 # PUT
 curlCmd="curl -i -k -X PUT -H \"Content-Type: application/json\" -d \"{\\\"id\\\":2,\\\"name\\\":\\\"Knotted Rope\\\",\\\"price\\\":14.99}\" https://localhost:5001/products/2"
@@ -82,14 +87,20 @@ eval $curlCmd
 echo
 
 # One more for verification
-curlCmd="curl -k -s https://localhost:5001/products | jq"
+
+# GET
+curlDisplayCmd="curl -i -k -s https://localhost:5001/products"
+curlHeadersCmd="curl -sD - -o /dev/null -k https://localhost:5001/products"
+curlJsonCmd="curl -k -s https://localhost:5001/products | jq"
 
 echo
 echo "Testing HTTP ${headingStyle}GET${defaultTextStyle}..."
 echo
-echo "> ${yellow}$curlCmd${defaultTextStyle}"
+echo "> ${yellow}$curlDisplayCmd${defaultTextStyle}"
 echo
-eval $curlCmd
+eval $curlHeadersCmd
+echo
+eval $curlJsonCmd
 echo
 
 echo "${successStyle}Done!${defaultTextStyle}"
