@@ -36,9 +36,11 @@ echo "> ${yellow}$curlCmd${defaultTextStyle}"
 echo
 eval $curlCmd
 echo
+echo
 
 # Valid POST
 curlCmd="curl -i -k -H \"Content-Type: application/json\" -d \"{\\\"name\\\":\\\"PlushSquirrel\\\",\\\"price\\\":12.99}\" https://localhost:5001/products"
+
 
 echo
 echo "Testing HTTP ${green}valid ${headingStyle}POST${defaultTextStyle}..."
@@ -46,6 +48,7 @@ echo
 echo "> ${yellow}$curlCmd${defaultTextStyle}"
 echo
 eval $curlCmd
+echo
 echo
 
 # GET
@@ -59,7 +62,6 @@ echo
 echo "> ${yellow}$curlDisplayCmd${defaultTextStyle}"
 echo
 eval $curlHeadersCmd
-echo
 eval $curlJsonCmd
 echo
 
@@ -99,7 +101,6 @@ echo
 echo "> ${yellow}$curlDisplayCmd${defaultTextStyle}"
 echo
 eval $curlHeadersCmd
-echo
 eval $curlJsonCmd
 echo
 
