@@ -27,7 +27,7 @@ echo "${headingStyle}Contoso Pets API Test${defaultTextStyle}"
 echo
 
 # Invalid POST
-curlCmd="curl -i -k -H \"Content-Type: application/json\" -d \"{\\\"name\\\":\\\"PlushSquirrel\\\",\\\"price\\\":0.00}\" https://localhost:5001/products"
+curlCmd="curl -i -k -H \"Content-Type: application/json\" -d \"{\\\"name\\\":\\\"Plush Squirrel\\\",\\\"price\\\":0.00}\" https://localhost:5001/products"
 
 echo
 echo "${headingStyle}HTTP POST${defaultTextStyle}: Add an ${red}invalid${defaultTextStyle} product"
