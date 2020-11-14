@@ -39,7 +39,7 @@ echo
 echo
 
 # Valid POST
-curlCmd="curl -i -k -H \"Content-Type: application/json\" -d \"{\\\"name\\\":\\\"PlushSquirrel\\\",\\\"price\\\":12.99}\" https://localhost:5001/products"
+curlCmd="curl -i -k -H \"Content-Type: application/json\" -d \"{\\\"name\\\":\\\"Plush Squirrel\\\",\\\"price\\\":12.99}\" https://localhost:5001/products"
 
 
 echo
