@@ -30,7 +30,7 @@ echo
 curlCmd="curl -i -k -H \"Content-Type: application/json\" -d \"{\\\"name\\\":\\\"PlushSquirrel\\\",\\\"price\\\":0.00}\" https://localhost:5001/products"
 
 echo
-echo "Testing HTTP ${red}invalid ${headingStyle}POST${defaultTextStyle}..."
+echo "${headingStyle}HTTP POST${defaultTextStyle}: Add an ${red}invalid${defaultTextStyle} product"
 echo
 echo "> ${yellow}$curlCmd${defaultTextStyle}"
 echo
@@ -43,7 +43,7 @@ curlCmd="curl -i -k -H \"Content-Type: application/json\" -d \"{\\\"name\\\":\\\
 
 
 echo
-echo "Testing HTTP ${green}valid ${headingStyle}POST${defaultTextStyle}..."
+echo "${headingStyle}HTTP POST${defaultTextStyle}: Add a ${green}valid${defaultTextStyle} product"
 echo
 echo "> ${yellow}$curlCmd${defaultTextStyle}"
 echo
@@ -52,12 +52,26 @@ echo
 echo
 
 # GET
+curlDisplayCmd="curl -i -k -s https://localhost:5001/products/10"
+curlHeadersCmd="curl -sD - -o /dev/null -k https://localhost:5001/products/10"
+curlJsonCmd="curl -k -s https://localhost:5001/products/10 | jq"
+
+echo
+echo "${headingStyle}HTTP GET${defaultTextStyle}: Retrieve an ${red}invalid${defaultTextStyle} product"
+echo
+echo "> ${yellow}$curlDisplayCmd${defaultTextStyle}"
+echo
+eval $curlHeadersCmd
+eval $curlJsonCmd
+echo
+
+# GET
 curlDisplayCmd="curl -i -k -s https://localhost:5001/products/3"
 curlHeadersCmd="curl -sD - -o /dev/null -k https://localhost:5001/products/3"
 curlJsonCmd="curl -k -s https://localhost:5001/products/3 | jq"
 
 echo
-echo "Testing HTTP ${headingStyle}GET${defaultTextStyle}..."
+echo "${headingStyle}HTTP GET${defaultTextStyle}: Retrieve a ${green}valid${defaultTextStyle} product"
 echo
 echo "> ${yellow}$curlDisplayCmd${defaultTextStyle}"
 echo
@@ -70,7 +84,7 @@ echo
 curlCmd="curl -i -k -X PUT -H \"Content-Type: application/json\" -d \"{\\\"id\\\":2,\\\"name\\\":\\\"Knotted Rope\\\",\\\"price\\\":14.99}\" https://localhost:5001/products/2"
 
 echo
-echo "Testing HTTP ${headingStyle}PUT${defaultTextStyle}..."
+echo "${headingStyle}HTTP PUT${defaultTextStyle}: Update a product"
 echo
 echo "> ${yellow}$curlCmd${defaultTextStyle}"
 echo
@@ -81,7 +95,7 @@ echo
 curlCmd="curl -i -k -X DELETE https://localhost:5001/products/1"
 
 echo
-echo "Testing HTTP ${headingStyle}DELETE${defaultTextStyle}..."
+echo "${headingStyle}HTTP DELETE${defaultTextStyle}: Remove a product"
 echo
 echo "> ${yellow}$curlCmd${defaultTextStyle}"
 echo
@@ -96,7 +110,7 @@ curlHeadersCmd="curl -sD - -o /dev/null -k https://localhost:5001/products"
 curlJsonCmd="curl -k -s https://localhost:5001/products | jq"
 
 echo
-echo "Testing HTTP ${headingStyle}GET${defaultTextStyle}..."
+echo "${headingStyle}HTTP GET${defaultTextStyle}: Retrieve all products"
 echo
 echo "> ${yellow}$curlDisplayCmd${defaultTextStyle}"
 echo
