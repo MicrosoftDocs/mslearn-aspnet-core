@@ -16,7 +16,7 @@ declare moduleName="build-web-api-aspnet-core"
 declare -x dotnetSdkVersion="5.0.100"
 
 # Any other declarations we need
-declare -x gitBranch="web-api-updates"
+declare -x gitBranch="live"
 declare initScript=https://raw.githubusercontent.com/MicrosoftDocs/mslearn-aspnet-core/$gitBranch/infrastructure/scripts/initenvironment.sh
 declare dotnetBotGreeting="I have configured .NET SDK $dotnetSdkVersion. Have fun!"
 declare suppressAzureResources=true
