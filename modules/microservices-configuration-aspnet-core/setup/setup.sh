@@ -52,6 +52,12 @@ else
 
     # Deployment templates used customized coupon and webshoppingagg images
     # Revert to non-custom tags
+    echo
+    echo "Deploying special containers for this module..."
+    echo
+    pushd $editorHomeLocation/deploy/k8s > /dev/null
+    ./deploy-application.sh --charts coupon,webshoppingagg,webspa --registry eshoplearn
+    popd > /dev/null
     sed -i "s|linux-feature-flags|linux-latest|g" $editorHomeLocation/deploy/k8s/helm-simple/coupon/templates/deployment.yaml
     sed -i "s|linux-feature-flags|linux-latest|g" $editorHomeLocation/deploy/k8s/helm-simple/webshoppingagg/templates/deployment.yaml
     sed -i "s|linux-feature-flags|linux-latest|g" $editorHomeLocation/deploy/k8s/helm-simple/webspa/templates/deployment.yaml
