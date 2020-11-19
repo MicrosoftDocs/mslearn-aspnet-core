@@ -50,16 +50,15 @@ else
     # Run eshop-learn quickstart to deploy to AKS
     $editorHomeLocation/deploy/k8s/quickstart.sh --resource-group eshop-learn-rg --location westus
 
+    # Deployment templates used customized coupon and webshoppingagg images
+    # Revert to non-custom tags
+    sed -i "s|linux-feature-flags|linux-latest|g" $editorHomeLocation/deploy/k8s/helm-simple/coupon/templates/deployment.yaml
+    sed -i "s|linux-feature-flags|linux-latest|g" $editorHomeLocation/deploy/k8s/helm-simple/webshoppingagg/templates/deployment.yaml
+    sed -i "s|linux-feature-flags|linux-latest|g" $editorHomeLocation/deploy/k8s/helm-simple/webspa/templates/deployment.yaml
+
     # Create ACR resource
     $editorHomeLocation/deploy/k8s/create-acr.sh
     
-    # Upload customized coupon and webshoppingagg images
-    echo "Uploading custom images..."
-    $editorHomeLocation/deploy/k8s/build-to-acr.sh --services coupon.api,webshoppingagg
-
-    # Deploy customized coupon and webshoppingagg images
-    $editorHomeLocation/deploy/k8s/deploy-application.sh --charts coupon,webshoppingagg
-
     # Display URLs to user
     cat ~/clouddrive/aspnet-learn/deployment-urls.txt
 fi
