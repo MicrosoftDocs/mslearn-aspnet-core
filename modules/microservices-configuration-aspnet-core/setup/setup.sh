@@ -52,12 +52,9 @@ else
 
     # Deployment templates used customized coupon and webshoppingagg images
     # Revert to non-custom tags
-    rm $editorHomeLocation/deploy/k8s/helm-simple/coupon/templates/deployment.yaml
-    mv $editorHomeLocation/deploy/k8s/helm-simple/coupon/templates/deployment.yaml.bak $editorHomeLocation/deploy/k8s/helm-simple/coupon/templates/deployment.yaml
-    rm $editorHomeLocation/deploy/k8s/helm-simple/webshoppingagg/templates/deployment.yaml
-    mv $editorHomeLocation/deploy/k8s/helm-simple/webshoppingagg/templates/deployment.yaml.bak $editorHomeLocation/deploy/k8s/helm-simple/webshoppingagg/templates/deployment.yaml
-    rm $editorHomeLocation/deploy/k8s/helm-simple/webspa/templates/deployment.yaml
-    mv $editorHomeLocation/deploy/k8s/helm-simple/webspa/templates/deployment.yaml.bak $editorHomeLocation/deploy/k8s/helm-simple/webspa/templates/deployment.yaml
+    sed -i "s|linux-feature-flags|linux-latest|g" $editorHomeLocation/deploy/k8s/helm-simple/coupon/templates/deployment.yaml
+    sed -i "s|linux-feature-flags|linux-latest|g" $editorHomeLocation/deploy/k8s/helm-simple/webshoppingagg/templates/deployment.yaml
+    sed -i "s|linux-feature-flags|linux-latest|g" $editorHomeLocation/deploy/k8s/helm-simple/webspa/templates/deployment.yaml
 
     # Create ACR resource
     $editorHomeLocation/deploy/k8s/create-acr.sh
