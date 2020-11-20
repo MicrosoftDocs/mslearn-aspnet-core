@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
         - name: coupon-api
-          image: eshoplearn/coupon.api:linux-feature-flags
+          image: {{ .Values.registry }}/coupon.api:linux-latest
           imagePullPolicy: {{ .Values.imagePullPolicy }}
           ports:
             - containerPort: 80

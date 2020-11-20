@@ -35,5 +35,3 @@ cd ~/clouddrive/aspnet-learn/src/deploy/k8s
 eval $(cat ~/clouddrive/aspnet-learn/create-aks-exports.txt)
 
 ./deploy-application.sh
-
-./deploy-application.sh --charts coupon,webshoppingagg,webspa --registry eshoplearn
