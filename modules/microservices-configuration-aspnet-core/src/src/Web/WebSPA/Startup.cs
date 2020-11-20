@@ -64,8 +64,6 @@ namespace eShopOnContainers.WebSPA
                         options.JsonSerializerOptions.PropertyNameCaseInsensitive = true);
             services.AddSpaStaticFiles(configuration => configuration.RootPath = "wwwroot");
             
-            // Add the AddFeatureManagement code
-            
             services.AddControllersWithViews();
             services.AddHttpClient<ICouponService, CouponService>();
         }
