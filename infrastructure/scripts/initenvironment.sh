@@ -76,18 +76,19 @@ resetAzureCliDefaults() {
     )
 }
 configureDotNetCli() {
-    echo "${newline}${headingStyle}Configuring the .NET Core CLI...${defaultTextStyle}"
+    echo "${newline}${headingStyle}Configuring the .NET CLI...${defaultTextStyle}"
     declare installedDotNet=$(dotnet --version)
 
     if [ "$dotnetSdkVersion" != "$installedDotNet" ];
     then
-        # Install .NET Core SDK
+        # Install .NET SDK
         wget -q -O - https://dot.net/v1/dotnet-install.sh | bash /dev/stdin --version $dotnetSdkVersion
     fi
 
     setPathEnvironmentVariableForDotNet
+    setDotnetRootEnvironmentVariable
 
-    # By default, the .NET Core CLI prints Welcome and Telemetry messages on
+    # By default, the .NET CLI prints Welcome and Telemetry messages on
     # the first run. Suppress those messages by creating an appropriately
     # named file on disk.
     touch ~/.dotnet/$dotnetSdkVersion.dotnetFirstUseSentinel
@@ -104,8 +105,8 @@ configureDotNetCli() {
     # Disable add'l welcome messages and logo stuff
     export DOTNET_NOLOGO=true
     echo "export DOTNET_NOLOGO=true" >> ~/.bashrc
-    
-    # Add tab completion for .NET Core CLI
+
+    # Add tab completion for .NET CLI
     tabSlug="#dotnet-tab-completion"
     tabScript=$dotnetScriptsPath/tabcomplete.sh
     if ! [[ $(grep $tabSlug ~/.bashrc) ]]; then
@@ -121,11 +122,19 @@ setPathEnvironmentVariableForDotNet() {
     # Add a note to .bashrc in case someone is running this in their own Cloud Shell
     echo "# The following was added by Microsoft Learn $moduleName" >> ~/.bashrc
 
-    # Add .NET Core SDK and .NET Core Global Tools default installation directory to PATH
+    # Add .NET SDK and .NET Global Tools default installation directory to PATH
     if ! [ $(echo $PATH | grep .dotnet) ]; then 
         export PATH=~/.dotnet:~/.dotnet/tools:$PATH; 
-        echo "# Add custom .NET Core SDK to PATH" >> ~/.bashrc
+        echo "# Add custom .NET SDK to PATH" >> ~/.bashrc
         echo "export PATH=~/.dotnet:~/.dotnet/tools:\$PATH;" >> ~/.bashrc
+    fi
+}
+setDotnetRootEnvironmentVariable() {
+    # Add .NET Global Tools directory variable
+    if ! [ $(echo $DOTNET_ROOT | grep .dotnet) ]; then 
+        export DOTNET_ROOT=~/.dotnet
+        echo "# Add DOTNET_ROOT variable" >> ~/.bashrc
+        echo "export DOTNET_ROOT=~/.dotnet" >> ~/.bashrc
     fi
 }
 downloadAndBuild() {
@@ -199,13 +208,13 @@ displayGreeting() {
     # Set location
     cd ~
 
-    # Display installed .NET Core SDK version
+    # Display installed .NET SDK version
     if ! [ "$suppressConfigureDotNet" ]; then
-        echo "${defaultTextStyle}Using .NET Core SDK version ${headingStyle}$dotnetSdkVersion${defaultTextStyle}"
+        echo "${defaultTextStyle}Using .NET SDK version ${headingStyle}$dotnetSdkVersion${defaultTextStyle}"
     fi
     
-    # Install .NET Core global tool to display connection info
-    dotnet tool install dotnetsay --global --version 2.1.4 --verbosity quiet
+    # Install .NET global tool to display connection info
+    dotnet tool install dotnetsay --global --version 2.1.7 --verbosity quiet
 
     # Greetings!
     if [ "$dotnetBotGreeting" ]; then
