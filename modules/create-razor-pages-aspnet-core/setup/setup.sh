@@ -60,7 +60,7 @@ writeAzWebappConfig(){
 
 # Grab and run initenvironment.sh
 . <(wget -q -O - $initScript)
- 
+
 # Download and build
 downloadAndBuild
 
