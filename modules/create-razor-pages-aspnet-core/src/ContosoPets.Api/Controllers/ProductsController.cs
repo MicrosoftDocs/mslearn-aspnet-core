@@ -8,8 +8,8 @@ using ContosoPets.Api.Models;
 
 namespace ContosoPets.Api.Controllers
 {
-    [Route("api/[controller]")]
     [ApiController]
+    [Route("[controller]")]
     public class ProductsController : ControllerBase
     {
         private readonly ContosoPetsContext _context;
@@ -20,15 +20,15 @@ namespace ContosoPets.Api.Controllers
         }
 
         [HttpGet]
-        public ActionResult<List<Product>> GetAll() =>
-            _context.Products.ToList();
+        public ActionResult<IEnumerable<Product>> GetAll() =>
+            _context.Products;
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Product>> GetById(long id)
+        public async Task<ActionResult<Product>> GetById(int id)
         {
             var product = await _context.Products.FindAsync(id);
 
-            if (product == null)
+            if (product is null)
             {
                 return NotFound();
             }
@@ -46,7 +46,7 @@ namespace ContosoPets.Api.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(long id, Product product)
+        public async Task<IActionResult> Update(int id, Product product)
         {
             if (id != product.Id)
             {
@@ -60,11 +60,11 @@ namespace ContosoPets.Api.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(long id)
+        public async Task<IActionResult> Delete(int id)
         {
             var product = await _context.Products.FindAsync(id);
 
-            if (product == null)
+            if (product is null)
             {
                 return NotFound();
             }

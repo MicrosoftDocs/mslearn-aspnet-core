@@ -14,7 +14,7 @@
 declare -x moduleName="create-razor-pages-aspnet-core"
 
 # dotnet SDK version
-declare -x dotnetSdkVersion="3.1.301"
+declare -x dotnetSdkVersion="5.0.100"
 
 # Any other declarations we need
 declare -x gitBranch="live"
@@ -22,7 +22,7 @@ declare initScript=https://raw.githubusercontent.com/MicrosoftDocs/mslearn-aspne
 declare -x projectRootDirectory="ContosoPets.Ui"
 
 # If the script appears to have already been run, just set the vars and leave.
-declare variableScript='variables.sh'
+declare variableScript="variables.sh"
 if [ -e ~/$variableScript ]
 then
     . ~/$variableScript

@@ -1,8 +1,4 @@
-using System;
 using System.Linq;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
-using ContosoPets.Api.Models;
 
 namespace ContosoPets.Api.Data
 {
@@ -13,16 +9,8 @@ namespace ContosoPets.Api.Data
             if (!context.Products.Any())
             {
                 context.Products.AddRange(
-                    new Product
-                    {
-                        Name = "Squeaky Bone",
-                        Price = 20.99m
-                    },
-                    new Product
-                    {
-                        Name = "Knotted Rope",
-                        Price = 12.99m
-                    }
+                    new(0, "Squeaky Bone", 20.99m),
+                    new(0, "Knotted Rope", 12.99m)
                 );
 
                 context.SaveChanges();
