@@ -70,18 +70,18 @@ provisionResourceGroup
 provisionAppServicePlan
 
 (
-    # API web app
+    # web API
     declare -x webAppName=apiapp$instanceId
     declare -x projectRootDirectory="ContosoPets.Api"
-    declare -x webAppLabel="ContosoPets.Api API"
+    declare -x webAppLabel="ContosoPets.Api web API"
     provisionAppService
 
     # Deploy the app because it's a dependency.
     cd $srcWorkingDirectory/$projectRootDirectory
     az webapp up --name $webAppName --plan $webPlanName &> ../apiapp-deploy.log
 ) &
-(   
-    # UI web app
+(
+    # web app
     declare -x webAppName=webapp$instanceId
     declare -x projectRootDirectory="ContosoPets.Ui"
     declare -x webAppLabel="ContosoPets.Ui Web App"
@@ -90,11 +90,11 @@ provisionAppServicePlan
 
 wait &>/dev/null
 
-# Point to the Web to the API
+# Point the web app to the web API
 cd $srcWorkingDirectory/$projectRootDirectory
 sed -i "s|<web-app-name>|apiapp$instanceId|g" appsettings.json
 
-# Setup az webapp up
+# Set up az webapp up
 writeAzWebappConfig
 
 # Clean up
