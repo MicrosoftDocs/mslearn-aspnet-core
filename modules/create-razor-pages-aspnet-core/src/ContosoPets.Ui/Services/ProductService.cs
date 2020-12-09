@@ -39,19 +39,13 @@ namespace ContosoPets.Ui.Services
             return product;
         }
 
-        public async Task UpdateProduct(Product product)
-        {
-            await _httpClient.PutAsJsonAsync<Product>($"{_route}/{product.Id}", product);
-        }
+        public Task UpdateProduct(Product product) =>
+            _httpClient.PutAsJsonAsync($"{_route}/{product.Id}", product);
 
-        public async Task CreateProduct(Product product)
-        {
-            await _httpClient.PostAsJsonAsync<Product>(_route, product);
-        }
+        public Task CreateProduct(Product product) =>
+            _httpClient.PostAsJsonAsync(_route, product);
 
-        public async Task DeleteProduct(int productId)
-        {
-            await _httpClient.DeleteAsync($"{_route}/{productId}");
-        }
+        public Task DeleteProduct(int productId) =>
+            _httpClient.DeleteAsync($"{_route}/{productId}");
     }
 }
