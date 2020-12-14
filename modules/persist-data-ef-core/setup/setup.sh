@@ -83,8 +83,8 @@ createAliases(){
 . <(wget -q -O - $initScript)
 
 
-# Download and build
-downloadAndBuild
+# Download
+downloadStarterApp
 
 
 
