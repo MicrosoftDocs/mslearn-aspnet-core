@@ -38,8 +38,8 @@ else
     # Grab and run initenvironment.sh
     . <(wget -q -O - $initScript)
 
-    # Download and build
-    downloadAndBuild
+    # Download
+    downloadStarterApp
 
     # Set location to ~/clouddrive
     cd $editorHomeLocation

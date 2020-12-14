@@ -137,7 +137,7 @@ setDotnetRootEnvironmentVariable() {
         echo "export DOTNET_ROOT=~/.dotnet" >> ~/.bashrc
     fi
 }
-downloadAndBuild() {
+downloadStarterApp() {
     if ! [ "$suppressShallowClone" ]; then
         # Set location
         cd $rootLocation
