@@ -4,14 +4,14 @@ echo
 echo "Creating an Azure Cosmos DB instance"
 echo "===================================="
 
-if [ -f ~/clouddrive/source/create-aks-exports.txt ]
+if [ -f ~/clouddrive/aspnet-learn/create-aks-exports.txt ]
 then
-  eval $(cat ~/clouddrive/source/create-aks-exports.txt)
+  eval $(cat ~/clouddrive/aspnet-learn/create-aks-exports.txt)
 fi
 
-if [ -f ~/clouddrive/source/create-idtag-exports.txt ]
+if [ -f ~/clouddrive/aspnet-learn/create-idtag-exports.txt ]
 then
-  eval $(cat ~/clouddrive/source/create-idtag-exports.txt)
+  eval $(cat ~/clouddrive/aspnet-learn/create-idtag-exports.txt)
 fi
 
 if [ -z "$ESHOP_RG" ] || [ -z "$ESHOP_LOCATION" ]
@@ -122,8 +122,8 @@ echo "---------------------"
 cat create-azure-cosmosdb-exports.txt
 echo 
 echo "Run the following command to update the environment"
-echo 'eval $(cat ~/clouddrive/source/create-azure-cosmosdb-exports.txt)'
+echo 'eval $(cat ~/clouddrive/aspnet-learn/create-azure-cosmosdb-exports.txt)'
 echo
 
-mv -f create-azure-cosmosdb-exports.txt ~/clouddrive/source/
-mv -f create-idtag-exports.txt ~/clouddrive/source/
+mv -f create-azure-cosmosdb-exports.txt ~/clouddrive/aspnet-learn/
+mv -f create-idtag-exports.txt ~/clouddrive/aspnet-learn/
