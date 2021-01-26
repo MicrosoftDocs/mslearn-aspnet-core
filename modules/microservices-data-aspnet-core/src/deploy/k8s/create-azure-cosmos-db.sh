@@ -35,6 +35,7 @@ then
 fi
 
 cosmosAccountName=eshop-learn-$eshopIdTag
+cosmosDbName=CouponDb
 
 echo
 echo "Creating Azure Cosmos DB account $cosmosAccountName in RG $ESHOP_RG"
@@ -53,12 +54,12 @@ then
 fi
 
 echo
-echo "Creating MongoDB database $cosmosDbName in RG $ESHOP_RG"
+echo "Creating MongoDB database $cosmosDbName in $cosmosAccountName"
 echo "-------------------------"
 
 az cosmosdb mongodb database create \
     --account-name $cosmosAccountName \
-    --name CouponDb \
+    --name $cosmosDbName \
     --resource-group $ESHOP_RG \
     --query "{Name:name,ResourceGroup:resourceGroup}"
 
