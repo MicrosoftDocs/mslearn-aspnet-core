@@ -13,7 +13,7 @@
 # Module name
 declare moduleName="build-web-api-aspnet-core"
 # dotnet SDK version
-declare -x dotnetSdkVersion="5.0.100"
+declare -x dotnetSdkVersion="5.0.103"
 
 # Any other declarations we need
 declare -x gitBranch="live"
