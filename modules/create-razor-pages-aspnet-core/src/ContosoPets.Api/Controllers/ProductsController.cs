@@ -1,10 +1,9 @@
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using ContosoPets.Api.Data;
 using ContosoPets.Api.Models;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace ContosoPets.Api.Controllers
 {
@@ -28,7 +27,7 @@ namespace ContosoPets.Api.Controllers
         {
             var product = await _context.Products.FindAsync(id);
 
-            if (product is null)
+            if (product == null)
             {
                 return NotFound();
             }
@@ -64,7 +63,7 @@ namespace ContosoPets.Api.Controllers
         {
             var product = await _context.Products.FindAsync(id);
 
-            if (product is null)
+            if (product == null)
             {
                 return NotFound();
             }

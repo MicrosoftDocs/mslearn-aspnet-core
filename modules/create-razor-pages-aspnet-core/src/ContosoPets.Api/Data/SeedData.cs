@@ -1,3 +1,4 @@
+using ContosoPets.Api.Models;
 using System.Linq;
 
 namespace ContosoPets.Api.Data
@@ -9,8 +10,18 @@ namespace ContosoPets.Api.Data
             if (!context.Products.Any())
             {
                 context.Products.AddRange(
-                    new(0, "Squeaky Bone", 20.99m),
-                    new(0, "Knotted Rope", 12.99m)
+                    new Product
+                    {
+                        Id = 0,
+                        Name = "Squeaky Bone",
+                        Price = 20.99m
+                    },
+                    new Product
+                    {
+                        Id = 0,
+                        Name = "Knotted Rope",
+                        Price = 12.99m
+                    }
                 );
 
                 context.SaveChanges();

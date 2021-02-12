@@ -2,25 +2,32 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using ContosoPets.Api.Data;
-using ContosoPets.Api;
+using System.Threading.Tasks;
 
-CreateHostBuilder(args).Build().SeedDatabase().Run();
-
-static IHostBuilder CreateHostBuilder(string[] args) =>
-    Host.CreateDefaultBuilder(args)
-        .ConfigureWebHostDefaults(webBuilder => webBuilder.UseStartup<Startup>());
-
-static class IHostExtensions
+namespace ContosoPets.Api
 {
-    public static IHost SeedDatabase(this IHost host)
+    public class Program
     {
-        var scopeFactory = host.Services.GetRequiredService<IServiceScopeFactory>();
-        using var scope = scopeFactory.CreateScope();
-        var context = scope.ServiceProvider.GetRequiredService<ContosoPetsContext>();
+        static Task Main(string[] args) =>
+            CreateHostBuilder(args).Build().SeedDatabase().RunAsync();
 
-        if (context.Database.EnsureCreated())
-            SeedData.Initialize(context);
+        static IHostBuilder CreateHostBuilder(string[] args) =>
+            Host.CreateDefaultBuilder(args)
+                .ConfigureWebHostDefaults(webBuilder => webBuilder.UseStartup<Startup>());
+    }
 
-        return host;
+    public static class IHostExtensions
+    {
+        public static IHost SeedDatabase(this IHost host)
+        {
+            var scopeFactory = host.Services.GetRequiredService<IServiceScopeFactory>();
+            using var scope = scopeFactory.CreateScope();
+            var context = scope.ServiceProvider.GetRequiredService<ContosoPetsContext>();
+
+            if (context.Database.EnsureCreated())
+                SeedData.Initialize(context);
+
+            return host;
+        }
     }
 }
