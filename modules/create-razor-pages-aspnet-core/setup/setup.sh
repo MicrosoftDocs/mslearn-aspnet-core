@@ -14,10 +14,10 @@
 declare -x moduleName="create-razor-pages-aspnet-core"
 
 # dotnet SDK version
-declare -x dotnetSdkVersion="5.0.100"
+declare -x dotnetSdkVersion="3.1.406"
 
 # Any other declarations we need
-declare -x gitBranch="live"
+declare -x gitBranch="scottaddie/revert-to.3.1"
 declare initScript=https://raw.githubusercontent.com/MicrosoftDocs/mslearn-aspnet-core/$gitBranch/infrastructure/scripts/initenvironment.sh
 declare -x projectRootDirectory="ContosoPets.Ui"
 
