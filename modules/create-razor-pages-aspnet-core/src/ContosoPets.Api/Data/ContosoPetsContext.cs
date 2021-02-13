@@ -10,6 +10,6 @@ namespace ContosoPets.Api.Data
         {
         }
 
-        public DbSet<Product> Products { get; init; }
+        public DbSet<Product> Products { get; set; }
     }
 }
