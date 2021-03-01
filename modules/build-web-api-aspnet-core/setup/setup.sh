@@ -24,6 +24,9 @@ declare suppressAzureResources=true
 # Grab and run initenvironment.sh
 . <(wget -q -O - $initScript)
 
+# Switch to working directory
+cd $srcWorkingDirectory
+
 # If they reconnect, bring them back here.
 echo >> ~/.bashrc
 echo "cd ~/aspnet-learn/src/ContosoPets.Api && code ." >> ~/.bashrc
