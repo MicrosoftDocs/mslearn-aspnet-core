@@ -25,8 +25,9 @@ declare suppressAzureResources=true
 . <(wget -q -O - $initScript)
 
 # Create and switch to working directory
-mkdir $srcWorkingDirectory
-cd $srcWorkingDirectory
+mkdir ~/aspnet-learn
+mkdir ~/aspnet-learn/src
+cd ~/aspnet-learn/src
 
 # If they reconnect, bring them back here.
 echo >> ~/.bashrc
