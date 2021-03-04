@@ -24,7 +24,8 @@ declare suppressAzureResources=true
 # Grab and run initenvironment.sh
 . <(wget -q -O - $initScript)
 
-# Switch to working directory
+# Create and switch to working directory
+mkdir $srcWorkingDirectory
 cd $srcWorkingDirectory
 
 # If they reconnect, bring them back here.
