@@ -18,7 +18,7 @@ declare -x dotnetSdkVersion="3.1.300"
 declare moduleName="microservices-aspnet-core"
 
 # Any other declarations we need
-declare -x gitBranch="live"
+declare -x gitBranch="fix-the-aks-preview"
 declare initScript=https://raw.githubusercontent.com/MicrosoftDocs/mslearn-aspnet-core/$gitBranch/infrastructure/scripts/initenvironment.sh
 declare suppressAzureResources=true
 declare rootLocation=~/clouddrive
@@ -47,19 +47,8 @@ else
     # Launch editor so the user can see the code
     code .
 
-    # Enable aks-preview
-    # Mitigation for https://github.com/Azure/azure-cli/issues/14915
-    echo "Enabling Azure CLI aks-preview extension..."
-    az extension add --name aks-preview --only-show-errors
-    echo 
-
     # Run eshop-learn quickstart to deploy to AKS
     $editorHomeLocation/deploy/k8s/quickstart.sh --resource-group eshop-learn-rg --location westus
-
-    # Disabling the aks-preview we just enabled...
-    echo
-    echo "Disabling Azure CLI aks-preview extension..."
-    az extension remove --name aks-preview --only-show-errors
 
     # Create ACR resource
     $editorHomeLocation/deploy/k8s/create-acr.sh
