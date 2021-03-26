@@ -1,8 +1,10 @@
 #!/bin/bash
 
-echo
-echo "Creating an Azure Cache for Redis instance"
-echo "=========================================="
+# Color theming
+if [ -f ~/clouddrive/aspnet-learn/setup/theme.sh ]
+then
+  . <(cat ~/clouddrive/aspnet-learn/setup/theme.sh)
+fi
 
 if [ -f ~/clouddrive/aspnet-learn/create-aks-exports.txt ]
 then
@@ -36,27 +38,21 @@ fi
 
 redisName=eshop-learn-$eshopIdTag
 
-echo
-echo "Creating Azure Cache for Redis $redisName in RG $ESHOP_RG"
-echo "------------------------------"
 
-az redis create \
-    --location $ESHOP_LOCATION \
-    --name $redisName \
-    --resource-group $ESHOP_RG \
-    --sku Basic \
-    --vm-size c0 \
-    --query "{Name:name,HotsName:hostName,Location:location,ProvisioningState:provisioningState,RedisVersion:redisVersion}"
+echo
+echo "Creating Azure Cache for Redis \"$redisName\" in resource group \"$ESHOP_RG\"..."
+acrCommand="az redis create --location $ESHOP_LOCATION --name $redisName --resource-group $ESHOP_RG --sku Basic --vm-size c0 --output none"
+echo "${newline} > ${azCliCommandStyle}$acrCommand${defaultTextStyle}${newline}"
+eval $acrCommand
 
 if [ ! $? -eq 0 ]
 then
-    echo "ERROR!"
+    echo "${newline}${errorStyle}ERROR creating Azure Cache for Redis!${defaultTextStyle}${newline}"
     exit 1
 fi
 
 echo
-echo "Retrieving Azure Cache for Redis connection string"
-echo "--------------------------------------------------"
+echo "Retrieving Azure Cache for Redis connection string..."
 
 primaryKey=$(az redis list-keys \
     --resource-group $ESHOP_RG \
@@ -79,39 +75,10 @@ echo export ESHOP_IDTAG=$eshopIdTag >> create-azure-redis-exports.txt
 
 echo export ESHOP_IDTAG=$eshopIdTag >> create-idtag-exports.txt
 
-echo 
-echo "ConnectionString: $connectionString" 
-echo 
-
-provisioningState=""
-
-while [ -z "$provisioningState" ] || [ "$provisioningState" != "Creating" ]
-do
-    provisioningState=$(az redis show -g $ESHOP_RG -n $redisName --query provisioningState -o tsv)
-
-    if [ ! $? -eq 0 ]
-    then
-        echo "ERROR!"
-        exit 1
-    fi
-
-    if [ "$provisioningState" == "Creating" ]
-    then
-        echo "Waiting for the Azure Cache for Redis creation to finish ($provisioningState) - Ctrl+C to cancel..."
-        sleep 10
-    else
-        echo "Created Azure Cache for Redis $redisName in RG $ESHOP_RG at location $ESHOP_LOCATION." 
-    fi
-done
-
-echo
-echo "Environment variables" 
-echo "---------------------" 
-cat create-azure-redis-exports.txt
-echo 
-echo "Run the following command to update the environment"
-echo 'eval $(cat ~/clouddrive/aspnet-learn/create-azure-redis-exports.txt)'
-echo
+echo "${newline}${defaultTextStyle}ConnectionString: ${headingStyle}$connectionString${defaultTextStyle}" 
+echo "${newline}${headingStyle}Done! The Azure Cache for Redis resource is provisioned, but it still has startup tasks to do. It will be a few minutes before the resource is ready.${defaultTextStyle}" 
+echo "${newline}Check the status of the resource with the following:"
+echo "${newline} > ${azCliCommandStyle}az redis show -g $ESHOP_RG -n $redisName --query provisioningState${defaultTextStyle}${newline}"
 
 mv -f create-azure-redis-exports.txt ~/clouddrive/aspnet-learn/
 mv -f create-idtag-exports.txt ~/clouddrive/aspnet-learn/
