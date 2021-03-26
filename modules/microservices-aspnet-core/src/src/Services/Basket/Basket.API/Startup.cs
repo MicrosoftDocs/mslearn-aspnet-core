@@ -103,6 +103,8 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
             services.AddCustomHealthCheck(Configuration);
 
             services.Configure<BasketSettings>(Configuration);
+            
+            // UNCOMMENT TO ENABLE REDIS
 
             //By connecting here we are making sure that our service
             //cannot start until redis is ready. This might slow down startup,
@@ -110,17 +112,12 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
             //and then creating the connection it seems reasonable to move
             //that cost to startup instead of having the first request pay the
             //penalty.
-            services.AddSingleton<ConnectionMultiplexer>(sp =>
-            {
-                var settings = sp.GetRequiredService<IOptions<BasketSettings>>().Value;
-                var configuration = ConfigurationOptions.Parse(settings.ConnectionString, true);
-
-                configuration.ResolveDns = true;
-
-                return ConnectionMultiplexer.Connect(configuration);
-            });
-
-
+            //services.AddSingleton<ConnectionMultiplexer>(sp =>
+            //{
+            //    var settings = sp.GetRequiredService<IOptions<BasketSettings>>().Value;
+            //    return ConnectionMultiplexer.Connect(settings.ConnectionString);
+            //});            
+            
             if (Configuration.GetValue<bool>("AzureServiceBusEnabled"))
             {
                 services.AddSingleton<IServiceBusPersisterConnection>(sp =>
@@ -178,7 +175,14 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
                     .AllowCredentials());
             });
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-            services.AddTransient<IBasketRepository, RedisBasketRepository>();
+
+            // UNCOMMENT TO ENABLE REDIS
+            // Actual Redis Basket Repository
+            // services.AddTransient<IBasketRepository, RedisBasketRepository>();
+
+            // In Memory Basket Repository
+            services.AddSingleton<IBasketRepository, InMemoryBasketRepository>();
+
             services.AddTransient<IIdentityService, IdentityService>();
 
             services.AddOptions();
@@ -344,11 +348,12 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
 
             hcBuilder.AddCheck("self", () => HealthCheckResult.Healthy());
 
-            hcBuilder
-                .AddRedis(
-                    configuration["ConnectionString"],
-                    name: "redis-check",
-                    tags: new string[] { "redis" });
+            // UNCOMMENT TO ENABLE REDIS
+            //hcBuilder
+            //    .AddRedis(
+            //        configuration["ConnectionString"],
+            //        name: "redis-check",
+            //        tags: new string[] { "redis" });
 
             if (configuration.GetValue<bool>("AzureServiceBusEnabled"))
             {
