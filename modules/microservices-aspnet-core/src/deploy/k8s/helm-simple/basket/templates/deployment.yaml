@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
         - name: basket-api
-          image: {{ .Values.registry }}/basket.api:imo
+          image: {{ .Values.registry }}/basket.api:linux-latest
           imagePullPolicy: Always
           ports:
             - name: http
@@ -43,4 +43,3 @@ spec:
           envFrom:
             - configMapRef:
                 name: basket-cm
-
