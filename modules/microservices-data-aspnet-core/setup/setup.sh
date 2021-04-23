@@ -48,7 +48,7 @@ else
     code .
 
     # Run eshop-learn quickstart to deploy to AKS
-    $editorHomeLocation/deploy/k8s/quickstart.sh --resource-group eshop-learn-rg --location westus
+    $editorHomeLocation/deploy/k8s/quickstart.sh --resource-group eshop-learn-rg --location eastus2
 
 
     # Create ACR resource
