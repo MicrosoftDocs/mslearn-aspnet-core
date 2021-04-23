@@ -36,7 +36,7 @@ then
     eshopIdTag="$dateString$random"
 fi
 
-redisName=eshop-learn-$eshopIdTag
+redisName=eshop-redis-$eshopIdTag
 
 
 echo
