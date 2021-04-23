@@ -103,20 +103,8 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
             services.AddCustomHealthCheck(Configuration);
 
             services.Configure<BasketSettings>(Configuration);
-            
-            // UNCOMMENT TO ENABLE REDIS
 
-            //By connecting here we are making sure that our service
-            //cannot start until redis is ready. This might slow down startup,
-            //but given that there is a delay on resolving the ip address
-            //and then creating the connection it seems reasonable to move
-            //that cost to startup instead of having the first request pay the
-            //penalty.
-            //services.AddSingleton<ConnectionMultiplexer>(sp =>
-            //{
-            //    var settings = sp.GetRequiredService<IOptions<BasketSettings>>().Value;
-            //    return ConnectionMultiplexer.Connect(settings.ConnectionString);
-            //});            
+            // Add the ConnectionMultiplexer code...         
             
             if (Configuration.GetValue<bool>("AzureServiceBusEnabled"))
             {
@@ -176,11 +164,7 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
             });
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
-            // UNCOMMENT TO ENABLE REDIS
-            // Actual Redis Basket Repository
-            // services.AddTransient<IBasketRepository, RedisBasketRepository>();
-
-            // In Memory Basket Repository
+            // Basket Repository -- Replace the following line to enable Redis
             services.AddSingleton<IBasketRepository, InMemoryBasketRepository>();
 
             services.AddTransient<IIdentityService, IdentityService>();
