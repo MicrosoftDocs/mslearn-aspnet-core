@@ -1,8 +1,10 @@
 #!/bin/bash
 
-echo
-echo "Creating an Azure Cosmos DB instance"
-echo "===================================="
+# Color theming
+if [ -f ~/clouddrive/aspnet-learn/setup/theme.sh ]
+then
+  . <(cat ~/clouddrive/aspnet-learn/setup/theme.sh)
+fi
 
 if [ -f ~/clouddrive/aspnet-learn/create-aks-exports.txt ]
 then
@@ -38,51 +40,38 @@ cosmosAccountName=eshop-learn-$eshopIdTag
 cosmosDbName=CouponDb
 
 echo
-echo "Creating Azure Cosmos DB account $cosmosAccountName in RG $ESHOP_RG"
-echo "--------------------------------"
-
-az cosmosdb create \
-    --name $cosmosAccountName \
-    --resource-group $ESHOP_RG \
-    --kind MongoDB \
-    --query "{DocumentEndpoint:documentEndpoint,Kind:kind,Name:name,Location:location}"
+echo "Creating Azure CosmosDB account \"$cosmosAccountName\" in resource group \"$ESHOP_RG\"..."
+acdbCommand="az cosmosdb create --name $cosmosAccountName --resource-group $ESHOP_RG --kind MongoDB --output none"
+echo "${newline} > ${azCliCommandStyle}$acdbCommand${defaultTextStyle}${newline}"
+eval $acdbCommand
 
 if [ ! $? -eq 0 ]
 then
-    echo "ERROR!"
+    echo "${errorStyle}Error creating CosmosDB account!${plainTextStyle}"
     exit 1
 fi
 
 echo
-echo "Creating MongoDB database $cosmosDbName in $cosmosAccountName"
-echo "-------------------------"
-
-az cosmosdb mongodb database create \
-    --account-name $cosmosAccountName \
-    --name $cosmosDbName \
-    --resource-group $ESHOP_RG \
-    --query "{Name:name,ResourceGroup:resourceGroup}"
+echo "Creating MongoDB database \"$cosmosDbName\" in \"$cosmosAccountName\"..."
+mdbCommand="az cosmosdb mongodb database create --account-name $cosmosAccountName --name $cosmosDbName --resource-group $ESHOP_RG --output none"
+echo "${newline} > ${azCliCommandStyle}$mdbCommand${defaultTextStyle}${newline}"
+eval $mdbCommand
 
 if [ ! $? -eq 0 ]
 then
-    echo "ERROR!"
+    echo "${errorStyle}Error creating MongoDB database!${plainTextStyle}"
     exit 1
 fi
 
 echo
-echo "Retrieving Azure Cosmos DB connection string"
-echo "--------------------------------------------"
-
-connectionString=$(az cosmosdb keys list \
-    --type connection-strings \
-    --name $cosmosAccountName \
-    --resource-group $ESHOP_RG \
-    --query connectionStrings[0].connectionString \
-    --output tsv)
+echo "Retrieving connection string..."
+csCommand="az cosmosdb keys list --type connection-strings --name $cosmosAccountName --resource-group $ESHOP_RG --query connectionStrings[0].connectionString --output tsv"
+echo "${newline} > ${azCliCommandStyle}$csCommand${defaultTextStyle}${newline}"
+connectionString=$(eval $csCommand)
 
 if [ ! $? -eq 0 ]
 then
-    echo "ERROR!"
+    echo "${errorStyle}Error retrieving connection string!${plainTextStyle}"
     exit 1
 fi
 
@@ -92,39 +81,8 @@ echo export ESHOP_IDTAG=$eshopIdTag >> create-azure-cosmosdb-exports.txt
 
 echo export ESHOP_IDTAG=$eshopIdTag >> create-idtag-exports.txt
 
+echo "${newline}${headingStyle}Connection String:${plainTextStyle}${newline}${newline}$connectionString" 
 echo 
-echo "ConnectionString: $connectionString" 
-echo 
-
-# provisioningState=""
-
-# while [ -z "$provisioningState" ] || [ "$provisioningState" != "Creating" ]
-# do
-#     provisioningState=$(az redis show -g $ESHOP_RG -n $redisName --query provisioningState -o tsv)
-
-#     if [ ! $? -eq 0 ]
-#     then
-#         echo "ERROR!"
-#         exit 1
-#     fi
-
-#     if [ "$provisioningState" == "Creating" ]
-#     then
-#         echo "Waiting for the Azure Cache for Redis creation to finish ($provisioningState) - Ctrl+C to cancel..."
-#         sleep 10
-#     else
-#         echo "Created Azure Cache for Redis $redisName in RG $ESHOP_RG at location $ESHOP_LOCATION." 
-#     fi
-# done
-
-echo
-echo "Environment variables" 
-echo "---------------------" 
-cat create-azure-cosmosdb-exports.txt
-echo 
-echo "Run the following command to update the environment"
-echo 'eval $(cat ~/clouddrive/aspnet-learn/create-azure-cosmosdb-exports.txt)'
-echo
 
 mv -f create-azure-cosmosdb-exports.txt ~/clouddrive/aspnet-learn/
 mv -f create-idtag-exports.txt ~/clouddrive/aspnet-learn/
