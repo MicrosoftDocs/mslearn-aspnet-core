@@ -71,7 +71,7 @@ connectionString=$(eval $csCommand)
 
 if [ ! $? -eq 0 ]
 then
-    echo "${errorStyle}Error retrieving connection string!${plainTextStyle}"
+    echo "${errorStyle}Error retrieving connection string!${defaultTextStyle}"
     exit 1
 fi
 
@@ -81,7 +81,7 @@ echo export ESHOP_IDTAG=$eshopIdTag >> create-azure-cosmosdb-exports.txt
 
 echo export ESHOP_IDTAG=$eshopIdTag >> create-idtag-exports.txt
 
-echo "${newline}${headingStyle}Connection String:${plainTextStyle}${newline}${newline}$connectionString" 
+echo "${newline}${headingStyle}Connection String:${defaultTextStyle}${newline}${newline}$connectionString" 
 echo 
 
 mv -f create-azure-cosmosdb-exports.txt ~/clouddrive/aspnet-learn/
