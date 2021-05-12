@@ -18,7 +18,7 @@ declare -x dotnetSdkVersion="3.1.407"
 declare moduleName="microservices-data-aspnet-core"
 
 # Any other declarations we need
-declare -x gitBranch="microservices-data-aspnet-core"
+declare -x gitBranch="live"
 declare initScript=https://raw.githubusercontent.com/MicrosoftDocs/mslearn-aspnet-core/$gitBranch/infrastructure/scripts/initenvironment.sh
 declare suppressAzureResources=true
 declare rootLocation=~/clouddrive
