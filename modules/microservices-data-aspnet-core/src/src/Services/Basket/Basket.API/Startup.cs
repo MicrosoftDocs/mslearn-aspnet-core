@@ -332,12 +332,7 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
 
             hcBuilder.AddCheck("self", () => HealthCheckResult.Healthy());
 
-            // UNCOMMENT TO ENABLE REDIS
-            //hcBuilder
-            //    .AddRedis(
-            //        configuration["ConnectionString"],
-            //        name: "redis-check",
-            //        tags: new string[] { "redis" });
+            // Add the healthcheck code...
 
             if (configuration.GetValue<bool>("AzureServiceBusEnabled"))
             {
