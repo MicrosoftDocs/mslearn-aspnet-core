@@ -43,4 +43,3 @@ spec:
           envFrom:
             - configMapRef:
                 name: basket-cm
-
