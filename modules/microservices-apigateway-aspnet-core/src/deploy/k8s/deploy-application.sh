@@ -1,4 +1,18 @@
 #!/bin/bash
+
+# Color theming
+if [ -f ~/clouddrive/aspnet-learn/setup/theme.sh ]
+then
+  . <(cat ~/clouddrive/aspnet-learn/setup/theme.sh)
+fi
+
+if [ -f ~/clouddrive/aspnet-learn/create-acr-exports.txt ]
+then
+  eval $(cat ~/clouddrive/aspnet-learn/create-acr-exports.txt)
+fi
+
+pushd ~/clouddrive/aspnet-learn/src/deploy/k8s > /dev/null
+
 registry=$REGISTRY
 eshopRegistry=${ESHOP_REGISTRY}
 
@@ -64,7 +78,7 @@ then
     echo
     echo "Couldn't resolve the host name!"
     echo "Either use the --hostip (for IP addresses), or --hostname (for DNS names), or"
-    echo "run the \"eval $(cat ~/clouddrive/source/deploy-application-exports.txt)\" command to the values from the initial deployment."
+    echo "run the \"eval $(cat ~/clouddrive/aspnet-learn/deploy-application-exports.txt)\" command to the values from the initial deployment."
     echo
     exit 1
 fi
@@ -76,9 +90,9 @@ fi
 
 if [ "$certificate" == "self-signed" ]
 then
-    pushd ./certificates
+    pushd ./certificates > /dev/null
     ./create-self-signed-certificate.sh
-    popd
+    popd > /dev/null
 
     echo
     echo "Deploying a development self-signed certificate"
@@ -86,9 +100,11 @@ then
     ./deploy-secrets.sh
 fi
 
+pushd ~/clouddrive/aspnet-learn > /dev/null
 echo "export ESHOP_LBIP=$ESHOP_LBIP" > deploy-application-exports.txt
 echo "export ESHOP_HOST=$hostName" >> deploy-application-exports.txt
 echo "export ESHOP_REGISTRY=$ESHOP_REGISTRY" >> deploy-application-exports.txt
+popd > /dev/null
 
 if [ "$charts" == "" ]
 then
@@ -96,7 +112,9 @@ then
     if [ "$installedCharts" != "" ]
     then
         echo "Uninstalling Helm charts..."
-        helm delete $installedCharts
+        helmCmd="helm delete $installedCharts"
+        echo "${newline} > ${genericCommandStyle}$helmCmd${defaultTextStyle}${newline}"
+        eval $helmCmd
     fi
     chartList=$(ls $chartsFolder)
 else
@@ -108,7 +126,9 @@ else
         then
             echo
             echo "Uninstalling chart ""$chart""..."
-            helm delete $installedChart
+            helmCmd="helm delete $installedChart"
+            echo "${newline} > ${genericCommandStyle}$helmCmd${defaultTextStyle}${newline}"
+            eval $helmCmd
         fi
     done
 fi
@@ -121,40 +141,30 @@ for chart in $chartList
 do
     echo
     echo "Installing chart \"$chart\"..."
-    helm install eshoplearn-$chart "$chartsFolder/$chart" \
-        --set registry=$registry \
-        --set imagePullPolicy=Always \
-        --set useHostName=$useHostName \
-        --set host=$hostName \
-        --set protocol=$protocol 
+    helmCmd="helm install eshoplearn-$chart "$chartsFolder/$chart" --set registry=$registry --set imagePullPolicy=Always --set useHostName=$useHostName --set host=$hostName --set protocol=$protocol"
+    echo "${newline} > ${genericCommandStyle}$helmCmd${defaultTextStyle}${newline}"
+    eval $helmCmd
 done
 
 echo
-echo "Helm charts deployed"
+echo "Helm charts deployed!"
+echo 
+echo "${newline} > ${genericCommandStyle}helm list${defaultTextStyle}${newline}"
 helm list
 
-echo
-echo "Pod status"
+echo "Displaying Kubernetes pod status..."
+echo 
+echo "${newline} > ${genericCommandStyle}kubectl get pods${defaultTextStyle}${newline}"
 kubectl get pods
 
-echo
-echo "The eShop-Learn application has been deployed to \"$protocol://$hostName\" (IP: $ESHOP_LBIP)."
-echo
-echo "You can begin exploring these services (when ready):"
-echo "- Centralized logging       : $protocol://$hostName/seq/#/events?autorefresh (See transient failures during startup)"
-echo "- General application status: $protocol://$hostName/webstatus/ (See overall service status)"
-echo "- Web SPA application       : $protocol://$hostName/"
+pushd ~/clouddrive/aspnet-learn > /dev/null
+echo "The eShop-Learn application has been deployed to \"$protocol://$hostName\" (IP: $ESHOP_LBIP)." > deployment-urls.txt
+echo "" >> deployment-urls.txt
+echo "You can begin exploring these services (when ready):" >> deployment-urls.txt
+echo "- Centralized logging       : $protocol://$hostName/seq/#/events?autorefresh (See transient failures during startup)" >> deployment-urls.txt
+echo "- General application status: $protocol://$hostName/webstatus/ (See overall service status)" >> deployment-urls.txt
+echo "- Web SPA application       : $protocol://$hostName/" >> deployment-urls.txt
+echo "${newline}" >> deployment-urls.txt
+popd > /dev/null
 
-echo "eShop-Learn application deployed to \"$protocol://$hostName\" (IP: $ESHOP_LBIP)." > deploy-application-results.txt
-echo "" >> deploy-application-results.txt
-echo "- Logging       : $protocol://$hostName/seq/#/events?autorefresh" >> deploy-application-results.txt
-echo "- General status: $protocol://$hostName/webstatus/" >> deploy-application-results.txt
-echo "- Web SPA       : $protocol://$hostName/" >> deploy-application-results.txt
-
-echo
-echo "Run the following command to update the environment"
-echo 'eval $(cat ~/clouddrive/source/deploy-application-exports.txt)'
-echo
-
-mv -f deploy-application-exports.txt ~/clouddrive/source/
-mv -f deploy-application-results.txt ~/clouddrive/source/
+popd > /dev/null

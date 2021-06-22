@@ -1,4 +1,12 @@
 #!/bin/bash
+
+# Color theming
+if [ -f ~/clouddrive/aspnet-learn/setup/theme.sh ]
+then
+  . <(cat ~/clouddrive/aspnet-learn/setup/theme.sh)
+fi
+
+eshopSubs=${ESHOP_SUBS}
 eshopRg=${ESHOP_RG}
 eshopLocation=${ESHOP_LOCATION}
 eshopNodeCount=${ESHOP_NODECOUNT:-1}
@@ -20,24 +28,32 @@ done
 
 if [ -z "$eshopRg" ]
 then
-    echo "ERROR: RG is mandatory. Use -g to set it"
+    echo "${newline}${errorStyle}ERROR: Resource group is mandatory. Use -g to set it.${defaultTextStyle}${newline}"
     exit 1
 fi
 
+# Swallow STDERR so we don't get red text here from expected error if the RG doesn't exist
+exec 3>&2
+exec 2> /dev/null
+
 rg=`az group show -g $eshopRg -o json`
+
+# Reset STDERR
+exec 2>&3
 
 if [ -z "$rg" ]
 then
     if [ -z "$eshopLocation" ]
     then
-        echo "ERROR: If RG has to be created, location is mandatory. Use -l to set it."
+        echo "${newline}${errorStyle}ERROR: If resource group has to be created, location is mandatory. Use -l to set it.${defaultTextStyle}${newline}"
         exit 1
     fi
-    echo "Creating RG $eshopRg in location $eshopLocation..."
-    az group create -n $eshopRg -l $eshopLocation
+    echo "Creating resource group \"$eshopRg\" in location \"$eshopLocation\"..."
+    echo "${newline} > ${azCliCommandStyle}az group create -n $eshopRg -l $eshopLocation --output none${defaultTextStyle}${newline}"
+    az group create -n $eshopRg -l $eshopLocation --output none
     if [ ! $? -eq 0 ]
     then
-        echo "ERROR: Can't create Resource Group"
+        echo "${newline}${errorStyle}ERROR: Can't create resource group!${defaultTextStyle}${newline}"
         exit 1
     fi
 else
@@ -48,32 +64,46 @@ else
 fi
 
 # AKS Cluster creation
+# Swallow STDERR so we don't get red text here from expected error if the RG doesn't exist
+exec 3>&2
+exec 2> /dev/null
 
-echo
-echo "Creating AKS cluster \"$eshopAksName\" in RG \"$eshopRg\" and location \"$eshopLocation\"..."
-aksCreateCommand="az aks create -n $eshopAksName -g $eshopRg -c $eshopNodeCount --vm-set-type VirtualMachineScaleSets -l $eshopLocation --enable-managed-identity --generate-ssh-keys -o json"
+existingAks=`az aks show -n $eshopAksName -g $eshopRg -o json`
 
-retry=5
-aks=`$aksCreateCommand`
-while [ ! $? -eq 0 ]&&[ $retry -gt 0 ]
-do
-    echo
-    echo "Error creating AKS cluster. Retrying in 5s..."
-    let retry--
-    sleep 5
-    echo
-    echo "Retrying AKS cluster creation..."
-    aks=`$aksCreateCommand`
-done
+# Reset STDERR
+exec 2>&3
 
-if [ ! $? -eq 0 ]
+if [ -z "$existingAks" ]
 then
-    echo "ERROR creating AKS cluster!"
-    exit 1
-fi
+    echo
+    echo "Creating AKS cluster \"$eshopAksName\" in resource group \"$eshopRg\" and location \"$eshopLocation\"..."
+    aksCreateCommand="az aks create -n $eshopAksName -g $eshopRg -c $eshopNodeCount --node-vm-size Standard_D2_v3 --vm-set-type VirtualMachineScaleSets -l $eshopLocation --enable-managed-identity --generate-ssh-keys -o json"
+    echo "${newline} > ${azCliCommandStyle}$aksCreateCommand${defaultTextStyle}${newline}"
+    retry=5
+    aks=`$aksCreateCommand`
+    while [ ! $? -eq 0 ]&&[ $retry -gt 0 ]
+    do
+        echo
+        echo "Unable to create AKS cluster. Retrying in 5s..."
+        let retry--
+        sleep 5
+        echo
+        echo "Retrying AKS cluster creation..."
+        aks=`$aksCreateCommand`
+    done
 
-echo
-echo "AKS cluster created."
+    if [ ! $? -eq 0 ]
+    then
+        echo "${newline}${errorStyle}Error creating AKS cluster!${defaultTextStyle}${newline}"
+        exit 1
+    fi
+
+    echo
+    echo "AKS cluster created."
+else
+    echo
+    echo "Reusing existing AKS resource."
+fi
 
 echo
 echo "Getting credentials for AKS..."
@@ -82,14 +112,30 @@ az aks get-credentials -n $eshopAksName -g $eshopRg --overwrite-existing
 # Ingress controller and load balancer (LB) deployment
 
 echo
-echo "Installing NGINX ingress controller"
+echo "Installing Nginx ingress controller..."
 kubectl apply -f ingress-controller/nginx-controller.yaml
 kubectl apply -f ingress-controller/nginx-loadbalancer.yaml
 
 echo
-echo "Getting Load Balancer public IP"
+echo "Getting Load Balancer public IP..."
 
-aksNodeRG=`az aks list --query "[?name=='$eshopAksName'&&resourceGroup=='$eshopRg'].nodeResourceGroup" -otsv`
+aksNodeRGCommand="az aks list --query \"[?name=='$eshopAksName'&&resourceGroup=='$eshopRg'].nodeResourceGroup\" -otsv"
+
+retry=5
+echo "${newline} > ${azCliCommandStyle}$aksNodeRGCommand${defaultTextStyle}${newline}"
+aksNodeRG=$(eval $aksNodeRGCommand)
+while [ "$aksNodeRG" == "" ]
+do
+    echo
+    echo "Unable to obtain load balancer resource group. Retrying in 5s..."
+    let retry--
+    sleep 5
+    echo
+    echo "Retrying..."
+    echo $aksNodeRGCommand
+    aksNodeRG=$(eval $aksNodeRGCommand)
+done
+
 
 while [ "$eshopLbIp" == "" ] || [ "$eshopLbIp" == "<pending>" ]
 do
@@ -104,7 +150,7 @@ do
 done
 
 echo
-echo "NGINX ingress controller installed."
+echo "Nginx ingress controller installed."
 
 echo export ESHOP_RG=$eshopRg > create-aks-exports.txt
 echo export ESHOP_LOCATION=$eshopLocation >> create-aks-exports.txt
@@ -112,19 +158,11 @@ echo export ESHOP_AKSNAME=$eshopAksName >> create-aks-exports.txt
 echo export ESHOP_AKSNODERG=$aksNodeRG >> create-aks-exports.txt
 echo export ESHOP_LBIP=$eshopLbIp >> create-aks-exports.txt
 
-echo
-echo "AKS cluster \"$eshopAksName\" created with LB public IP \"$eshopLbIp\"."
-echo
-echo "Environment variables"
-echo "---------------------"
-cat create-aks-exports.txt
-echo
-
 if [ -z "$ESHOP_QUICKSTART" ]
 then
     echo "Run the following command to update the environment"
-    echo 'eval $(cat ~/clouddrive/source/create-aks-exports.txt)'
+    echo 'eval $(cat ~/clouddrive/aspnet-learn/create-aks-exports.txt)'
     echo
 fi
 
-mv -f create-aks-exports.txt ~/clouddrive/source/
+mv -f create-aks-exports.txt ~/clouddrive/aspnet-learn/

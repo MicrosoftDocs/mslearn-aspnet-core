@@ -17,7 +17,7 @@ done
 
 if [ -z "$eshopRg" ]
 then
-    echo "ERROR: RG is mandatory. Use -g to set it"
+    echo "${newline}${errorStyle}ERROR: Resource group is mandatory. Use -g to set it.${defaultTextStyle}${newline}"
     exit 1
 fi
 
@@ -25,10 +25,13 @@ export ESHOP_RG=$eshopRg
 export ESHOP_LOCATION=$eshopLocation
 export ESHOP_REGISTRY=$eshopRegistry
 
+
+cd ~/clouddrive/aspnet-learn/src/deploy/k8s
+
 # AKS Cluster creation
 
 ./create-aks.sh
 
-eval $(cat ~/clouddrive/source/create-aks-exports.txt)
+eval $(cat ~/clouddrive/aspnet-learn/create-aks-exports.txt)
 
 ./deploy-application.sh

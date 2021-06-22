@@ -1,13 +1,19 @@
 #!/bin/bash
 
-if [ -f ~/clouddrive/source/create-aks-exports.txt ]
+# Color theming
+if [ -f ~/clouddrive/aspnet-learn/setup/theme.sh ]
 then
-  eval $(cat ~/clouddrive/source/create-aks-exports.txt)
+  . <(cat ~/clouddrive/aspnet-learn/setup/theme.sh)
 fi
 
-if [ -f ~/clouddrive/source/create-idtag-exports.txt ]
+if [ -f ~/clouddrive/aspnet-learn/create-aks-exports.txt ]
 then
-  eval $(cat ~/clouddrive/source/create-idtag-exports.txt)
+  eval $(cat ~/clouddrive/aspnet-learn/create-aks-exports.txt)
+fi
+
+if [ -f ~/clouddrive/aspnet-learn/create-idtag-exports.txt ]
+then
+  eval $(cat ~/clouddrive/aspnet-learn/create-idtag-exports.txt)
 fi
 
 eshopRg=${ESHOP_RG}
@@ -30,7 +36,7 @@ done
 
 if [ -z "$eshopRg" ]
 then
-    echo "ERROR: RG is mandatory. Use -g to set it"
+    echo "${newline}${errorStyle}ERROR: Resource group is mandatory. Use -g to set it${defaultTextStyle}${newline}"
     exit 1
 fi
 
@@ -40,18 +46,18 @@ if [ -z "$rg" ]
 then
     if [ -z "$eshopLocation" ]
     then
-        echo "ERROR: If RG has to be created, location is mandatory. Use -l to set it."
+        echo "${newline}${errorStyle}ERROR: If resource group has to be created, location is mandatory. Use -l to set it.${defaultTextStyle}${newline}"
         exit 1
     fi
-    echo "Creating RG $eshopRg in location $eshopLocation..."
+    echo "Creating resource group \"$eshopRg\" in location \"$eshopLocation\"..."
     az group create -n $eshopRg -l $eshopLocation
     if [ ! $? -eq 0 ]
     then
-        echo "ERROR: Can't create Resource Group"
+        echo "${newline}${errorStyle}ERROR: Can't create resource group${defaultTextStyle}${newline}"
         exit 1
     fi
 
-    echo "Created RG \"$eshopRg\" in location \"$eshopLocation\"."
+    echo "Created resource group \"$eshopRg\" in location \"$eshopLocation\"."
 
 else
     if [ -z "$eshopLocation" ]
@@ -76,16 +82,18 @@ then
     fi
 
     echo
-    echo "Creating ACR eshoplearn$eshopIdTag in RG $eshopRg"
-    eshopAcrName=`az acr create --name eshoplearn$eshopIdTag -g $eshopRg -l $eshopLocation -o json --sku standard --admin-enabled --query "name" -otsv`
+    echo "Creating Azure Container Registry \"eshoplearn$eshopIdTag\" in resource group \"$eshopRg\"..."
+    acrCommand="az acr create --name eshoplearn$eshopIdTag -g $eshopRg -l $eshopLocation -o json --sku basic --admin-enabled --query \"name\" -otsv"
+    echo "${newline} > ${azCliCommandStyle}$acrCommand${defaultTextStyle}${newline}"
+    eshopAcrName=`$acrCommand`
 
     if [ ! $? -eq 0 ]
     then
-        echo "ERROR creating ACR!"
+        echo "${newline}${errorStyle}ERROR creating ACR!${defaultTextStyle}${newline}"
         exit 1
     fi
 
-    echo ACR created
+    echo ACR instance created!
     echo
 fi
 
@@ -93,7 +101,7 @@ eshopRegistry=`az acr show -n $eshopAcrName --query "loginServer" -otsv`
 
 if [ -z "$eshopRegistry" ]
 then
-    echo "ERROR ACR server $eshopAcrName doesn't exist!"
+    echo "${newline}${errorStyle}ERROR! ACR server $eshopAcrName doesn't exist!${defaultTextStyle}${newline}"
     exit 1
 fi
 
@@ -128,23 +136,7 @@ echo export ESHOP_IDTAG=$eshopIdTag >> create-acr-exports.txt
 echo export ESHOP_IDTAG=$eshopIdTag >> create-idtag-exports.txt
 
 echo 
-echo "Created ACR \"$eshopAcrName\" in RG \"$eshopRg\" in location \"$eshopLocation\"." 
-echo 
-echo "Login server: $eshopRegistry" 
-echo "User Login: $eshopAcrUser" 
-echo "Password: $eshopAcrPassword" 
-echo 
-echo "Environment variables" 
-echo "---------------------" 
-cat create-acr-exports.txt
-echo 
-echo "Commands" 
-echo "--------" 
-echo "- To login Docker to ACR: docker login $eshopRegistry -u $eshopAcrUser -p $eshopAcrPassword" 
-echo 
-echo "Run the following command to update the environment"
-echo 'eval $(cat ~/clouddrive/source/create-acr-exports.txt)'
-echo
+echo "Created Azure Container Registry \"$eshopAcrName\" in resource group \"$eshopRg\" in location \"$eshopLocation\"." 
 
-mv -f create-acr-exports.txt ~/clouddrive/source/
-mv -f create-idtag-exports.txt ~/clouddrive/source/
+mv -f create-acr-exports.txt ~/clouddrive/aspnet-learn/
+mv -f create-idtag-exports.txt ~/clouddrive/aspnet-learn/

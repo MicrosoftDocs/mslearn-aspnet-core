@@ -48,8 +48,13 @@ else
     code .
 
     # Run eshop-learn quickstart to deploy to AKS
-    $editorHomeLocation/deploy/k8s/quickstart.sh --resource-group eshop-learn-rg --location westus
+    $editorHomeLocation/deploy/k8s/quickstart.sh --resource-group eshop-learn-rg --location eastus2
 
+
+    # Create ACR resource
+    $editorHomeLocation/deploy/k8s/create-acr.sh
+    
     # Display URLs to user
     cat ~/clouddrive/aspnet-learn/deployment-urls.txt
 fi
+
