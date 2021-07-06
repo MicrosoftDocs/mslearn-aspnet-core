@@ -1,8 +1,20 @@
 #!/bin/bash
 
-echo
-echo "Deploy affected services"
-echo "============================"
+#!/bin/bash
+
+# Color theming
+if [ -f ~/clouddrive/aspnet-learn/setup/theme.sh ]
+then
+  . <(cat ~/clouddrive/aspnet-learn/setup/theme.sh)
+fi
+
+if [ -f ~/clouddrive/aspnet-learn/create-acr-exports.txt ]
+then
+  eval $(cat ~/clouddrive/aspnet-learn/create-acr-exports.txt)
+fi
+
+pushd ~/clouddrive/aspnet-learn/src/deploy/k8s > /dev/null
+
 
 while [ "$1" != "" ]; do
     case $1 in
@@ -21,10 +33,6 @@ then
     exit 1
 fi
 
-if [ -f ~/clouddrive/source/create-acr-exports.txt ]; then  
-  eval $(cat ~/clouddrive/source/create-acr-exports.txt)
-fi
-
 if [ -z "$ESHOP_REGISTRY" ]
 then
     echo "One or more required environment variables are missing:"
@@ -40,3 +48,5 @@ echo "=========Deploy the Identity.API service=============="
 
 echo "=========Deploy the WebSalesAgg service=============="
 ./deploy-application.sh --registry $ESHOP_REGISTRY --hostip $ipAddress --charts websalesagg
+
+popd

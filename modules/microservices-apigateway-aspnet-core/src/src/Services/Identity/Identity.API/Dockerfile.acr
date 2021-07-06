@@ -28,12 +28,13 @@ COPY ["src/Services/Payment/Payment.API/Payment.API.csproj", "src/Services/Payme
 COPY ["src/Web/WebSPA/WebSPA.csproj", "src/Web/WebSPA/"]
 COPY ["src/Web/WebStatus/WebStatus.csproj", "src/Web/WebStatus/"]
 COPY ["NuGet.config", "./"]
+COPY ["docker-compose.dcproj", "./"]
 COPY ["eShop-Learn.sln", "./"]
 RUN dotnet restore "eShop-Learn.sln"
 
 COPY . .
 WORKDIR "/src/src/Services/Identity/Identity.API"
-# RUN dotnet build "Identity.API.csproj" -c Release -o /app/build
+RUN dotnet build "Identity.API.csproj" -c Release -o /app/build
 
 FROM build AS publish
 RUN dotnet publish --no-restore "Identity.API.csproj" -c Release -o /app/publish
