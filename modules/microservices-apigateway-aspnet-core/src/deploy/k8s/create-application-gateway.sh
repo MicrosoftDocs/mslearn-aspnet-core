@@ -1,13 +1,17 @@
 #!/bin/bash
 
-echo
-echo "Creating Application Gateway"
-echo "============================"
+# Color theming
+if [ -f ~/clouddrive/aspnet-learn/setup/theme.sh ]
+then
+  . <(cat ~/clouddrive/aspnet-learn/setup/theme.sh)
+fi
 
 if [ -f ~/clouddrive/source/create-aks-exports.txt ]
 then
   eval $(cat ~/clouddrive/source/create-aks-exports.txt)
 fi
+
+pushd ~/clouddrive/aspnet-learn/src/deploy/k8s > /dev/null
 
 if [ -z "$ESHOP_RG" ] || [ -z "$ESHOP_LOCATION" ]
 then
@@ -93,8 +97,8 @@ echo
 echo create-application-gateway-exports
 echo ----------------------------------
 cat create-application-gateway-exports.txt
-echo 
-echo "Run the following command to update the environment"
-echo 'eval $(cat ~/clouddrive/source/create-application-gateway-exports.txt)'
+echo
 
-mv -f create-application-gateway-exports.txt ~/clouddrive/source/
+mv -f create-application-gateway-exports.txt ~/clouddrive/aspnet-learn/
+
+popd > /dev/null

@@ -1,7 +1,5 @@
 #!/bin/bash
 
-#!/bin/bash
-
 # Color theming
 if [ -f ~/clouddrive/aspnet-learn/setup/theme.sh ]
 then

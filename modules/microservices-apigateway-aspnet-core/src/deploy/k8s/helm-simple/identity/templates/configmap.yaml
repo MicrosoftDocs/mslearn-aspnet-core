@@ -19,4 +19,4 @@ data:
   SpaClient: {{ .Values.protocol }}://{{ .Values.host }}  
   UseCustomizationData: "True"
   WebShoppingAggClient: {{ .Values.protocol }}://{{ .Values.host }}/webshoppingagg
-  WebSalesAggClient: {{ .Values.protocol }}://{{ .Values.host }}/websalesagg
+  # WebSalesAggClient: {{ .Values.protocol }}://{{ .Values.host }}/websalesagg
