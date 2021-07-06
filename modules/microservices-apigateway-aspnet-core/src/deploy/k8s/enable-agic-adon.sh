@@ -1,15 +1,23 @@
 #!/bin/bash
 
+# Color theming
+if [ -f ~/clouddrive/aspnet-learn/setup/theme.sh ]
+then
+  . <(cat ~/clouddrive/aspnet-learn/setup/theme.sh)
+fi
+
+pushd ~/clouddrive/aspnet-learn/src/deploy/k8s > /dev/null
+
 echo
 echo "Enable AGIC add on"
 echo "============================"
 
-if [ -f ~/clouddrive/source/create-aks-exports.txt ]; then  
-  eval $(cat ~/clouddrive/source/create-aks-exports.txt)
+if [ -f ~/clouddrive/mslearn-aspnet-core/create-aks-exports.txt ]; then  
+  eval $(cat ~/clouddrive/mslearn-aspnet-core/create-aks-exports.txt)
 fi
 
-if [ -f ~/clouddrive/source/create-application-gateway-exports.txt ]; then
-  eval $(cat ~/clouddrive/source/create-application-gateway-exports.txt)
+if [ -f ~/clouddrive/mslearn-aspnet-core/create-application-gateway-exports.txt ]; then
+  eval $(cat ~/clouddrive/mslearn-aspnet-core/create-application-gateway-exports.txt)
 fi
 
 if [ -z "$ESHOP_RG" ]  || [ -z "$ESHOP_AKSNAME" ] || [ -z "$ESHOP_APPGATEWAY" ] || [ -z "$ESHOP_APPGATEWAYRG" ] || [ -z "$ESHOP_APPVNET" ]
@@ -41,5 +49,7 @@ appGWVnetId=$(az network vnet show -n $ESHOP_APPVNET -g $ESHOP_RG -o tsv --query
 az network vnet peering create -n AKStoAppGWVnetPeering -g $nodeResourceGroup --vnet-name $aksVnetName --remote-vnet $appGWVnetId --allow-vnet-access
 
 echo
-echo "AGIC enabled to your existing cluster"
+echo "AGIC enabled in your existing cluster"
 echo "============================"
+
+popd > /dev/null

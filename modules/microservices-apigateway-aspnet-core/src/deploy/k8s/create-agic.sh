@@ -4,12 +4,12 @@ echo
 echo "Creating Application Gateway Ingress Controller"
 echo "==============================================="
 
-if [ -f ~/clouddrive/source/create-application-gateway-exports.txt ]; then
-  eval $(cat ~/clouddrive/source/create-application-gateway-exports.txt)
+if [ -f ~/clouddrive/mslearn-aspnet-core/create-application-gateway-exports.txt ]; then
+  eval $(cat ~/clouddrive/mslearn-aspnet-core/create-application-gateway-exports.txt)
 fi
 
-if [ -f ~/clouddrive/source/setup-pod-identity-exports.txt ]; then
-  eval $(cat ~/clouddrive/source/setup-pod-identity-exports.txt)
+if [ -f ~/clouddrive/mslearn-aspnet-core/setup-pod-identity-exports.txt ]; then
+  eval $(cat ~/clouddrive/mslearn-aspnet-core/setup-pod-identity-exports.txt)
 fi
 
 if [ -z "$ESHOP_PODIDENTITY_CLIENTID" ] || [ -z "$ESHOP_PODIDENTITY_RESOURCEID" ] || [ -z "$ESHOP_APPGATEWAY" ] || [ -z "$ESHOP_APPGATEWAYRG" ]
