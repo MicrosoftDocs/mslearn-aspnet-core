@@ -13,11 +13,11 @@ echo "Enable AGIC add on"
 echo "============================"
 
 if [ -f ~/clouddrive/mslearn-aspnet-core/create-aks-exports.txt ]; then  
-  eval $(cat ~/clouddrive/mslearn-aspnet-core/create-aks-exports.txt)
+  eval $(cat ~/clouddrive/aspnet-learn/create-aks-exports.txt)
 fi
 
 if [ -f ~/clouddrive/mslearn-aspnet-core/create-application-gateway-exports.txt ]; then
-  eval $(cat ~/clouddrive/mslearn-aspnet-core/create-application-gateway-exports.txt)
+  eval $(cat ~/clouddrive/aspnet-learn/create-application-gateway-exports.txt)
 fi
 
 if [ -z "$ESHOP_RG" ]  || [ -z "$ESHOP_AKSNAME" ] || [ -z "$ESHOP_APPGATEWAY" ] || [ -z "$ESHOP_APPGATEWAYRG" ] || [ -z "$ESHOP_APPVNET" ]
