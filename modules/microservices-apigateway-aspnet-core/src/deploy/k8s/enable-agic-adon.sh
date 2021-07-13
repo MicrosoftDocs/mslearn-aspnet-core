@@ -12,11 +12,11 @@ echo
 echo "Enable AGIC add on"
 echo "============================"
 
-if [ -f ~/clouddrive/mslearn-aspnet-core/create-aks-exports.txt ]; then  
+if [ -f ~/clouddrive/aspnet-learn/create-aks-exports.txt ]; then  
   eval $(cat ~/clouddrive/aspnet-learn/create-aks-exports.txt)
 fi
 
-if [ -f ~/clouddrive/mslearn-aspnet-core/create-application-gateway-exports.txt ]; then
+if [ -f ~/clouddrive/aspnet-learn/create-application-gateway-exports.txt ]; then
   eval $(cat ~/clouddrive/aspnet-learn/create-application-gateway-exports.txt)
 fi
 

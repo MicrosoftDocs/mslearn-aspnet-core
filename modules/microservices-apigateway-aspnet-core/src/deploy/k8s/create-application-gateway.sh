@@ -13,6 +13,10 @@ fi
 
 pushd ~/clouddrive/aspnet-learn/src/deploy/k8s > /dev/null
 
+if [ -f ~/clouddrive/aspnet-learn/create-aks-exports.txt ]; then  
+  eval $(cat ~/clouddrive/aspnet-learn/create-aks-exports.txt)
+fi
+
 if [ -z "$ESHOP_RG" ] || [ -z "$ESHOP_LOCATION" ]
 then
     echo "Resource group (ESHOP_RG) and location (ESHOP_LOCATION) variables must be defined in the environment!"
