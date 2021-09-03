@@ -51,7 +51,7 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public virtual IServiceProvider ConfigureServices(IServiceCollection services)
-        {
+        {            
             services.AddGrpc(options =>
             {
                 options.EnableDetailedErrors = true;
@@ -65,8 +65,8 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
                     options.Filters.Add(typeof(ValidateModelStateFilter));
 
                 }) // Added for functional tests
-                .AddApplicationPart(typeof(BasketController).Assembly)
-                .AddNewtonsoftJson(options => options.SerializerSettings.Converters.Add(new StringEnumConverter()));
+                .AddApplicationPart(typeof(BasketController).Assembly);
+                //.AddNewtonsoftJson(options => options.SerializerSettings.Converters.Add(new StringEnumConverter()));
 
             services.AddSwaggerGen(options =>
             {
@@ -96,7 +96,8 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
 
                 options.OperationFilter<AuthorizeCheckOperationFilter>();
             });
-            services.AddSwaggerGenNewtonsoftSupport();
+            
+            //services.AddSwaggerGenNewtonsoftSupport();
 
             ConfigureAuthService(services);
 

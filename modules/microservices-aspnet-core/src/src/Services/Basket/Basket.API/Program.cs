@@ -1,4 +1,6 @@
-﻿using Basket.API.Infrastructure.Middlewares;
+﻿using Azure.Core;
+using Azure.Identity;
+using Basket.API.Infrastructure.Middlewares;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -96,10 +98,12 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API
 
             if (config.GetValue<bool>("UseVault", false))
             {
-                builder.AddAzureKeyVault(
-                    $"https://{config["Vault:Name"]}.vault.azure.net/",
-                    config["Vault:ClientId"],
-                    config["Vault:ClientSecret"]);
+                TokenCredential credential = new ClientSecretCredential(
+                config["Vault:TenantId"],
+                config["Vault:ClientId"],
+                config["Vault:ClientSecret"]);
+                //builder.AddAzureKeyVault(new Uri($"https://{config["Vault:Name"]}.vault.azure.net/"), credential);
+                builder.AddAzureKeyVault($"https://{config["Vault:Name"]}.vault.azure.net/", config["Vault:ClientId"], config["Vault:ClientSecret"]);
             }
 
             return builder.Build();
