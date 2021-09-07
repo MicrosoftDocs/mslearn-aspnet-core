@@ -19,7 +19,7 @@
 
     public class CatalogContextSeed
     {
-        public async Task SeedAsync(CatalogContext context,IWebHostEnvironment env,IOptions<CatalogSettings> settings,ILogger<CatalogContextSeed> logger)
+        public async Task SeedAsync(CatalogContext context, IWebHostEnvironment env, IOptions<CatalogSettings> settings, ILogger<CatalogContextSeed> logger)
         {
             var policy = CreatePolicy(logger, nameof(CatalogContextSeed));
 
@@ -73,7 +73,7 @@
             try
             {
                 string[] requiredHeaders = { "catalogbrand" };
-                csvheaders = GetHeaders( csvFileCatalogBrands, requiredHeaders );
+                csvheaders = GetHeaders(csvFileCatalogBrands, requiredHeaders);
             }
             catch (Exception ex)
             {
@@ -82,10 +82,10 @@
             }
 
             return File.ReadAllLines(csvFileCatalogBrands)
-                .Skip(1) // skip header row
-                .SelectTry(x => CreateCatalogBrand(x))
-                .OnCaughtException(ex => { logger.LogError(ex, "EXCEPTION ERROR: {Message}", ex.Message); return null; })
-                .Where(x => x != null);
+                                        .Skip(1) // skip header row
+                                        .SelectTry(x => CreateCatalogBrand(x))
+                                        .OnCaughtException(ex => { logger.LogError(ex, "EXCEPTION ERROR: {Message}", ex.Message); return null; })
+                                        .Where(x => x != null);
         }
 
         private CatalogBrand CreateCatalogBrand(string brand)
@@ -128,7 +128,7 @@
             try
             {
                 string[] requiredHeaders = { "catalogtype" };
-                csvheaders = GetHeaders( csvFileCatalogTypes, requiredHeaders );
+                csvheaders = GetHeaders(csvFileCatalogTypes, requiredHeaders);
             }
             catch (Exception ex)
             {
@@ -137,10 +137,10 @@
             }
 
             return File.ReadAllLines(csvFileCatalogTypes)
-                .Skip(1) // skip header row
-                .SelectTry(x => CreateCatalogType(x))
-                .OnCaughtException(ex => { logger.LogError(ex, "EXCEPTION ERROR: {Message}", ex.Message); return null; })
-                .Where(x => x != null);
+                                        .Skip(1) // skip header row
+                                        .SelectTry(x => CreateCatalogType(x))
+                                        .OnCaughtException(ex => { logger.LogError(ex, "EXCEPTION ERROR: {Message}", ex.Message); return null; })
+                                        .Where(x => x != null);
         }
 
         private CatalogType CreateCatalogType(string type)
@@ -164,7 +164,7 @@
             {
                 new CatalogType() { Type = "Mug"},
                 new CatalogType() { Type = "T-Shirt" },
-                new CatalogType() { Type = "Pin" },
+                new CatalogType() { Type = "Sheet" },
                 new CatalogType() { Type = "USB Memory Stick" }
             };
         }
@@ -181,9 +181,9 @@
             string[] csvheaders;
             try
             {
-                string[] requiredHeaders = { "catalogtypename", "catalogbrandname", "description", "name", "price", "pictureFileName" };
+                string[] requiredHeaders = { "catalogtypename", "catalogbrandname", "description", "name", "price", "picturefilename" };
                 string[] optionalheaders = { "availablestock", "restockthreshold", "maxstockthreshold", "onreorder" };
-                csvheaders = GetHeaders(csvFileCatalogItems, requiredHeaders, optionalheaders );
+                csvheaders = GetHeaders(csvFileCatalogItems, requiredHeaders, optionalheaders);
             }
             catch (Exception ex)
             {
@@ -195,11 +195,11 @@
             var catalogBrandIdLookup = context.CatalogBrands.ToDictionary(ct => ct.Brand, ct => ct.Id);
 
             return File.ReadAllLines(csvFileCatalogItems)
-                .Skip(1) // skip header row
-                .Select(row => Regex.Split(row, ",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)") )
-                .SelectTry(column => CreateCatalogItem(column, csvheaders, catalogTypeIdLookup, catalogBrandIdLookup))
-                .OnCaughtException(ex => { logger.LogError(ex, "EXCEPTION ERROR: {Message}", ex.Message); return null; })
-                .Where(x => x != null);
+                        .Skip(1) // skip header row
+                        .Select(row => Regex.Split(row, ",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)"))
+                        .SelectTry(column => CreateCatalogItem(column, csvheaders, catalogTypeIdLookup, catalogBrandIdLookup))
+                        .OnCaughtException(ex => { logger.LogError(ex, "EXCEPTION ERROR: {Message}", ex.Message); return null; })
+                        .Where(x => x != null);
         }
 
         private CatalogItem CreateCatalogItem(string[] column, string[] headers, Dictionary<String, int> catalogTypeIdLookup, Dictionary<String, int> catalogBrandIdLookup)
@@ -234,7 +234,7 @@
                 Description = column[Array.IndexOf(headers, "description")].Trim('"').Trim(),
                 Name = column[Array.IndexOf(headers, "name")].Trim('"').Trim(),
                 Price = price,
-                PictureUri = column[Array.IndexOf(headers, "pictureuri")].Trim('"').Trim(),
+                PictureFileName = column[Array.IndexOf(headers, "picturefilename")].Trim('"').Trim(),
             };
 
             int availableStockIndex = Array.IndexOf(headers, "availablestock");
@@ -243,7 +243,7 @@
                 string availableStockString = column[availableStockIndex].Trim('"').Trim();
                 if (!String.IsNullOrEmpty(availableStockString))
                 {
-                    if ( int.TryParse(availableStockString, out int availableStock))
+                    if (int.TryParse(availableStockString, out int availableStock))
                     {
                         catalogItem.AvailableStock = availableStock;
                     }
@@ -316,16 +316,14 @@
                 new CatalogItem { CatalogTypeId = 1, CatalogBrandId = 2, AvailableStock = 100, Description = ".NET Black & White Mug", Name = ".NET Black & White Mug", Price= 8.50M, PictureFileName = "2.png" },
                 new CatalogItem { CatalogTypeId = 2, CatalogBrandId = 5, AvailableStock = 100, Description = "Prism White T-Shirt", Name = "Prism White T-Shirt", Price = 12, PictureFileName = "3.png" },
                 new CatalogItem { CatalogTypeId = 2, CatalogBrandId = 2, AvailableStock = 100, Description = ".NET Foundation T-shirt", Name = ".NET Foundation T-shirt", Price = 12, PictureFileName = "4.png" },
-                new CatalogItem { CatalogTypeId = 3, CatalogBrandId = 5, AvailableStock = 100, Description = "Roslyn Red Pin", Name = "Roslyn Red Pin", Price = 8.5M, PictureFileName = "5.png" },
+                new CatalogItem { CatalogTypeId = 3, CatalogBrandId = 5, AvailableStock = 100, Description = "Roslyn Red Sheet", Name = "Roslyn Red Sheet", Price = 8.5M, PictureFileName = "5.png" },
                 new CatalogItem { CatalogTypeId = 2, CatalogBrandId = 2, AvailableStock = 100, Description = ".NET Blue Hoodie", Name = ".NET Blue Hoodie", Price = 12, PictureFileName = "6.png" },
                 new CatalogItem { CatalogTypeId = 2, CatalogBrandId = 5, AvailableStock = 100, Description = "Roslyn Red T-Shirt", Name = "Roslyn Red T-Shirt", Price = 12, PictureFileName = "7.png" },
                 new CatalogItem { CatalogTypeId = 2, CatalogBrandId = 5, AvailableStock = 100, Description = "Kudu Purple Hoodie", Name = "Kudu Purple Hoodie", Price = 8.5M, PictureFileName = "8.png" },
                 new CatalogItem { CatalogTypeId = 1, CatalogBrandId = 5, AvailableStock = 100, Description = "Cup<T> White Mug", Name = "Cup<T> White Mug", Price = 12, PictureFileName = "9.png" },
-                new CatalogItem { CatalogTypeId = 3, CatalogBrandId = 2, AvailableStock = 100, Description = ".NET Foundation Pin", Name = ".NET Foundation Pin", Price = 12, PictureFileName = "10.png" },
-                new CatalogItem { CatalogTypeId = 3, CatalogBrandId = 5, AvailableStock = 100, Description = "Cup<T> Pin", Name = "Cup<T> Pin", Price = 8.5M, PictureFileName = "11.png" },
-                new CatalogItem { CatalogTypeId = 2, CatalogBrandId = 5, AvailableStock = 100, Description = "Cup<T> White TShirt", Name = "Cup<T> White TShirt", Price = 12, PictureFileName = "12.png" },
-                new CatalogItem { CatalogTypeId = 1, CatalogBrandId = 2, AvailableStock = 100, Description = "Modern .NET Mug", Name = "Modern .NET Mug", Price= 8.50M, PictureFileName = "13.png" },
-                new CatalogItem { CatalogTypeId = 1, CatalogBrandId = 5, AvailableStock = 100, Description = "Modern Cup<T> Mug", Name = "Modern Cup<T> Mug", Price = 12, PictureFileName = "14.png" },
+                new CatalogItem { CatalogTypeId = 3, CatalogBrandId = 2, AvailableStock = 100, Description = ".NET Foundation Sheet", Name = ".NET Foundation Sheet", Price = 12, PictureFileName = "10.png" },
+                new CatalogItem { CatalogTypeId = 3, CatalogBrandId = 2, AvailableStock = 100, Description = "Cup<T> Sheet", Name = "Cup<T> Sheet", Price = 8.5M, PictureFileName = "11.png" },
+                new CatalogItem { CatalogTypeId = 2, CatalogBrandId = 5, AvailableStock = 100, Description = "Prism White TShirt", Name = "Prism White TShirt", Price = 12, PictureFileName = "12.png" },
             };
         }
 
@@ -372,7 +370,7 @@
             }
         }
 
-        private AsyncRetryPolicy CreatePolicy( ILogger<CatalogContextSeed> logger, string prefix,int retries = 3)
+        private AsyncRetryPolicy CreatePolicy(ILogger<CatalogContextSeed> logger, string prefix, int retries = 3)
         {
             return Policy.Handle<SqlException>().
                 WaitAndRetryAsync(
