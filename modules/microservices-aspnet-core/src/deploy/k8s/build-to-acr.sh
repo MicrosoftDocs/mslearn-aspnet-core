@@ -30,7 +30,7 @@ echo "Building and publishing docker images to $REGISTRY..."
 
 echo
 echo "Building image \"coupon.api\"..."
-couponCmd="az acr build --registry $ESHOP_ACRNAME --image $ESHOP_REGISTRY/coupon.api:linux-latest --file src/Services/Coupon/Coupon.API/Dockerfile ."
+couponCmd="az acr build --registry $ESHOP_ACRNAME --image $ESHOP_REGISTRY/coupon.api:linux-net-6 --file src/Services/Coupon/Coupon.API/Dockerfile ."
 echo "> $couponCmd"
 eval $couponCmd
 
@@ -43,7 +43,7 @@ fi
 echo
 echo "Building image \"webspa\"..."
 # This Dockerfile.acr file is optimized for building to ACR, where you can't take advatage of image layer caching
-webspaCmd="az acr build --registry $ESHOP_ACRNAME --image $ESHOP_REGISTRY/webspa:linux-latest --file src/Web/WebSPA/Dockerfile.acr ."
+webspaCmd="az acr build --registry $ESHOP_ACRNAME --image $ESHOP_REGISTRY/webspa:linux-net-6 --file src/Web/WebSPA/Dockerfile.acr ."
 echo "> $webspaCmd"
 eval $webspaCmd
 
