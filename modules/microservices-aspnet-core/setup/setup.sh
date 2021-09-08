@@ -12,7 +12,7 @@
 cd ~
 
 # dotnet SDK version
-declare -x dotnetSdkVersion="3.1.405"
+declare -x dotnetSdkVersion="6.0.100-preview.7"
 
 # Module name
 declare moduleName="microservices-aspnet-core"
