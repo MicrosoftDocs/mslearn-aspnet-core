@@ -57,9 +57,9 @@ else
     echo "${newline}${headingStyle}Installing required version of Linkerd...${defaultTextStyle}${newline}"
     curl -sL https://run.linkerd.io/install | sh
     export PATH=${PATH/':/usr/local/linkerd/bin'/''}:$HOME/.linkerd2/bin
-    echo "${newline}export PATH=${PATH/':/usr/local/linkerd/bin'/''}:$HOME/.linkerd2/bin" >> ~/.bashrc
+    echo "${newline}export PATH=$PATH" >> ~/.bashrc
     echo "${newline}${warningStyle}Important note! ${defaultTextStyle}We have installed a different version of Linkerd than what is provided in Azure Cloud Shell by default. Be sure to revert the changes to your ${headingStyle}.bashrc${defaultTextStyle} after the module if you use Linkerd regularly."
-    echo"${newline}${newline}"
+    echo "${newline}${newline}"
     
     # Display URLs to user
     cat ~/clouddrive/aspnet-learn/deployment-urls.txt
