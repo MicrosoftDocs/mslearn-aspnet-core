@@ -67,7 +67,7 @@ setAzureCliDefaults() {
         set -x
         az configure --defaults \
             group=$resourceGroupName \
-            location=$defaultLocation
+            location=$defaultRegion
     )
 }
 resetAzureCliDefaults() {
