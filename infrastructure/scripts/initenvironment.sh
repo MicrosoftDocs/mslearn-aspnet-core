@@ -22,7 +22,11 @@ declare srcWorkingDirectory=$rootLocation/aspnet-learn/src
 declare setupWorkingDirectory=$rootLocation/aspnet-learn/setup
 declare subscriptionId=$(az account show --query id --output tsv)
 declare resourceGroupName=""
-declare defaultLocation="centralus"
+if ! [ $defaultRegion ]
+then
+    declare defaultRegion="centralus"
+fi
+
 
 # AppService Declarations
 declare appServicePlan=appservice$instanceId
