@@ -18,6 +18,10 @@ declare -x dotnetSdkVersion="3.1.401"
 declare moduleName="microservices-devops-aspnet-core"
 
 # Any other declarations we need
+if ! [ $defaultRegion ]
+then
+    declare defaultRegion=centralus
+fi
 declare -x gitBranch="live"
 declare initScript=https://raw.githubusercontent.com/MicrosoftDocs/mslearn-aspnet-core/$gitBranch/infrastructure/scripts/initenvironment.sh
 declare suppressAzureResources=true
@@ -63,7 +67,7 @@ else
     cd $editorHomeLocation
 
     # Run eshop-learn quickstart to deploy to AKS
-    $editorHomeLocation/deploy/k8s/quickstart.sh --resource-group eshop-learn-rg --location westus
+    $editorHomeLocation/deploy/k8s/quickstart.sh --resource-group eshop-learn-rg --location $defaultRegion
 
     # Create ACR resource
     $editorHomeLocation/deploy/k8s/create-acr.sh
