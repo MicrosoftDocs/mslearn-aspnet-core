@@ -92,6 +92,20 @@ services:
       - ordering-api
       - catalog-api
       - basket-api
+  
+  websalesagg:
+    image: ${REGISTRY:-eshopdev}/websalesagg:${PLATFORM:-linux}-${TAG:-latest}
+    build:
+      context: .
+      dockerfile: src/ApiGateways/Aggregators/Web.Sales.HttpAggregator/Dockerfile
+    depends_on:
+      - nosqldata
+      - sqldata
+      - identity-api
+      - rabbitmq
+      - ordering-api
+      - catalog-api
+      - basket-api
 
   ordering-signalrhub:
     image: ${REGISTRY:-eshopdev}/ordering.signalrhub:${PLATFORM:-linux}-${TAG:-latest}
@@ -121,4 +135,3 @@ services:
     build:
       context: .
       dockerfile: src/Web/WebSPA/Dockerfile
-
