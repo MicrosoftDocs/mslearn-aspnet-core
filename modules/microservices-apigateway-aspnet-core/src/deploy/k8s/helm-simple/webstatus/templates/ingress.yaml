@@ -1,4 +1,4 @@
-apiVersion: extensions/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: webstatus
@@ -17,6 +17,9 @@ spec:
 {{- end }}
       paths:
       - path: /webstatus
+        pathType: ImplementationSpecific
         backend:
-          serviceName: webstatus
-          servicePort: 80
+          service:
+            name: webstatus
+            port: 
+              number: 80

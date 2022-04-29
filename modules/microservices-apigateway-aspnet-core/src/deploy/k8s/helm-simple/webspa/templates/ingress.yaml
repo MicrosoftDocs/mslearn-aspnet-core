@@ -1,4 +1,4 @@
-apiVersion: extensions/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: webspa
@@ -23,6 +23,9 @@ spec:
 {{- end }}
       paths:
       - path: /
+        pathType: ImplementationSpecific
         backend:
-          serviceName: webspa
-          servicePort: 80
+          service:
+            name: webspa
+            port: 
+              number: 80

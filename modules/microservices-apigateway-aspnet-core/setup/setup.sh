@@ -12,12 +12,16 @@
 cd ~
 
 # dotnet SDK version
-declare -x dotnetSdkVersion="3.1.405"
+declare -x dotnetSdkVersion="6.0.202"
 
 # Module name
 declare moduleName="microservices-apigateway-aspnet-core"
 
 # Any other declarations we need
+if ! [ $defaultRegion ]
+then
+    declare defaultRegion=centralus
+fi
 declare -x gitBranch="microservices-apigateway-aspnet-core"
 declare initScript=https://raw.githubusercontent.com/MicrosoftDocs/mslearn-aspnet-core/$gitBranch/infrastructure/scripts/initenvironment.sh
 declare suppressAzureResources=true
@@ -48,12 +52,11 @@ else
     code .
 
     # Run eshop-learn quickstart to deploy to AKS
-    $editorHomeLocation/deploy/k8s/quickstart.sh --resource-group eshop-learn-rg --location eastus2
+    $editorHomeLocation/deploy/k8s/quickstart.sh --resource-group eshop-learn-rg --location $defaultRegion
 
     # Create ACR resource
     $editorHomeLocation/deploy/k8s/create-acr.sh
-    
+
     # Display URLs to user
     cat ~/clouddrive/aspnet-learn/deployment-urls.txt
 fi
-

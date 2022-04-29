@@ -35,7 +35,7 @@ namespace Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator.Controllers
         [ProducesResponseType(typeof(CouponData), (int)HttpStatusCode.OK)]
         public async Task<ActionResult<CouponData>> CheckCouponAsync(string code)
         {
-            _logger.LogInformation("----- Getting discount cupon: {Code}", code);
+            _logger.LogInformation("----- Getting discount coupon: {Code}", code);
 
             var response = await _coupon.CheckCouponByCodeNumberAsync(code);
 
@@ -55,7 +55,7 @@ namespace Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator.Controllers
                 if (content.IndexOf('\n') > -1)
                 {
                     var line = content.Substring(0, content.IndexOf('\n')).Trim();
-                    _logger.LogWarning("----- Error getting discount cupon: {StatusCode} ({ReasonPhrase}) - Content: {Message}", (int)response.StatusCode, response.ReasonPhrase, line);
+                    _logger.LogWarning("----- Error getting discount coupon: {StatusCode} ({ReasonPhrase}) - Content: {Message}", (int)response.StatusCode, response.ReasonPhrase, line);
 
                     if (ExceptionRegex.IsMatch(line))
                     {
@@ -74,7 +74,7 @@ namespace Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator.Controllers
             var couponResponse = await response.Content.ReadAsStringAsync();
             var data = JsonConvert.DeserializeObject<CouponData>(couponResponse);
 
-            _logger.LogInformation("----- Received discount cupon: {Code} ({@Coupon})", code, data);
+            _logger.LogInformation("----- Received discount coupon: {Code} ({@Coupon})", code, data);
 
             return Ok(data);
         }

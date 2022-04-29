@@ -1,4 +1,3 @@
-# List of {service-name}:{image-name}>{dockerfile-path} for the application
 basket-api:basket.api>src/Services/Basket/Basket.API/Dockerfile
 catalog-api:catalog.api>src/Services/Catalog/Catalog.API/Dockerfile
 coupon-api:coupon.api>src/Services/Coupon/Coupon.API/Dockerfile
