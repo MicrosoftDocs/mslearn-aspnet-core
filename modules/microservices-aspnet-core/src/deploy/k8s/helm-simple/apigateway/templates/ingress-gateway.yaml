@@ -1,4 +1,4 @@
-apiVersion: extensions/v1beta1
+apiVersion: extensions/v1
 kind: Ingress
 metadata:
   name: ingress-gw-c
@@ -19,7 +19,7 @@ spec:
           servicePort: 80
         path: /apigateway/c(/|$)(.*)
 ---
-apiVersion: extensions/v1beta1
+apiVersion: extensions/v1
 kind: Ingress
 metadata:
   name: ingress-gw-b
@@ -40,7 +40,7 @@ spec:
           servicePort: 80
         path: /apigateway/b(/|$)(.*)
 ---
-apiVersion: extensions/v1beta1
+apiVersion: extensions/v1
 kind: Ingress
 metadata:
   name: ingress-gw-o
@@ -61,7 +61,7 @@ spec:
           servicePort: 80
         path: /apigateway/o(/|$)(.*)   
 ---
-apiVersion: extensions/v1beta1
+apiVersion: extensions/v1
 kind: Ingress
 metadata:
   name: ingress-gw-cp
@@ -82,7 +82,7 @@ spec:
           servicePort: 80
         path: /apigateway/cp(/|$)(.*)   
 ---
-apiVersion: extensions/v1beta1
+apiVersion: extensions/v1
 kind: Ingress
 metadata:
   name: ingress-gw-agg
@@ -103,7 +103,7 @@ spec:
           servicePort: 80
         path: /apigateway(/|$)(.*)
 ---
-apiVersion: extensions/v1beta1
+apiVersion: extensions/v1
 kind: Ingress
 metadata:
   name: ingress-gw-signalr
