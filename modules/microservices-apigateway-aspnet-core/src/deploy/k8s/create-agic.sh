@@ -53,7 +53,7 @@ helm install ingress-azure application-gateway-kubernetes-ingress/ingress-azure 
     --set rbac.enabled=true \
     --set verbosityLevel=3 \
     --set kubernetes.watchNamespace=default \
-    --version 1.2.0
+    --version 1.5.1
 
 if [ ! $? -eq 0 ]; then
     echo "ERROR!"; exit 1
