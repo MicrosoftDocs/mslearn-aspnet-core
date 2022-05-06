@@ -12,6 +12,10 @@ spec:
     - http:
         paths:
         - path: /basket-api
-          backend: 
-            serviceName: basket-api
-            servicePort: 80
+          pathType: Prefix
+          backend:
+            service:
+              name: basket-api
+              port:
+                number: 80
+              

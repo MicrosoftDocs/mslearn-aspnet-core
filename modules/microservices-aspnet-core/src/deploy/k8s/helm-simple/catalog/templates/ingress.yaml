@@ -12,6 +12,9 @@ spec:
     - http:
         paths:
         - path: /catalog-api
-          backend: 
-            serviceName: catalog-api
-            servicePort: 80
+          pathType: Prefix
+          backend:
+            service:
+              name: catalog-api
+              port:
+                number: 80

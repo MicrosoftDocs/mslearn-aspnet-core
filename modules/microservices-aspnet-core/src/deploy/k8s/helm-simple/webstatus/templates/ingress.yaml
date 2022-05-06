@@ -12,6 +12,9 @@ spec:
     - http:
         paths:
         - path: /webstatus
-          backend: 
-            serviceName: webstatus
-            servicePort: 80
+          pathType: Prefix
+          backend:
+            service:
+              name: webstatus
+              port:
+                number: 80
