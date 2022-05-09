@@ -150,6 +150,8 @@ kubectl apply -f ingress-controller/nginx-cm.yaml
 echo
 echo "Getting load balancer public IP"
 
+read -n 1 -r -s -p "Press any key to continue..." key
+
 k8sLbTag="ingress-nginx/ingress-nginx"
 aksNodeRGCommand="az aks list --query \"[?name=='$eshopAksName'&&resourceGroup=='$eshopRg'].nodeResourceGroup\" -otsv"
 
