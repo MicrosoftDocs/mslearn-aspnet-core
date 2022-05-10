@@ -151,9 +151,12 @@ spec:
     - http:
         paths:
         - path: /coupon-api
-          backend: 
-            serviceName: coupon-api
-            servicePort: 80
+          pathType: Prefix
+          backend:
+            service:
+              name: coupon-api
+              port:
+                number: 80
 EOL
 
 
