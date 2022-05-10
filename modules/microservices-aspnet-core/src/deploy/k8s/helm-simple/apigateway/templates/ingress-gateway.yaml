@@ -1,4 +1,4 @@
-apiVersion: extensions/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: ingress-gw-c
@@ -14,12 +14,15 @@ spec:
   rules:
   - http:
       paths:
-      - backend:
-          serviceName: catalog-api
-          servicePort: 80
-        path: /apigateway/c(/|$)(.*)
+      - path: /apigateway/c(/|$)(.*)
+        pathType: Prefix
+        backend:
+          service:
+            name: catalog-api
+            port:
+              number: 80
 ---
-apiVersion: extensions/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: ingress-gw-b
@@ -35,12 +38,15 @@ spec:
   rules:
   - http:
       paths:
-      - backend:
-          serviceName: basket-api
-          servicePort: 80
-        path: /apigateway/b(/|$)(.*)
+      - path: /apigateway/b(/|$)(.*)
+        pathType: Prefix
+        backend:
+          service:
+            name: basket-api
+            port:
+              number: 80
 ---
-apiVersion: extensions/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: ingress-gw-o
@@ -56,12 +62,15 @@ spec:
   rules:
   - http:
       paths:
-      - backend:
-          serviceName: ordering-api
-          servicePort: 80
-        path: /apigateway/o(/|$)(.*)   
+      - path: /apigateway/o(/|$)(.*)
+        pathType: Prefix
+        backend:
+          service:
+            name: ordering-api
+            port:
+              number: 80   
 ---
-apiVersion: extensions/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: ingress-gw-cp
@@ -77,12 +86,15 @@ spec:
   rules:
   - http:
       paths:
-      - backend:
-          serviceName: coupon-api
-          servicePort: 80
-        path: /apigateway/cp(/|$)(.*)   
+      - path: /apigateway/cp(/|$)(.*)
+        pathType: Prefix
+        backend:
+          service:
+            name: coupon-api
+            port:
+              number: 80   
 ---
-apiVersion: extensions/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: ingress-gw-agg
@@ -98,12 +110,15 @@ spec:
   rules:
   - http:
       paths:
-      - backend:
-          serviceName: webshoppingagg
-          servicePort: 80
-        path: /apigateway(/|$)(.*)
+      - path: /apigateway(/|$)(.*)
+        pathType: Prefix
+        backend:
+          service:
+            name: webshoppingagg
+            port:
+              number: 80
 ---
-apiVersion: extensions/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: ingress-gw-signalr
@@ -120,7 +135,10 @@ spec:
   rules:
   - http:
       paths:
-      - backend:
-          serviceName: ordering-signalrhub
-          servicePort: 80
-        path: /apigateway/hub/notificationhub(/|$)(.*)
+      - path: /apigateway/hub/notificationhub(/|$)(.*)
+        pathType: Prefix
+        backend:
+          service:
+            name: ordering-signalrhub
+            port:
+              number: 80
