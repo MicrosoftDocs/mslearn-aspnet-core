@@ -1,5 +1,5 @@
 kind: Ingress
-apiVersion: extensions/v1beta1
+apiVersion: networking.k8s.io/v1
 metadata:
   name: basket
   labels:
@@ -12,6 +12,10 @@ spec:
     - http:
         paths:
         - path: /basket-api
-          backend: 
-            serviceName: basket-api
-            servicePort: 80
+          pathType: Prefix
+          backend:
+            service:
+              name: basket-api
+              port:
+                number: 80
+              
