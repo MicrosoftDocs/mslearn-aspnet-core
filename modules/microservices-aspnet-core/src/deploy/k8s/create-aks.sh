@@ -152,7 +152,7 @@ echo "Getting load balancer public IP"
 
 while [ -z "$eshopLbIp" ]
 do
-    eshopLbIpCommand="kubectl get svc -n ingress-nginx -o json | jq -r -e '.items[0].status.loadBalancer.ingress[0].ip'"
+    eshopLbIpCommand="kubectl get svc -n ingress-nginx -o json | jq -r -e '.items[0].status.loadBalancer.ingress[0].ip // empty'"
     echo "${newline} > ${genericCommandStyle}$eshopLbIpCommand${defaultTextStyle}${newline}"
     eshopLbIp=$(eval $eshopLbIpCommand)
     if [ -z "$eshopLbIp" ]
