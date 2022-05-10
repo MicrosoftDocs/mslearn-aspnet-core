@@ -1,5 +1,5 @@
 kind: Ingress
-apiVersion: extensions/v1beta1
+apiVersion: networking.k8s.io/v1
 metadata:
   name: identity
   labels:
@@ -12,6 +12,9 @@ spec:
     - http:
         paths:
         - path: /identity
+          pathType: ImplementationSpecific
           backend: 
-            serviceName: identity-api
-            servicePort: 80
+            service:
+              name: identity-api
+              port: 
+                number: 80

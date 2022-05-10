@@ -1,4 +1,4 @@
-apiVersion: extensions/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: ingress-gw-c
@@ -15,11 +15,14 @@ spec:
   - http:
       paths:
       - backend:
-          serviceName: catalog-api
-          servicePort: 80
+          service:
+            name: catalog-api
+            port: 
+              number: 80
+        pathType: ImplementationSpecific
         path: /apigateway/c(/|$)(.*)
 ---
-apiVersion: extensions/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: ingress-gw-b
@@ -36,11 +39,14 @@ spec:
   - http:
       paths:
       - backend:
-          serviceName: basket-api
-          servicePort: 80
+          service:
+            name: basket-api
+            port: 
+              number: 80
+        pathType: ImplementationSpecific
         path: /apigateway/b(/|$)(.*)
 ---
-apiVersion: extensions/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: ingress-gw-o
@@ -57,11 +63,14 @@ spec:
   - http:
       paths:
       - backend:
-          serviceName: ordering-api
-          servicePort: 80
-        path: /apigateway/o(/|$)(.*)   
+          service:
+            name: ordering-api
+            port: 
+              number: 80
+        path: /apigateway/o(/|$)(.*)
+        pathType: ImplementationSpecific   
 ---
-apiVersion: extensions/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: ingress-gw-cp
@@ -78,11 +87,14 @@ spec:
   - http:
       paths:
       - backend:
-          serviceName: coupon-api
-          servicePort: 80
+          service:
+            name: coupon-api
+            port: 
+              number: 80
+        pathType: ImplementationSpecific
         path: /apigateway/cp(/|$)(.*)   
 ---
-apiVersion: extensions/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: ingress-gw-agg
@@ -99,11 +111,14 @@ spec:
   - http:
       paths:
       - backend:
-          serviceName: webshoppingagg
-          servicePort: 80
+          service:
+            name: webshoppingagg
+            port: 
+              number: 80
+        pathType: ImplementationSpecific
         path: /apigateway(/|$)(.*)
 ---
-apiVersion: extensions/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: ingress-gw-signalr
@@ -121,6 +136,9 @@ spec:
   - http:
       paths:
       - backend:
-          serviceName: ordering-signalrhub
-          servicePort: 80
+          service:
+            name: ordering-signalrhub
+            port: 
+              number: 80
+        pathType: ImplementationSpecific
         path: /apigateway/hub/notificationhub(/|$)(.*)

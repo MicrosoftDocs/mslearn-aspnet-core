@@ -16,6 +16,12 @@ then
   eval $(cat ~/clouddrive/aspnet-learn/create-acr-exports.txt)
 fi
 
+if [ -z "$REGISTRY" ]
+then
+    echo "ERROR: The REGISTRY environment variable is not defined."
+    exit 1
+fi
+
 if [ -z "$ESHOP_REGISTRY" ]
 then
     echo "ERROR: The ESHOP_REGISTRY environment variable is not defined."
@@ -46,8 +52,8 @@ for chart in webstatus webshoppingagg
 do
     echo
     echo "Installing chart \"$chart\"..."
-    echo "${newline}${genericCommandStyle}helm install eshop-$chart --set registry=eshoplearn --set aksLB=$ESHOP_LBIP \"helm-simple/$chart\"${defaultTextStyle}${newline}"
-    helm install eshop-$chart --set registry=eshoplearn --set aksLB=$ESHOP_LBIP "helm-simple/$chart"
+    echo "${newline}${genericCommandStyle}helm install eshop-$chart --set registry=$REGISTRY --set aksLB=$ESHOP_LBIP \"helm-simple/$chart\"${defaultTextStyle}${newline}"
+    helm install eshop-$chart --set registry=$REGISTRY --set aksLB=$ESHOP_LBIP "helm-simple/$chart"
 done
 
 # Install charts for new and updated applications from ACR

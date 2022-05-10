@@ -1,5 +1,5 @@
 kind: Ingress
-apiVersion: extensions/v1beta1
+apiVersion: networking.k8s.io/v1
 metadata:
   name: ordering
   labels:
@@ -12,6 +12,9 @@ spec:
     - http:
         paths:
         - path: /ordering-api
+          pathType: ImplementationSpecific
           backend: 
-            serviceName: ordering-api
-            servicePort: 80
+            service:
+              name: ordering-api
+              port: 
+                number: 80

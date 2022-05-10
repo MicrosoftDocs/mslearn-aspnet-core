@@ -144,13 +144,12 @@ az aks get-credentials -n $eshopAksName -g $eshopRg --overwrite-existing
 echo
 echo "Installing NGINX ingress controller"
 kubectl apply -f ingress-controller/nginx-mandatory.yaml
-kubectl apply -f ingress-controller/nginx-service-loadbalancer.yaml
-kubectl apply -f ingress-controller/nginx-cm.yaml
+
 
 echo
 echo "Getting load balancer public IP"
 
-k8sLbTag="ingress-nginx/ingress-nginx"
+k8sLbTag="ingress-nginx/ingress-nginx-controller"
 aksNodeRGCommand="az aks list --query \"[?name=='$eshopAksName'&&resourceGroup=='$eshopRg'].nodeResourceGroup\" -otsv"
 
 retry=5

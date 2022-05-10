@@ -69,7 +69,7 @@ spec:
     spec:
       containers:
         - name: coupon-api
-          image: {{ .Values.registry }}/coupon.api:linux-latest
+          image: {{ .Values.registry }}/coupon.api:linux-net6-initial
           imagePullPolicy: Always
           ports:
             - containerPort: 80
@@ -138,7 +138,7 @@ EOL
 # helm-simple/coupon/templates/ingress.yaml
 cat >helm-simple/coupon/templates/ingress.yaml <<EOL
 kind: Ingress
-apiVersion: extensions/v1beta1
+apiVersion: networking.k8s.io/v1
 metadata:
   name: coupon
   labels:
@@ -151,9 +151,12 @@ spec:
     - http:
         paths:
         - path: /coupon-api
+          pathType: ImplementationSpecific
           backend: 
-            serviceName: coupon-api
-            servicePort: 80
+            service:
+              name: coupon-api
+              port: 
+                number: 80
 EOL
 
 
