@@ -11,7 +11,9 @@
     
     1. gitBranch specified as "net6/release-microservices-aspnetcore
 
-    2. Helm deployment tags specified as linux-net6-initial
+    2. Helm deployment tags specified as linux-net6-initial . 
+    
+    3. Includes docker-compose scripts to build & push it to dockerhub.
 
 
 - Changes needed on course content:
