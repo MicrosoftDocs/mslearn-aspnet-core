@@ -14,13 +14,13 @@ spec:
   rules:
   - http:
       paths:
-      - backend:
+      - path: /apigateway/c(/|$)(.*)
+        pathType: Prefix
+        backend:
           service:
             name: catalog-api
-            port: 
+            port:
               number: 80
-        pathType: ImplementationSpecific
-        path: /apigateway/c(/|$)(.*)
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
@@ -38,13 +38,13 @@ spec:
   rules:
   - http:
       paths:
-      - backend:
+      - path: /apigateway/b(/|$)(.*)
+        pathType: Prefix
+        backend:
           service:
             name: basket-api
-            port: 
+            port:
               number: 80
-        pathType: ImplementationSpecific
-        path: /apigateway/b(/|$)(.*)
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
@@ -62,13 +62,13 @@ spec:
   rules:
   - http:
       paths:
-      - backend:
+      - path: /apigateway/o(/|$)(.*)
+        pathType: Prefix
+        backend:
           service:
             name: ordering-api
-            port: 
-              number: 80
-        path: /apigateway/o(/|$)(.*)
-        pathType: ImplementationSpecific   
+            port:
+              number: 80   
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
@@ -86,13 +86,13 @@ spec:
   rules:
   - http:
       paths:
-      - backend:
+      - path: /apigateway/cp(/|$)(.*)
+        pathType: Prefix
+        backend:
           service:
             name: coupon-api
-            port: 
-              number: 80
-        pathType: ImplementationSpecific
-        path: /apigateway/cp(/|$)(.*)   
+            port:
+              number: 80   
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
@@ -110,13 +110,13 @@ spec:
   rules:
   - http:
       paths:
-      - backend:
+      - path: /apigateway(/|$)(.*)
+        pathType: Prefix
+        backend:
           service:
             name: webshoppingagg
-            port: 
+            port:
               number: 80
-        pathType: ImplementationSpecific
-        path: /apigateway(/|$)(.*)
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
@@ -135,10 +135,10 @@ spec:
   rules:
   - http:
       paths:
-      - backend:
+      - path: /apigateway/hub/notificationhub(/|$)(.*)
+        pathType: Prefix
+        backend:
           service:
             name: ordering-signalrhub
-            port: 
+            port:
               number: 80
-        pathType: ImplementationSpecific
-        path: /apigateway/hub/notificationhub(/|$)(.*)

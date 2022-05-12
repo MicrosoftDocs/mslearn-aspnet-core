@@ -149,35 +149,19 @@ kubectl apply -f ingress-controller/nginx-mandatory.yaml
 echo
 echo "Getting load balancer public IP"
 
-k8sLbTag="ingress-nginx/ingress-nginx-controller"
-aksNodeRGCommand="az aks list --query \"[?name=='$eshopAksName'&&resourceGroup=='$eshopRg'].nodeResourceGroup\" -otsv"
-
-retry=5
-echo "${newline} > ${azCliCommandStyle}$aksNodeRGCommand${defaultTextStyle}${newline}"
-aksNodeRG=$(eval $aksNodeRGCommand)
-while [ "$aksNodeRG" == "" ]
+while [ -z "$eshopLbIp" ]
 do
-    echo
-    echo "Unable to obtain load balancer resource group. Retrying in 5s..."
-    let retry--
-    sleep 5
-    echo
-    echo "Retrying..."
-    echo $aksNodeRGCommand
-    aksNodeRG=$(eval $aksNodeRGCommand)
-done
-
-
-while [ "$eshopLbIp" == "" ]
-do
-    eshopLbIpCommand="az network public-ip list -g $aksNodeRG --query \"[?tags.service=='$k8sLbTag'].ipAddress\" -otsv"
-    echo "${newline} > ${azCliCommandStyle}$eshopLbIpCommand${defaultTextStyle}${newline}"
+    eshopLbIpCommand="kubectl get svc -n ingress-nginx -o json | jq -r -e '.items[0].status.loadBalancer.ingress[0].ip // empty'"
+    echo "${newline} > ${genericCommandStyle}$eshopLbIpCommand${defaultTextStyle}${newline}"
     eshopLbIp=$(eval $eshopLbIpCommand)
-    echo "Waiting for the load balancer IP address..."
-    sleep 5
+    if [ -z "$eshopLbIp" ]
+    then
+        echo "Waiting for load balancer IP..."
+        sleep 5
+    fi
 done
 
-echo "Done!"
+echo "Load balancer IP is $eshopLbIp"
 
 echo export ESHOP_SUBS=$eshopSubs > create-aks-exports.txt
 echo export ESHOP_RG=$eshopRg >> create-aks-exports.txt

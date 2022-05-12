@@ -12,9 +12,9 @@ spec:
     - http:
         paths:
         - path: /identity
-          pathType: ImplementationSpecific
-          backend: 
+          pathType: Prefix
+          backend:
             service:
               name: identity-api
-              port: 
+              port:
                 number: 80
