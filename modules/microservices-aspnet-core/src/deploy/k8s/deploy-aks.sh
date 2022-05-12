@@ -43,6 +43,15 @@ then
 fi
 
 echo
+echo "Wait until ingress is ready to process requests"
+
+kubectl wait --namespace ingress-nginx \
+  --for=condition=ready pod \
+  --selector=app.kubernetes.io/component=controller \
+  --timeout=90s
+
+
+echo
 echo "Deploying Helm charts using registry \"$acr\""
 
 for dir in ./helm-simple/*/
