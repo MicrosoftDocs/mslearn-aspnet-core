@@ -42,7 +42,7 @@ do
 done
 
 # Install reconfigured charts from Docker Hub
-for chart in webstatus webshoppingagg
+for chart in webstatus webshoppingagg 
 do
     echo
     echo "Installing chart \"$chart\"..."
@@ -55,8 +55,8 @@ for chart in coupon webspa
 do
     echo
     echo "Installing chart \"$chart\"..."
-    echo "${newline}${genericCommandStyle}helm install eshop-$chart --set registry=ecortijo --set aksLB=$ESHOP_LBIP \"helm-simple/$chart\"${defaultTextStyle}${newline}"
-    helm install eshop-$chart --set registry=ecortijo --set aksLB=$ESHOP_LBIP "helm-simple/$chart"
+    echo "${newline}${genericCommandStyle}helm install eshop-$chart --set registry=$ESHOP_REGISTRY --set aksLB=$ESHOP_LBIP \"helm-simple/$chart\"${defaultTextStyle}${newline}"
+    helm install eshop-$chart --set registry=$ESHOP_REGISTRY --set aksLB=$ESHOP_LBIP "helm-simple/$chart"
 done
 
 popd
