@@ -35,12 +35,12 @@ For the quickstart process, see the [environment-setup documentation](../../doc/
 
 #### Update the base images in the public registry
 
-The base images for the second batch of modules (#02-07) are built from project **`module-01-final-eshopdev`**.
+The base images for the second batch of modules (#02-07) are built from project **`module-01-final-ecortijo`**.
 
-1. Set the environment variable REGISTRY to `eshopdev`, `eshoplearn`, or whichever you're using the following command (for `eshopdev`).
+1. Set the environment variable REGISTRY to `ecortijo`, `eshoplearn`, or whichever you're using the following command (for `ecortijo`).
 
    ```powershell
-   $env:REGISTRY="eshopdev"
+   $env:REGISTRY="ecortijo"
    ```
 
 2. Build the required services with docker-compose:
@@ -107,7 +107,7 @@ Input environment variables:
 
 Parameters:
 
-- **--registry**: Registry to pull images from, defaults to **eshopdev**
+- **--registry**: Registry to pull images from, defaults to **ecortijo**
 - **--hostname**: Name of the host to access the deployed application.
 - **--hostip**: IP address to access the deployed application.
 - **--protocol**: http/https, defaults to **http**
@@ -185,5 +185,5 @@ Parameters:
 - **-deploymentType**: **[Mandatory, positional]** Deployment type (**local/aks**)
 - **-protocol**: **[Mandatory, positional]** (**http/https**)
 - **-hostName**: Name of the host to access the deployed application.
-- **-registry**: Registry to pull images from, defaults to **eshopdev**
+- **-registry**: Registry to pull images from, defaults to **ecortijo**
 - **-charts**: Comma separated list of charts to deploy

@@ -27,7 +27,7 @@ $k8sContext = $(kubectl config current-context)
 $localK8s = "docker-desktop,docker-for-desktop" -split "," -contains $k8sContext
 $appPrefix = "eshoplearn"
 $chartsFolder = ".\helm-simple"
-$defaultRegistry = "eshopdev"
+$defaultRegistry = "ecortijo"
 
 if ($deploymentType -eq "local") {
     if (!$localK8s) {

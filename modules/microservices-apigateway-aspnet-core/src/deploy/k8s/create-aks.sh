@@ -149,6 +149,14 @@ do
 done
 
 echo
+echo "Wait until ingress is ready to process requests"
+
+kubectl wait --namespace ingress-nginx \
+  --for=condition=ready pod \
+  --selector=app.kubernetes.io/component=controller \
+  --timeout=90s
+
+echo
 echo "Nginx ingress controller installed."
 
 echo export ESHOP_RG=$eshopRg > create-aks-exports.txt

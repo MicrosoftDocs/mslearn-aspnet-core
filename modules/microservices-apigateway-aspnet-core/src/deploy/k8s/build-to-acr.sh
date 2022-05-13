@@ -4,9 +4,9 @@ echo
 echo "Building images to ACR"
 echo "======================"
 
-if [ -f ~/clouddrive/source/create-acr-exports.txt ]
+if [ -f ~/clouddrive/aspnet-learn/create-acr-exports.txt ]
 then
-  eval $(cat ~/clouddrive/source/create-acr-exports.txt)
+  eval $(cat ~/clouddrive/aspnet-learn/create-acr-exports.txt)
 fi
 
 if [ -z "$ESHOP_REGISTRY" ] || [ -z "$ESHOP_ACRNAME" ]
@@ -31,6 +31,9 @@ done
 echo
 echo "Building and publishing docker images to $ESHOP_REGISTRY"
 
+pushd ~/clouddrive/aspnet-learn/src/deploy/k8s
+echo " "
+
 # This is the list of {service}:{image}>{dockerfile} of the application
 appServices=$(cat ./build-to-acr.services)
 
@@ -53,7 +56,9 @@ do
 
     echo
     echo "Building image \"$image\" for service \"$service\" with \"$dockerfile.acr\"..."
-    az acr build -r $ESHOP_ACRNAME -t $ESHOP_REGISTRY/$image:linux-latest -f $dockerfile.acr .
+    az acr build -r $ESHOP_ACRNAME -t $ESHOP_REGISTRY/$image:linux-net6-coupon -f $dockerfile.acr .
 done
+
+popd
 
 popd

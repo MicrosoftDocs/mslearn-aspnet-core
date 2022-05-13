@@ -18,7 +18,7 @@ services:
     image: rabbitmq:3-management-alpine
 
   identity-api:
-    image: ${REGISTRY:-eshopdev}/identity.api:${PLATFORM:-linux}-${TAG:-latest}
+    image: ${REGISTRY:-ecortijo}/identity.api:${PLATFORM:-linux}-${TAG:-latest}
     build:
       context: .
       dockerfile: src/Services/Identity/Identity.API/Dockerfile
@@ -26,7 +26,7 @@ services:
       - sqldata
 
   basket-api:
-    image: ${REGISTRY:-eshopdev}/basket.api:${PLATFORM:-linux}-${TAG:-latest}
+    image: ${REGISTRY:-ecortijo}/basket.api:${PLATFORM:-linux}-${TAG:-latest}
     build:
       context: .
       dockerfile: src/Services/Basket/Basket.API/Dockerfile
@@ -36,7 +36,7 @@ services:
       - rabbitmq
 
   catalog-api:
-    image: ${REGISTRY:-eshopdev}/catalog.api:${PLATFORM:-linux}-${TAG:-latest}
+    image: ${REGISTRY:-ecortijo}/catalog.api:${PLATFORM:-linux}-${TAG:-latest}
     build:
       context: .
       dockerfile: src/Services/Catalog/Catalog.API/Dockerfile
@@ -45,7 +45,7 @@ services:
       - rabbitmq
 
   ordering-api:
-    image: ${REGISTRY:-eshopdev}/ordering.api:${PLATFORM:-linux}-${TAG:-latest}
+    image: ${REGISTRY:-ecortijo}/ordering.api:${PLATFORM:-linux}-${TAG:-latest}
     build:
       context: .
       dockerfile: src/Services/Ordering/Ordering.API/Dockerfile
@@ -54,7 +54,7 @@ services:
       - rabbitmq
 
   ordering-backgroundtasks:
-    image: ${REGISTRY:-eshopdev}/ordering.backgroundtasks:${PLATFORM:-linux}-${TAG:-latest}
+    image: ${REGISTRY:-ecortijo}/ordering.backgroundtasks:${PLATFORM:-linux}-${TAG:-latest}
     build:
       context: .
       dockerfile: src/Services/Ordering/Ordering.BackgroundTasks/Dockerfile
@@ -63,7 +63,7 @@ services:
       - rabbitmq
 
   payment-api:
-    image: ${REGISTRY:-eshopdev}/payment.api:${PLATFORM:-linux}-${TAG:-latest}
+    image: ${REGISTRY:-ecortijo}/payment.api:${PLATFORM:-linux}-${TAG:-latest}
     build:
       context: .
       dockerfile: src/Services/Payment/Payment.API/Dockerfile
@@ -71,7 +71,7 @@ services:
       - rabbitmq
 
   coupon-api:
-    image: ${REGISTRY:-eshopdev}/coupon.api:${PLATFORM:-linux}-${TAG:-latest}
+    image: ${REGISTRY:-ecortijo}/coupon.api:${PLATFORM:-linux}-${TAG:-latest}
     build:
       context: .
       dockerfile: src/Services/Coupon/Coupon.API/Dockerfile
@@ -80,7 +80,7 @@ services:
       - rabbitmq
 
   webshoppingagg:
-    image: ${REGISTRY:-eshopdev}/webshoppingagg:${PLATFORM:-linux}-${TAG:-latest}
+    image: ${REGISTRY:-ecortijo}/webshoppingagg:${PLATFORM:-linux}-${TAG:-latest}
     build:
       context: .
       dockerfile: src/ApiGateways/Aggregators/Web.Shopping.HttpAggregator/Dockerfile
@@ -94,7 +94,7 @@ services:
       - basket-api
   
   websalesagg:
-    image: ${REGISTRY:-eshopdev}/websalesagg:${PLATFORM:-linux}-${TAG:-latest}
+    image: ${REGISTRY:-ecortijo}/websalesagg:${PLATFORM:-linux}-${TAG:-latest}
     build:
       context: .
       dockerfile: src/ApiGateways/Aggregators/Web.Sales.HttpAggregator/Dockerfile
@@ -108,7 +108,7 @@ services:
       - basket-api
 
   ordering-signalrhub:
-    image: ${REGISTRY:-eshopdev}/ordering.signalrhub:${PLATFORM:-linux}-${TAG:-latest}
+    image: ${REGISTRY:-ecortijo}/ordering.signalrhub:${PLATFORM:-linux}-${TAG:-latest}
     build:
       context: .
       dockerfile: src/Services/Ordering/Ordering.SignalrHub/Dockerfile
@@ -122,7 +122,7 @@ services:
       - basket-api
 
   webstatus:
-    image: ${REGISTRY:-eshopdev}/webstatus:${PLATFORM:-linux}-${TAG:-latest}
+    image: ${REGISTRY:-ecortijo}/webstatus:${PLATFORM:-linux}-${TAG:-latest}
     build:
       context: .
       dockerfile: src/Web/WebStatus/Dockerfile
@@ -131,7 +131,7 @@ services:
     image: envoyproxy/envoy:v1.11.1
 
   webspa:
-    image: ${REGISTRY:-eshopdev}/webspa:${PLATFORM:-linux}-${TAG:-latest}
+    image: ${REGISTRY:-ecortijo}/webspa:${PLATFORM:-linux}-${TAG:-latest}
     build:
       context: .
       dockerfile: src/Web/WebSPA/Dockerfile
