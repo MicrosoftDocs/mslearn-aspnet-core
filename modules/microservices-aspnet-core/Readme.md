@@ -1,15 +1,9 @@
 # Update to .NET 6 
 
-- In order to test the module from user's perspective we've made two changes that may need to be reversed once it becomes live
-
-    1. Repository on github changed from user MicrosoftDocs to ecortijo
-
-    2. Dockerhub registry changed from eshoplearn to ecortijo
-
 
 - As we don't want this module to overwrite the "live" branch and "linux-latest" dockerhub image directly, we made two changes:
     
-    1. gitBranch specified as "net6/release-microservices-aspnetcore
+    1. gitBranch specified as microservices-aspnet-core-net6-final
 
     2. Helm deployment tags specified as linux-net6-initial . 
     

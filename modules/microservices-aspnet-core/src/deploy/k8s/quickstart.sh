@@ -3,7 +3,7 @@
 eshopSubs=${ESHOP_SUBS}
 eshopRg=${ESHOP_RG}
 eshopLocation=${ESHOP_LOCATION}
-eshopRegistry=ecortijo
+eshopRegistry=eshoplearn
 
 while [ "$1" != "" ]; do
     case $1 in
