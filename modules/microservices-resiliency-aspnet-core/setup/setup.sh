@@ -15,14 +15,14 @@ cd ~
 declare -x dotnetSdkVersion="6.0.202"
 
 # Module name
-declare moduleName="net6/release-microservices-resiliency-aspnet-core"
+declare moduleName="microservices-resiliency-aspnet-core"
 
 # Any other declarations we need
 if ! [ $defaultRegion ]
 then
     declare defaultRegion=centralus
 fi
-declare -x gitBranch="net6/release"
+declare -x gitBranch="net6/release-microservices-resiliency-aspnet-core"
 declare initScript=https://raw.githubusercontent.com/ecortijo/mslearn-aspnet-core/$gitBranch/infrastructure/scripts/initenvironment.sh
 declare suppressAzureResources=true
 declare rootLocation=~/clouddrive
