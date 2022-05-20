@@ -4,8 +4,8 @@ using System;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Polly;
-using System.Data.SqlClient;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Data.SqlClient;
 
 namespace Catalog.API.Extensions
 {
