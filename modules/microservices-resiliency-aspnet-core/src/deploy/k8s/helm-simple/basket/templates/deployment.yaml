@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
         - name: basket-api
-          image: {{ .Values.registry }}/basket.api:linux-latest
+          image: {{ .Values.registry }}/basket.api:linux-net6-coupon
           imagePullPolicy: {{ .Values.imagePullPolicy }}
           ports:
             - name: http

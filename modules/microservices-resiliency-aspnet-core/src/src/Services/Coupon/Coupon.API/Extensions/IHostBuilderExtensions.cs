@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Data.SqlClient;
+using Microsoft.Data.SqlClient;
 using Coupon.API.IntegrationEvents.EventHandlers;
 using Coupon.API.IntegrationEvents.Events;
 using Microsoft.eShopOnContainers.BuildingBlocks.EventBus.Abstractions;
