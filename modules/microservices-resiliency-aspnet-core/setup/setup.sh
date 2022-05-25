@@ -5,7 +5,7 @@
 # going on within this script. We've provided what we hope are useful
 # comments inline, as well as color-coded relevant shell output.
 # We hope it's useful for you, but if you have any questions or suggestions
-# please open an issue on https:/github.com/ecortijo/mslearn-aspnet-core.
+# please open an issue on https:/github.com/MicrosoftDocs/mslearn-aspnet-core.
 #
 
 ## Start
@@ -22,8 +22,8 @@ if ! [ $defaultRegion ]
 then
     declare defaultRegion=centralus
 fi
-declare -x gitBranch="net6/release-microservices-resiliency-aspnet-core"
-declare initScript=https://raw.githubusercontent.com/ecortijo/mslearn-aspnet-core/$gitBranch/infrastructure/scripts/initenvironment.sh
+declare -x gitBranch="resiliency-net6"
+declare initScript=https://raw.githubusercontent.com/MicrosoftDocs/mslearn-aspnet-core/$gitBranch/infrastructure/scripts/initenvironment.sh
 declare suppressAzureResources=true
 declare rootLocation=~/clouddrive
 declare editorHomeLocation=$rootLocation/aspnet-learn/src
