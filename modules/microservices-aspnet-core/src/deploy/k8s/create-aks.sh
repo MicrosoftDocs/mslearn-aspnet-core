@@ -144,8 +144,7 @@ az aks get-credentials -n $eshopAksName -g $eshopRg --overwrite-existing
 echo
 echo "Installing NGINX ingress controller"
 kubectl apply -f ingress-controller/nginx-mandatory.yaml
-kubectl apply -f ingress-controller/nginx-service-loadbalancer.yaml
-kubectl apply -f ingress-controller/nginx-cm.yaml
+
 
 echo
 echo "Getting load balancer public IP"

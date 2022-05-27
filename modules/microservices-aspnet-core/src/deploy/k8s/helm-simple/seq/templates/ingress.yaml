@@ -15,8 +15,8 @@ spec:
       paths:
       - path: /seq(/|$)(.*)
         pathType: Prefix
-          backend:
-            service:
-              name: seq
-              port:
-                number: 80
+        backend:
+          service:
+            name: seq
+            port:
+              number: 80
