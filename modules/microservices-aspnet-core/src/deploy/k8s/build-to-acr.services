@@ -1,0 +1,11 @@
+basket-api:basket.api>src/Services/Basket/Basket.API/Dockerfile
+catalog-api:catalog.api>src/Services/Catalog/Catalog.API/Dockerfile
+coupon-api:coupon.api>src/Services/Coupon/Coupon.API/Dockerfile
+identity-api:identity.api>src/Services/Identity/Identity.API/Dockerfile
+ordering-api:ordering.api>src/Services/Ordering/Ordering.API/Dockerfile
+ordering-backgroundtasks:ordering.backgroundtasks>src/Services/Ordering/Ordering.BackgroundTasks/Dockerfile
+ordering-signalrhub:ordering.signalrhub>src/Services/Ordering/Ordering.SignalrHub/Dockerfile
+payment-api:payment.api>src/Services/Payment/Payment.API/Dockerfile
+webshoppingagg:webshoppingagg>src/ApiGateways/Aggregators/Web.Shopping.HttpAggregator/Dockerfile
+webspa:webspa>src/Web/WebSPA/Dockerfile
+webstatus:webstatus>src/Web/WebStatus/Dockerfile

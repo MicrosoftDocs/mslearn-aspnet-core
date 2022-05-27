@@ -42,7 +42,7 @@ do
 done
 
 # Install reconfigured charts from Docker Hub
-for chart in webstatus webshoppingagg
+for chart in webstatus webshoppingagg 
 do
     echo
     echo "Installing chart \"$chart\"..."
