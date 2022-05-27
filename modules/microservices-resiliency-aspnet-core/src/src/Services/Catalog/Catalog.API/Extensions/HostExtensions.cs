@@ -8,7 +8,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Polly;
-using System.Data.SqlClient;
+using Microsoft.Data.SqlClient;
 
 namespace Catalog.API.Extensions
 {

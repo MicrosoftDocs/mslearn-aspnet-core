@@ -1,5 +1,5 @@
 #!/bin/bash
-eshopRegistry=eshopdev
+eshopRegistry=eshoplearn
 
 while [ "$1" != "" ]; do
     case $1 in
