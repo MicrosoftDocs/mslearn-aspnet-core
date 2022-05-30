@@ -22,7 +22,7 @@ if ! [ $defaultRegion ]
 then
     declare defaultRegion=centralus
 fi
-declare -x gitBranch="resiliency-net6"
+declare -x gitBranch="resiliency-net6-latest"
 declare initScript=https://raw.githubusercontent.com/MicrosoftDocs/mslearn-aspnet-core/$gitBranch/infrastructure/scripts/initenvironment.sh
 declare suppressAzureResources=true
 declare rootLocation=~/clouddrive
