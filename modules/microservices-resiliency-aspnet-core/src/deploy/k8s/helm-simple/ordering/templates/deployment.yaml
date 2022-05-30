@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
         - name: ordering-api
-          image: {{ .Values.registry }}/ordering.api:linux-latest
+          image: {{ .Values.registry }}/ordering.api:linux-net6-coupon
           imagePullPolicy: {{ .Values.imagePullPolicy }}
           ports:
             - name: http

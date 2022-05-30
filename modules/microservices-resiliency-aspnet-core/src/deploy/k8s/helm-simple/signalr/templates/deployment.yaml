@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
         - name: ordering-signalrhub
-          image: {{ .Values.registry }}/ordering.signalrhub:linux-latest
+          image: {{ .Values.registry }}/ordering.signalrhub:linux-net6-coupon
           imagePullPolicy: {{ .Values.imagePullPolicy }}
           ports:
             - name: http
