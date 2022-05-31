@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
         - name: identity-api
-          image: {{ .Values.registry }}/identity.api:linux-latest
+          image: {{ .Values.registry }}/identity.api:linux-net6-coupon
           imagePullPolicy: {{ .Values.imagePullPolicy }}
           ports:
             - name: http

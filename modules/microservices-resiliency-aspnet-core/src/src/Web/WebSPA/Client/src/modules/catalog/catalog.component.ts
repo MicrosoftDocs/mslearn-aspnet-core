@@ -1,5 +1,6 @@
+
+import {throwError as observableThrowError,  Observable, Subscription } from 'rxjs';
 import { Component, OnInit }    from '@angular/core';
-import { Observable, Subscription } from 'rxjs';
 import { catchError }           from 'rxjs/operators';
 
 import { CatalogService }       from './catalog.service';
@@ -117,7 +118,7 @@ export class CatalogComponent implements OnInit {
 
     private handleError(error: any) {
         this.errorReceived = true;
-        return Observable.throw(error);
+        return observableThrowError(error);
     }
 }
 
