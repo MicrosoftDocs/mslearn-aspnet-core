@@ -3,7 +3,6 @@
 For the quickstart process, see the [environment-setup documentation](../../doc/environment-setup.md).
 
 > **CONTENT**
-
 - [Typical workflows](#typical-workflows)
   - [Azure Cloud Shell / WSL](#azure-cloud-shell--wsl)
   - [Powershell](#powershell)
@@ -35,12 +34,12 @@ For the quickstart process, see the [environment-setup documentation](../../doc/
 
 #### Update the base images in the public registry
 
-The base images for the second batch of modules (#02-07) are built from project **`module-01-final-eshopdev`**.
+The base images for the second batch of modules (#02-07) are built from project **`module-03-logging`**.
 
-1. Set the environment variable REGISTRY to `eshopdev`, `eshoplearn`, or whichever you're using the following command (for `eshopdev`).
+1. Set the environment variable REGISTRY to `eshoplearn`, or whichever you're using the following command (for `eshoplearn`).
 
    ```powershell
-   $env:REGISTRY="eshopdev"
+   $env:REGISTRY="eshoplearn"
    ```
 
 2. Build the required services with docker-compose:
@@ -107,7 +106,7 @@ Input environment variables:
 
 Parameters:
 
-- **--registry**: Registry to pull images from, defaults to **eshopdev**
+- **--registry**: Registry to pull images from, defaults to **eshoplearn**
 - **--hostname**: Name of the host to access the deployed application.
 - **--hostip**: IP address to access the deployed application.
 - **--protocol**: http/https, defaults to **http**

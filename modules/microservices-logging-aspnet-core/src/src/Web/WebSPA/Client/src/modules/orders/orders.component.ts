@@ -1,8 +1,9 @@
+
+import {throwError as observableThrowError,  Observable } from 'rxjs';
 import { Component, OnInit }    from '@angular/core';
 import { OrdersService }        from './orders.service';
 import { IOrder }               from '../shared/models/order.model';
 import { ConfigurationService } from '../shared/services/configuration.service';
-import { Observable } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { SignalrService } from '../shared/services/signalr.service';
 
@@ -55,7 +56,7 @@ export class OrdersComponent implements OnInit {
 
     private handleError(error: any) {
         this.errorReceived = true;
-        return Observable.throw(error);
+        return observableThrowError(error);
     }  
 }
 
