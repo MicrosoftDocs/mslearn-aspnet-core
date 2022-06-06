@@ -5,14 +5,14 @@
 # going on within this script. We've provided what we hope are useful
 # comments inline, as well as color-coded relevant shell output.
 # We hope it's useful for you, but if you have any questions or suggestions
-# please open an issue on https:/github.com/MicrosoftDocs/mslearn-aspnet-core.
+# please open an issue on https:/github.com/ecortijo/mslearn-aspnet-core.
 #
 
 ## Start
 cd ~
 
 # dotnet SDK version
-declare -x dotnetSdkVersion="3.1.403"
+declare -x dotnetSdkVersion="6.0.202"
 
 # Module name
 declare moduleName="microservices-configuration-aspnet-core"
@@ -22,8 +22,8 @@ if ! [ $defaultRegion ]
 then
     declare defaultRegion=centralus
 fi
-declare -x gitBranch="live"
-declare initScript=https://raw.githubusercontent.com/MicrosoftDocs/mslearn-aspnet-core/$gitBranch/infrastructure/scripts/initenvironment.sh
+declare -x gitBranch="net6/release-microservices-configuration-aspnet-core"
+declare initScript=https://raw.githubusercontent.com/ecortijo/mslearn-aspnet-core/$gitBranch/infrastructure/scripts/initenvironment.sh
 declare suppressAzureResources=true
 declare rootLocation=~/clouddrive
 declare editorHomeLocation=$rootLocation/aspnet-learn/src
@@ -56,9 +56,9 @@ else
 
     # Deployment templates used customized coupon and webshoppingagg images
     # Revert to non-custom tags
-    sed -i "s|linux-feature-flags|linux-latest|g" $editorHomeLocation/deploy/k8s/helm-simple/coupon/templates/deployment.yaml
-    sed -i "s|linux-feature-flags|linux-latest|g" $editorHomeLocation/deploy/k8s/helm-simple/webshoppingagg/templates/deployment.yaml
-    sed -i "s|linux-feature-flags|linux-latest|g" $editorHomeLocation/deploy/k8s/helm-simple/webspa/templates/deployment.yaml
+    sed -i "s|linux-net6-feature-flags|linux-net6-coupon|g" $editorHomeLocation/deploy/k8s/helm-simple/coupon/templates/deployment.yaml
+    sed -i "s|linux-net6-feature-flags|linux-net6-coupon|g" $editorHomeLocation/deploy/k8s/helm-simple/webshoppingagg/templates/deployment.yaml
+    sed -i "s|linux-net6-feature-flags|linux-net6-coupon|g" $editorHomeLocation/deploy/k8s/helm-simple/webspa/templates/deployment.yaml
 
     # Create ACR resource
     $editorHomeLocation/deploy/k8s/create-acr.sh

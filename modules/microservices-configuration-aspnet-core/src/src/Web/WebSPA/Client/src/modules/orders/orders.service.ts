@@ -51,7 +51,6 @@ export class OrdersService {
 
     checkValidationCoupon(code: string): Observable<ICoupon> {
         let url = this.ordersUrl + `/cp/api/v1/coupon/${code}`;
-        console.log("url = " + url);
 
         return this.service.get(url).pipe<ICoupon>(tap((response: any) => {
             return response;

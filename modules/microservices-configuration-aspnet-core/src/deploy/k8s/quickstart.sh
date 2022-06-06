@@ -1,5 +1,5 @@
 #!/bin/bash
-eshopRegistry=eshopdev
+eshopRegistry=ecortijo
 
 while [ "$1" != "" ]; do
     case $1 in
@@ -36,4 +36,3 @@ eval $(cat ~/clouddrive/aspnet-learn/create-aks-exports.txt)
 
 ./deploy-application.sh
 
-./deploy-application.sh --charts coupon,webshoppingagg,webspa --registry eshoplearn
