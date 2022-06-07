@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
         - name: payment-api
-          image: {{ .Values.registry }}/payment.api:linux-latest
+          image: {{ .Values.registry }}/payment.api:linux-net6-coupon
           imagePullPolicy: {{ .Values.imagePullPolicy }}
           ports:
             - name: http

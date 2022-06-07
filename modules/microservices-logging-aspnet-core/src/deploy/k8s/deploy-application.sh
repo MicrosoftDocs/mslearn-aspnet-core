@@ -49,7 +49,7 @@ done
 
 appPrefix="eshoplearn"
 chartsFolder="./helm-simple"
-defaultRegistry="eshopdev"
+defaultRegistry="eshoplearn"
 
 if [ -z "$registry" ]
 then
