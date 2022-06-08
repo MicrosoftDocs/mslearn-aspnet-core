@@ -3,7 +3,7 @@
 
 - As we don't want this module to overwrite the "live" branch and "linux-latest" dockerhub image directly, we made two changes:
 
-    1. gitBranch specified as net6/release-microservices-configuration-aspnet-core
+    1. gitBranch specified as configuration-net6-latest
 
     2. Helm deployment tags specified as linux-net6-coupon and linux-net6-feature-flags . 
 
