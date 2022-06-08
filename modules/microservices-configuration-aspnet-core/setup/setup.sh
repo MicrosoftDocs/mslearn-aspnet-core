@@ -12,7 +12,7 @@
 cd ~
 
 # dotnet SDK version
-declare -x dotnetSdkVersion="3.1.403"
+declare -x dotnetSdkVersion="6.0.202"
 
 # Module name
 declare moduleName="microservices-configuration-aspnet-core"
@@ -22,7 +22,7 @@ if ! [ $defaultRegion ]
 then
     declare defaultRegion=centralus
 fi
-declare -x gitBranch="live"
+declare -x gitBranch="configuration-net6-latest"
 declare initScript=https://raw.githubusercontent.com/MicrosoftDocs/mslearn-aspnet-core/$gitBranch/infrastructure/scripts/initenvironment.sh
 declare suppressAzureResources=true
 declare rootLocation=~/clouddrive
@@ -56,9 +56,9 @@ else
 
     # Deployment templates used customized coupon and webshoppingagg images
     # Revert to non-custom tags
-    sed -i "s|linux-feature-flags|linux-latest|g" $editorHomeLocation/deploy/k8s/helm-simple/coupon/templates/deployment.yaml
-    sed -i "s|linux-feature-flags|linux-latest|g" $editorHomeLocation/deploy/k8s/helm-simple/webshoppingagg/templates/deployment.yaml
-    sed -i "s|linux-feature-flags|linux-latest|g" $editorHomeLocation/deploy/k8s/helm-simple/webspa/templates/deployment.yaml
+    sed -i "s|linux-net6-feature-flags|linux-net6-coupon|g" $editorHomeLocation/deploy/k8s/helm-simple/coupon/templates/deployment.yaml
+    sed -i "s|linux-net6-feature-flags|linux-net6-coupon|g" $editorHomeLocation/deploy/k8s/helm-simple/webshoppingagg/templates/deployment.yaml
+    sed -i "s|linux-net6-feature-flags|linux-net6-coupon|g" $editorHomeLocation/deploy/k8s/helm-simple/webspa/templates/deployment.yaml
 
     # Create ACR resource
     $editorHomeLocation/deploy/k8s/create-acr.sh

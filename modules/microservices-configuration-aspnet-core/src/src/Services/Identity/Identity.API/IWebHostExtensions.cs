@@ -4,7 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Polly;
 using System;
-using System.Data.SqlClient;
+using Microsoft.Data.SqlClient;
 
 namespace Microsoft.AspNetCore.Hosting
 {

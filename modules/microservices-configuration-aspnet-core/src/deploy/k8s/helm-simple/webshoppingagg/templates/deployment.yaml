@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
         - name: webshoppingagg
-          image: {{ .Values.registry }}/webshoppingagg:linux-feature-flags
+          image: {{ .Values.registry }}/webshoppingagg:linux-net6-feature-flags
           imagePullPolicy: {{ .Values.imagePullPolicy }}
           ports:
             - name: http

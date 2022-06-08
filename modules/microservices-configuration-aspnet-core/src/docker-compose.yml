@@ -1,0 +1,21 @@
+version: '3.4'
+
+services:
+
+  coupon-api:
+    image: ${REGISTRY:-eshopdev}/coupon.api:${PLATFORM:-linux}-${TAG:-latest}
+    build:
+      context: .
+      dockerfile: src/Services/Coupon/Coupon.API/Dockerfile
+
+  webshoppingagg:
+    image: ${REGISTRY:-eshopdev}/webshoppingagg:${PLATFORM:-linux}-${TAG:-latest}
+    build:
+      context: .
+      dockerfile: src/ApiGateways/Aggregators/Web.Shopping.HttpAggregator/Dockerfile
+
+  webspa:
+    image: ${REGISTRY:-eshopdev}/webspa:${PLATFORM:-linux}-${TAG:-latest}
+    build:
+      context: .
+      dockerfile: src/Web/WebSPA/Dockerfile
