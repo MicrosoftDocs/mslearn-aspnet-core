@@ -16,27 +16,39 @@
 
         1. Retrieve the cluster IP address of the websalesagg pod:
 
+        ```bash 
         kubectl get svc --selector service=websalesagg
+        ```
 
         2. Deploy and open a shell on a new pod with a curl image
 
+        ```bash 
         kubectl run mycurlpod --image=curlimages/curl -i --tty -- sh
+        ```
 
         3. Within the pod, use cURL to verify that the service is listening. Use the IP address that you retrieved earlier.
 
+        ```bash 
         curl http://<clusterip-of-websalesagg-pod>/websalesagg/swagger/index.html
+        ```
 
         4. Use the following command to close the shell:
 
+        ```bash 
         exit
+        ```
 
     2. On page: https://docs.microsoft.com/en-us/learn/modules/microservices-apigateway-aspnet-core/implement-azure-application-gateway
 
+        ```bash 
         deploy/k8s/deploy-application.sh --registry eshopdev --hostip {appgw-public-ip}
+        ```
 
         to
 
+        ```bash 
         deploy/k8s/deploy-application.sh --registry eshoplearn --hostip {appgw-public-ip}
+        ```
 
         ecortijo instead of eshoplearn when testing using my dockerhub
 
