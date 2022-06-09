@@ -118,23 +118,6 @@ kubectl apply -f ingress-controller/nginx-controller.yaml
 echo
 echo "Getting Load Balancer public IP..."
 
-aksNodeRGCommand="az aks list --query \"[?name=='$eshopAksName'&&resourceGroup=='$eshopRg'].nodeResourceGroup\" -otsv"
-
-retry=5
-echo "${newline} > ${azCliCommandStyle}$aksNodeRGCommand${defaultTextStyle}${newline}"
-aksNodeRG=$(eval $aksNodeRGCommand)
-while [ "$aksNodeRG" == "" ]
-do
-    echo
-    echo "Unable to obtain load balancer resource group. Retrying in 5s..."
-    let retry--
-    sleep 5
-    echo
-    echo "Retrying..."
-    echo $aksNodeRGCommand
-    aksNodeRG=$(eval $aksNodeRGCommand)
-done
-
 
 while [ "$eshopLbIp" == "" ] || [ "$eshopLbIp" == "<pending>" ]
 do
