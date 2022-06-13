@@ -82,7 +82,7 @@ az network application-gateway create \
     --frontend-port 80 \
     --http-settings-port 80 \
     --http-settings-protocol Http \
-    --priority 10010
+    --priority 10010 \
     --public-ip-address $appgwPublicIpName \
     --query "{ProvisioningState:applicationGateway.provisioningState,OperationalState:applicationGateway.operationalState,SKU:applicationGateway.sku}"
 
