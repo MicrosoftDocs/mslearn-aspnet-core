@@ -5,14 +5,14 @@
 # going on within this script. We've provided what we hope are useful
 # comments inline, as well as color-coded relevant shell output.
 # We hope it's useful for you, but if you have any questions or suggestions
-# please open an issue on https:/github.com/MicrosoftDocs/mslearn-aspnet-core.
+# please open an issue on https:/github.com/ecortijo/mslearn-aspnet-core.
 #
 
 ## Start
 cd ~
 
 # dotnet SDK version
-declare -x dotnetSdkVersion="3.1.401"
+declare -x dotnetSdkVersion="6.0.202"
 
 # Module name
 declare moduleName="microservices-devops-aspnet-core"
@@ -22,8 +22,8 @@ if ! [ $defaultRegion ]
 then
     declare defaultRegion=centralus
 fi
-declare -x gitBranch="live"
-declare initScript=https://raw.githubusercontent.com/MicrosoftDocs/mslearn-aspnet-core/$gitBranch/infrastructure/scripts/initenvironment.sh
+declare -x gitBranch="net6/release-microservices-devops-aspnet-core"
+declare initScript=https://raw.githubusercontent.com/ecortijo/mslearn-aspnet-core/$gitBranch/infrastructure/scripts/initenvironment.sh
 declare suppressAzureResources=true
 declare rootLocation=~/clouddrive
 declare editorHomeLocation=$rootLocation/aspnet-learn/
