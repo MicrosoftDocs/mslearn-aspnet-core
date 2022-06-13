@@ -3,7 +3,7 @@
 
 - As we don't want this module to overwrite the "live" branch and "linux-latest" dockerhub image directly, we made two changes:
 
-    1. gitBranch specified as net6/microservices-apigateway-aspnet-core
+    1. gitBranch specified as apigateway-net6-latest
 
     2. Helm deployment tags specified as linux-net6-coupon . 
 
@@ -50,7 +50,6 @@
         deploy/k8s/deploy-application.sh --registry eshoplearn --hostip {appgw-public-ip}
         ```
 
-        ecortijo instead of eshoplearn when testing using my dockerhub
 
 	
 

@@ -39,7 +39,7 @@ then
 fi
 
 echo "=========Deploy the WebStatus service=============="
-./deploy-application.sh --registry ecortijo --hostip $ipAddress --charts webstatus
+./deploy-application.sh --registry eshoplearn --hostip $ipAddress --charts webstatus
 
 echo "=========Deploy the Identity.API service=============="
 ./deploy-application.sh --registry $ESHOP_REGISTRY --hostip $ipAddress --charts identity
