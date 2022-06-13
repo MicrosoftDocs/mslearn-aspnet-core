@@ -1,0 +1,25 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: webstatus
+  labels:
+    app: eshop
+    service: webstatus
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+spec:
+  rules:
+{{- if .Values.useHostName }}
+  - host: {{ .Values.host }}
+    http:
+{{- else }}
+  - http:
+{{- end }}
+      paths:
+      - path: /webstatus
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: webstatus
+            port: 
+              number: 80
