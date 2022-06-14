@@ -1,5 +1,14 @@
 # Update to .NET 6 
 
-These steps are only needed when testing using ecortijo repo. 
+1. On page https://docs.microsoft.com/en-us/learn/modules/microservices-devops-aspnet-core/4-build-github-action
 
-- Fork this repo instead of the proposed one: https://github.com/ecortijo/mslearn-microservices-devops-aspnet-core
+
+Inside "Replace the YAML in the editor with the following YAML:" section
+
+tags: 'linux-latest' 
+
+	to
+
+tags: 'linux-net6-coupon'
+
+
