@@ -1,11 +1,12 @@
-﻿@import 'src/styles/variables';
+﻿@use "sass:math";
+@import 'src/styles/variables';
 
 .esh-campaign {
     $banner-height: 260px;
 
     &-title {
         position: relative;
-        top: $banner-height / 3.5;
+        top: math.div($banner-height, 3.5);
     }
 
     &-items {
