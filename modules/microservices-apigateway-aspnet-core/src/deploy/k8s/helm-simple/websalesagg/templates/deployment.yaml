@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: websalesagg
+  labels:
+    app: eshop
+    service: websalesagg
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      service: websalesagg
+  template:
+    metadata:
+      labels:
+        app: eshop
+        service: websalesagg
+    spec:
+      containers:
+        - name: websalesagg
+          image: {{ .Values.registry }}/websalesagg:linux-net6-coupon
+          imagePullPolicy: {{ .Values.imagePullPolicy }}
+          ports:
+            - name: http
+              containerPort: 80
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              port: 80
+              path: /liveness
+            initialDelaySeconds: 10
+            periodSeconds: 15
+          readinessProbe:
+            httpGet:
+              port: 80
+              path: /hc
+            initialDelaySeconds: 90
+            periodSeconds: 60
+            timeoutSeconds: 5
+          envFrom:
+            - configMapRef:
+                name: websalesagg-cm

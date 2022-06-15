@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: webspa
+  labels:
+    app: eshop
+    service: webspa
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      service: webspa
+  template:
+    metadata:
+      labels:
+        app: eshop
+        service: webspa
+    spec:
+      containers:
+        - name: webspa
+          image: {{ .Values.registry }}/webspa:linux-net6-coupon
+          imagePullPolicy: {{ .Values.imagePullPolicy }}
+          ports:
+            - name: http
+              containerPort: 80
+              protocol: TCP
+          envFrom:
+            - configMapRef:
+                name: webspa-cm
