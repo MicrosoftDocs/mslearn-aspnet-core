@@ -1,0 +1,25 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: catalog
+  labels:
+    app: eshop
+    service: catalog
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+spec:
+  rules:
+{{- if .Values.useHostName }}
+  - host: {{ .Values.host }}
+    http:
+{{- else }}
+  - http:
+{{- end }}
+      paths:
+      - path: /catalog-api
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: catalog-api
+            port: 
+              number: 80

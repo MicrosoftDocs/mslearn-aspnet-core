@@ -1,0 +1,25 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: coupon
+  labels:
+    app: eshop
+    service: coupon
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+spec:
+  rules:
+{{- if .Values.useHostName }}
+  - host: {{ .Values.host }}
+    http:
+{{- else }}
+  - http:
+{{- end }}
+      paths:
+      - path: /coupon-api
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: coupon-api
+            port: 
+              number: 80
