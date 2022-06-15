@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
         - name: coupon-api
-          image: {{ .Values.registry }}/coupon.api:linux-feature-flags
+          image: {{ .Values.registry }}/coupon.api:linux-net6-feature-flags
           imagePullPolicy: {{ .Values.imagePullPolicy }}
           ports:
             - containerPort: 80
