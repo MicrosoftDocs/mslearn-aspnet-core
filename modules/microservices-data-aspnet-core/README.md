@@ -36,5 +36,4 @@
 
         deploy/k8s/deploy-application.sh --charts coupon --registry eshoplearn
 
-        *ecortijo instead of eshoplearn when testing using my dockerhub
             
