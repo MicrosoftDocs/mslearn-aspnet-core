@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: coupon-cm
+  labels:
+    app: eshop
+    service: coupon
+data:
+  ASPNETCORE_ENVIRONMENT: Development
+  ASPNETCORE_URLS: http://0.0.0.0:80
+  AzureServiceBusEnabled: "False"
+  CheckUpdateTime: "30000"
+  ConnectionString: mongodb://nosqldata
+  EventBusConnection: rabbitmq
+  identityUrl: http://identity-api
+  IdentityUrlExternal: {{ .Values.protocol }}://{{ .Values.host }}/identity
+  OrchestratorType: K8S
+  PATH_BASE: /coupon-api
+  Serilog__MinimumLevel__Override__coupon-api: Verbose
+  Serilog__MinimumLevel__Override__Microsoft.eShopOnContainers.BuildingBlocks.EventBusRabbitMQ: Verbose
