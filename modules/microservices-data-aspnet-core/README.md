@@ -22,6 +22,12 @@
 
             SignalrStoreConnectionString: eshop-redis-202104230000.redis.cache.windows.net:6380,password=[password],ssl=True,abortConnect=False
 
+        
+        After deploy/k8s/deploy-application.sh --charts basket add
+
+        deploy/k8s/deploy-application.sh --charts signalr --registry eshoplearn
+        
+
     2. On page: https://docs.microsoft.com/en-us/learn/modules/microservices-data-aspnet-core/implement-cosmos-db
 
         deploy/k8s/deploy-application.sh --charts coupon --registry eshopdev
