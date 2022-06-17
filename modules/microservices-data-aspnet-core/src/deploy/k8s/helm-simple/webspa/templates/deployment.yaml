@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
         - name: webspa
-          image: {{ .Values.registry }}/webspa:linux-latest
+          image: {{ .Values.registry }}/webspa:linux-net6-coupon
           imagePullPolicy: {{ .Values.imagePullPolicy }}
           ports:
             - name: http

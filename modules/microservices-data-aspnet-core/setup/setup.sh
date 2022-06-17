@@ -12,7 +12,7 @@
 cd ~
 
 # dotnet SDK version
-declare -x dotnetSdkVersion="3.1.407"
+declare -x dotnetSdkVersion="6.0.202"
 
 # Module name
 declare moduleName="microservices-data-aspnet-core"
@@ -54,11 +54,9 @@ else
     # Run eshop-learn quickstart to deploy to AKS
     $editorHomeLocation/deploy/k8s/quickstart.sh --resource-group eshop-learn-rg --location $defaultRegion
 
-
     # Create ACR resource
     $editorHomeLocation/deploy/k8s/create-acr.sh
-    
+
     # Display URLs to user
     cat ~/clouddrive/aspnet-learn/deployment-urls.txt
 fi
-

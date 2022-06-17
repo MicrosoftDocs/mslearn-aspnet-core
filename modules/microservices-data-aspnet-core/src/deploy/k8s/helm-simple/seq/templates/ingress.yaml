@@ -1,4 +1,4 @@
-apiVersion: extensions/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: seq
@@ -19,6 +19,9 @@ spec:
 {{- end }}
       paths:
       - path: /seq(/|$)(.*)
+        pathType: ImplementationSpecific
         backend:
-          serviceName: seq
-          servicePort: 80
+          service:
+            name: seq
+            port: 
+              number: 80

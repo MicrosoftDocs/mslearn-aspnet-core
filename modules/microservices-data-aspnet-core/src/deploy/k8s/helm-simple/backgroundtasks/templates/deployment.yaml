@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
         - name: ordering-backgroundtasks
-          image: {{ .Values.registry }}/ordering.backgroundtasks:linux-latest
+          image: {{ .Values.registry }}/ordering.backgroundtasks:linux-net6-coupon
           imagePullPolicy: {{ .Values.imagePullPolicy }}
           ports:
             - name: http
