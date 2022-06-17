@@ -114,32 +114,13 @@ az aks get-credentials -n $eshopAksName -g $eshopRg --overwrite-existing
 echo
 echo "Installing Nginx ingress controller..."
 kubectl apply -f ingress-controller/nginx-controller.yaml
-kubectl apply -f ingress-controller/nginx-loadbalancer.yaml
 
 echo
 echo "Getting Load Balancer public IP..."
 
-aksNodeRGCommand="az aks list --query \"[?name=='$eshopAksName'&&resourceGroup=='$eshopRg'].nodeResourceGroup\" -otsv"
-
-retry=5
-echo "${newline} > ${azCliCommandStyle}$aksNodeRGCommand${defaultTextStyle}${newline}"
-aksNodeRG=$(eval $aksNodeRGCommand)
-while [ "$aksNodeRG" == "" ]
-do
-    echo
-    echo "Unable to obtain load balancer resource group. Retrying in 5s..."
-    let retry--
-    sleep 5
-    echo
-    echo "Retrying..."
-    echo $aksNodeRGCommand
-    aksNodeRG=$(eval $aksNodeRGCommand)
-done
-
-
 while [ "$eshopLbIp" == "" ] || [ "$eshopLbIp" == "<pending>" ]
 do
-    eshopLbIp=`kubectl get svc/ingress-nginx -n ingress-nginx -o jsonpath='{.status.loadBalancer.ingress[0].ip}'`
+    eshopLbIp=`kubectl get svc/ingress-nginx-controller -n ingress-nginx -o jsonpath='{.status.loadBalancer.ingress[0].ip}'`
     if [ "$eshopLbIp" == "" ]
     then
         echo "Waiting for the Load Balancer IP address - Ctrl+C to cancel..."
@@ -151,6 +132,14 @@ done
 
 echo
 echo "Nginx ingress controller installed."
+
+echo
+echo "Wait until ingress is ready to process requests"
+
+kubectl wait --namespace ingress-nginx \
+  --for=condition=ready pod \
+  --selector=app.kubernetes.io/component=controller \
+  --timeout=90s
 
 echo export ESHOP_RG=$eshopRg > create-aks-exports.txt
 echo export ESHOP_LOCATION=$eshopLocation >> create-aks-exports.txt
