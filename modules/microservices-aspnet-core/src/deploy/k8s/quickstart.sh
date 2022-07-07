@@ -1,4 +1,9 @@
 #!/bin/bash
+# Color theming
+if [ -f ./theme.sh ]
+then
+  . <(cat ./theme.sh)
+fi
 
 eshopSubs=${ESHOP_SUBS}
 eshopRg=${ESHOP_RG}
@@ -46,7 +51,7 @@ export ESHOP_LOCATION=$eshopLocation
 export ESHOP_REGISTRY=$eshopRegistry
 export ESHOP_QUICKSTART=true
 
-cd ~/clouddrive/aspnet-learn/src/deploy/k8s
+# cd ~/clouddrive/aspnet-learn/src/deploy/k8s
 
 # AKS Cluster creation
 
