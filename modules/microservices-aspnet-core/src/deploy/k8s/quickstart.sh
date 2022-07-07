@@ -55,8 +55,10 @@ export ESHOP_QUICKSTART=true
 
 # AKS Cluster creation
 
+chmod +x ./create-aks.sh
 ./create-aks.sh
 
 eval $(cat ~/clouddrive/aspnet-learn/create-aks-exports.txt)
 
+chmod +x ./deploy-aks.sh
 ./deploy-aks.sh
