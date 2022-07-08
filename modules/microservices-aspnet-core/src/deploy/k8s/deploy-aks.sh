@@ -76,7 +76,6 @@ echo
 echo "${newline} > ${genericCommandStyle}kubectl get pods${defaultTextStyle}${newline}"
 kubectl get pods
 
-pushd ../..
 echo "${newline}${headingStyle}The eShop-Learn application has been deployed.${defaultTextStyle}" > deployment-urls.txt
 echo "" >> deployment-urls.txt
 echo "You can begin exploring these services (when available):" >> deployment-urls.txt
@@ -84,4 +83,5 @@ echo "- Centralized logging       : http://$lbIp/seq/#/events?autorefresh (See t
 echo "- General application status: http://$lbIp/webstatus/ (See overall service status)" >> deployment-urls.txt
 echo "- Web SPA application       : http://$lbIp/" >> deployment-urls.txt
 echo "${newline}" >> deployment-urls.txt
-popd
+
+mv deployment-urls.txt ../../

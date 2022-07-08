@@ -1,13 +1,10 @@
 #!/bin/bash
 
 # Color theming
-if [ -f ~/clouddrive/aspnet-learn/setup/theme.sh ]
-then
-  . <(cat ~/clouddrive/aspnet-learn/setup/theme.sh)
-fi
+. <(cat ./theme.sh)
 
-pushd ~/clouddrive/aspnet-learn/src/deploy/k8s
-echo " "
+# AZ CLI check
+. <(cat azure-cli-check.sh)
 
 ## Add the discount coupon field in the checkout view.
 echo "Uncommenting HTML in src/Web/WebSPA/Client/src/modules/orders/orders-new/orders-new.component.html..."
@@ -69,7 +66,7 @@ spec:
     spec:
       containers:
         - name: coupon-api
-          image: {{ .Values.registry }}/coupon.api:linux-net6-initial
+          image: {{ .Values.registry }}/coupon.api:linux-net6
           imagePullPolicy: Always
           ports:
             - containerPort: 80
@@ -168,6 +165,5 @@ sed -i -E "/DISCOUNT-COUPON-COMMENT/s/#DISCOUNT-COUPON-COMMENT\*\*//" helm-simpl
 echo "Adding coupon service as a WebStatus health check item in deploy/k8s/helm-simple/webstatus/templates/configmap.yaml..."
 sed -i -E "/DISCOUNT-COUPON-COMMENT/s/#DISCOUNT-COUPON-COMMENT\*\*//" helm-simple/webstatus/templates/configmap.yaml
 
-popd
 echo " "
 echo "Implementation script done!"

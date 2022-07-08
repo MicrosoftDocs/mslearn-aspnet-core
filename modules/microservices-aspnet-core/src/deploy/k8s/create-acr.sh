@@ -1,9 +1,9 @@
 #!/bin/bash
 
 # Color theming
-if [ -f ../../setup/theme.sh ]
+if [ -f ./theme.sh ]
 then
-  . <(cat ../../setup/theme.sh)
+  . <(cat ./theme.sh)
 fi
 
 if [ -f ../../create-aks-exports.txt ]

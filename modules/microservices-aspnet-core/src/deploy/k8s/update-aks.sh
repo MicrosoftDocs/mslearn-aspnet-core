@@ -1,10 +1,10 @@
 #!/bin/bash
 
 # Color theming
-if [ -f ../../setup/theme.sh ]
-then
-  . <(cat ../../setup/theme.sh)
-fi
+. <(cat ./theme.sh)
+
+# AZ CLI check
+. <(cat azure-cli-check.sh)
 
 if [ -f ../../create-aks-exports.txt ]
 then
@@ -29,8 +29,6 @@ then
 fi
 
 echo "Updating existing AKS deployment..."
-
-pushd ../../src/deploy/k8s
 
 # Uninstall charts to be updated
 for chart in webspa webstatus webshoppingagg
@@ -58,7 +56,5 @@ do
     echo "${newline}${genericCommandStyle}helm install eshop-$chart --set registry=$ESHOP_REGISTRY --set aksLB=$ESHOP_LBIP \"helm-simple/$chart\"${defaultTextStyle}${newline}"
     helm install eshop-$chart --set registry=$ESHOP_REGISTRY --set aksLB=$ESHOP_LBIP "helm-simple/$chart"
 done
-
-popd
 
 echo "Done updating existing AKS deployment!"

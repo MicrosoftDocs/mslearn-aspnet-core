@@ -1,64 +1,62 @@
 #!/bin/bash
 
-echo
-echo "Building images to ACR"
-echo "======================"
+# Color theming
+. <(cat ./theme.sh)
 
-if [ -f ~/clouddrive/aspnet-learn/create-acr-exports.txt ]
+# AZ CLI check
+. <(cat ./azure-cli-check.sh)
+
+pushd ../.. >/dev/null
+
+if [ -f create-acr-exports.txt ]
 then
-  eval $(cat ~/clouddrive/aspnet-learn/create-acr-exports.txt)
+  eval $(cat create-acr-exports.txt)
 fi
 
-if [ -z "$ESHOP_REGISTRY" ] || [ -z "$ESHOP_ACRNAME" ]
+registry=${ESHOP_REGISTRY}
+platform=${PLATFORM:-linux}
+tag=${TAG:-latest}
+
+if [ -z "$registry" ]
 then
-    echo "One or more required environment variables are missing:"
-    echo "- ESHOP_REGISTRY.: $ESHOP_REGISTRY"
-    echo "- ESHOP_ACRNAME..: $ESHOP_ACRNAME"
+    echo "Must set and export environment variable called ESHOP_REGISTRY with the ACR login server"
     exit 1
 fi
 
-while [ "$1" != "" ]; do
-    case $1 in
-        --services) shift
-                    services=$1
-                    ;;
-             * )    echo "Invalid param: $1"
-                    exit 1
-    esac
-    shift
-done
+export REGISTRY=$registry
+export TAG=$tag
+export PLATFORM=$platform
 
 echo
-echo "Building and publishing docker images to $ESHOP_REGISTRY"
+echo "Building and publishing docker images to $REGISTRY..."
 
-pushd ~/clouddrive/aspnet-learn/src/deploy/k8s
-echo " "
+echo
+echo "Building image \"coupon.api\"..."
+couponCmd="az acr build --registry $ESHOP_ACRNAME --image $ESHOP_REGISTRY/coupon.api:linux-net6-initial --file ./src/Services/Coupon/Coupon.API/Dockerfile ."
+echo "> $couponCmd"
+eval $couponCmd
 
-# This is the list of {service}:{image}>{dockerfile} of the application
-appServices=$(cat ./build-to-acr.services)
-
-if [ -z "$services" ]
+if [ ! $? -eq 0 ]
 then
-    serviceList=$(echo "${appServices}" | sed -e 's/:.*//')
-else
-    serviceList=${services//,/ }
+    echo "Error building Coupon.API!"
+    exit 1
 fi
 
-pushd ../..
+echo
+echo "Building image \"webspa\"..."
+# This Dockerfile.acr file is optimized for building to ACR, where you can't take advatage of image layer caching
+webspaCmd="az acr build --registry $ESHOP_ACRNAME --image $ESHOP_REGISTRY/webspa:linux-net6-initial --file ./src/Web/WebSPA/Dockerfile.acr ."
+echo "> $webspaCmd"
+eval $webspaCmd
 
-for service in $serviceList
-do
-    line=$(echo "${appServices}" | grep "$service:")
-    tokens=(${line//[:>]/ })
-    service=${tokens[0]}
-    image=${tokens[1]}
-    dockerfile=${tokens[2]}
+if [ ! $? -eq 0 ]
+then
+    echo 
+    echo "Error building WebSPA!"
+    exit 1
+else
+  echo
+  echo "Done building and publishing docker images to $REGISTRY!"
+fi
 
-    echo
-    echo "Building image \"$image\" for service \"$service\" with \"$dockerfile.acr\"..."
-    az acr build -r $ESHOP_ACRNAME -t $ESHOP_REGISTRY/$image:linux-net6-initial -f $dockerfile.acr .
-done
-
-popd
-
-popd
+popd >/dev/null
