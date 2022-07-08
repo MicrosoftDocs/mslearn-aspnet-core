@@ -76,7 +76,7 @@ echo
 echo "${newline} > ${genericCommandStyle}kubectl get pods${defaultTextStyle}${newline}"
 kubectl get pods
 
-pushd ~/clouddrive/aspnet-learn
+pushd ../..
 echo "${newline}${headingStyle}The eShop-Learn application has been deployed.${defaultTextStyle}" > deployment-urls.txt
 echo "" >> deployment-urls.txt
 echo "You can begin exploring these services (when available):" >> deployment-urls.txt

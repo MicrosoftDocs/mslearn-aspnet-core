@@ -1,19 +1,19 @@
 #!/bin/bash
 
 # Color theming
-if [ -f ~/clouddrive/aspnet-learn/setup/theme.sh ]
+if [ -f ../../setup/theme.sh ]
 then
-  . <(cat ~/clouddrive/aspnet-learn/setup/theme.sh)
+  . <(cat ../../setup/theme.sh)
 fi
 
-if [ -f ~/clouddrive/aspnet-learn/create-aks-exports.txt ]
+if [ -f ../../create-aks-exports.txt ]
 then
-  eval $(cat ~/clouddrive/aspnet-learn/create-aks-exports.txt)
+  eval $(cat ../../create-aks-exports.txt)
 fi
 
-if [ -f ~/clouddrive/aspnet-learn/create-acr-exports.txt ]
+if [ -f ../../create-acr-exports.txt ]
 then
-  eval $(cat ~/clouddrive/aspnet-learn/create-acr-exports.txt)
+  eval $(cat ../../create-acr-exports.txt)
 fi
 
 if [ -z "$ESHOP_REGISTRY" ]
@@ -30,7 +30,7 @@ fi
 
 echo "Updating existing AKS deployment..."
 
-pushd ~/clouddrive/aspnet-learn/src/deploy/k8s
+pushd ../../src/deploy/k8s
 
 # Uninstall charts to be updated
 for chart in webspa webstatus webshoppingagg

@@ -188,8 +188,8 @@ echo export ESHOP_LBIP=$eshopLbIp >> create-aks-exports.txt
 if [ -z "$ESHOP_QUICKSTART" ]
 then
     echo "Run the following command to update the environment"
-    echo 'eval $(cat ~/clouddrive/aspnet-learn/create-aks-exports.txt)'
+    echo 'eval $(cat ../../create-aks-exports.txt)'
     echo
 fi
 
-mv -f create-aks-exports.txt ~/clouddrive/aspnet-learn/
+mv -f create-aks-exports.txt ../../
