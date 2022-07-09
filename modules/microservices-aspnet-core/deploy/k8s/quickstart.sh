@@ -3,7 +3,7 @@ defaultLocation="centralus"
 defaultRg="eshop-learn-rg"
 
 # Set location
-cd /workspaces/mslearn-aspnet-core/modules/microservices-aspnet-core/src/deploy/k8s
+cd /workspaces/mslearn-aspnet-core/modules/microservices-aspnet-core/deploy/k8s
 
 # Color theming
 . <(cat ./theme.sh)
