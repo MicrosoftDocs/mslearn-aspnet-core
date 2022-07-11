@@ -1,19 +1,19 @@
 #!/bin/bash
 
 # Color theming
-if [ -f ~/clouddrive/aspnet-learn/setup/theme.sh ]
+. <(cat ./theme.sh)
+
+# AZ CLI check
+. <(cat azure-cli-check.sh)
+
+if [ -f ../../create-aks-exports.txt ]
 then
-  . <(cat ~/clouddrive/aspnet-learn/setup/theme.sh)
+  eval $(cat ../../create-aks-exports.txt)
 fi
 
-if [ -f ~/clouddrive/aspnet-learn/create-aks-exports.txt ]
+if [ -f ../../create-acr-exports.txt ]
 then
-  eval $(cat ~/clouddrive/aspnet-learn/create-aks-exports.txt)
-fi
-
-if [ -f ~/clouddrive/aspnet-learn/create-acr-exports.txt ]
-then
-  eval $(cat ~/clouddrive/aspnet-learn/create-acr-exports.txt)
+  eval $(cat ../../create-acr-exports.txt)
 fi
 
 if [ -z "$ESHOP_REGISTRY" ]
@@ -29,8 +29,6 @@ then
 fi
 
 echo "Updating existing AKS deployment..."
-
-pushd ~/clouddrive/aspnet-learn/src/deploy/k8s
 
 # Uninstall charts to be updated
 for chart in webspa webstatus webshoppingagg
@@ -58,7 +56,5 @@ do
     echo "${newline}${genericCommandStyle}helm install eshop-$chart --set registry=$ESHOP_REGISTRY --set aksLB=$ESHOP_LBIP \"helm-simple/$chart\"${defaultTextStyle}${newline}"
     helm install eshop-$chart --set registry=$ESHOP_REGISTRY --set aksLB=$ESHOP_LBIP "helm-simple/$chart"
 done
-
-popd
 
 echo "Done updating existing AKS deployment!"

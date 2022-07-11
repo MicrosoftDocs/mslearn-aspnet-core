@@ -1,4 +1,15 @@
 #!/bin/bash
+defaultLocation="centralus"
+defaultRg="eshop-learn-rg"
+
+# Set location
+cd /workspaces/mslearn-aspnet-core/modules/microservices-aspnet-core/deploy/k8s
+
+# Color theming
+. <(cat ./theme.sh)
+
+# AZ CLI check
+. <(cat azure-cli-check.sh)
 
 eshopSubs=${ESHOP_SUBS}
 eshopRg=${ESHOP_RG}
@@ -22,11 +33,18 @@ while [ "$1" != "" ]; do
     shift
 done
 
+if [ -z "$eshopLocation" ]
+then
+    echo "Using the default location: $defaultLocation"
+    eshopLocation=$defaultLocation
+fi
+
 if [ -z "$eshopRg" ]
 then
-    echo "${newline}${errorStyle}ERROR: Resource group is mandatory. Use -g to set it.${defaultTextStyle}${newline}"
-    exit 1
+    echo "Using the default resource group: $defaultRg"
+    eshopRg=$defaultRg
 fi
+echo "${bold}Note: You can change the default location and resource group by modifying the variabels at the top of quickstart.sh.${defaultTextStyle}"
 
 if [ ! -z "$eshopSubs" ]
 then
@@ -46,12 +64,13 @@ export ESHOP_LOCATION=$eshopLocation
 export ESHOP_REGISTRY=$eshopRegistry
 export ESHOP_QUICKSTART=true
 
-cd ~/clouddrive/aspnet-learn/src/deploy/k8s
-
 # AKS Cluster creation
+. <(cat ./create-aks.sh)
 
-./create-aks.sh
+eval $(cat ../../create-aks-exports.txt)
 
-eval $(cat ~/clouddrive/aspnet-learn/create-aks-exports.txt)
+. <(cat ./deploy-aks.sh)
 
-./deploy-aks.sh
+. <(cat ./create-acr.sh)
+
+cat ../../deployment-urls.txt

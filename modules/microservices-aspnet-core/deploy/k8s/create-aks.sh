@@ -1,9 +1,10 @@
 #!/bin/bash
+vmSize=Standard_D2_v5
 
 # Color theming
-if [ -f ~/clouddrive/aspnet-learn/setup/theme.sh ]
+if [ -f ./theme.sh ]
 then
-  . <(cat ~/clouddrive/aspnet-learn/setup/theme.sh)
+  . <(cat ./theme.sh)
 fi
 
 eshopSubs=${ESHOP_SUBS}
@@ -96,51 +97,21 @@ else
     fi
 fi
 
-# Service Principal creation / validation
-
-if [ -z "$eshopClientId" ] || [ -z "$eshopClientSecret" ]
-then
-    echo "Creating service principal..."
-
-    spHomepage="https://eShop-Learn-AKS-SP"$RANDOM
-    eshopClientAppCommand="az ad sp create-for-rbac --name "$spHomepage" --query "[appId,password]" -otsv"
-
-    echo "${newline} > ${azCliCommandStyle}$eshopClientAppCommand${defaultTextStyle}${newline}"
-    eshopClientApp=`$eshopClientAppCommand`
-    
-    if [ ! $? -eq 0 ]
-    then
-        echo "${newline}${errorStyle}ERROR: Can't create service principal for AKS.${defaultTextStyle}${newline}"
-        exit 1
-    fi
-
-    eshopClientId=`echo "$eshopClientApp" | head -1`
-    eshopClientSecret=`echo "$eshopClientApp" | tail -1`
-
-    if [ "$eshopClientId" == "" ]||[ "$eshopClientSecret" == "" ]
-    then
-        echo "${newline}${errorStyle}ERROR: ClientId (\"$eshopClientId\") or ClientSecret (\"$eshopClientSecret\") missing!${defaultTextStyle}${newline}"
-        exit 1
-    fi
-
-    echo
-    echo "Service principal \"$spHomepage\" created with ID \"$eshopClientId\" and password \"$eshopClientSecret\""
-fi
-
 # AKS Cluster creation
 
 eshopAksName="eshop-learn-aks"
 
 echo
-echo "Creating AKS cluster \"$eshopAksName\" in resource group \"$eshopRg\" and location \"$eshopLocation\"..."
-aksCreateCommand="az aks create -n $eshopAksName -g $eshopRg --node-count $eshopNodeCount --node-vm-size Standard_D2_v3 --vm-set-type VirtualMachineScaleSets -l $eshopLocation --client-secret $eshopClientSecret --service-principal $eshopClientId --generate-ssh-keys -o json"
+echo "Creating AKS cluster \"$eshopAksName\" in resource group \"$eshopRg\" and location \"$eshopLocation\"."
+echo "Using VM size \"$vmSize\". You can change this by modifying the value of the \"vmSize\" variable at the top of \"create-aks.sh\""
+aksCreateCommand="az aks create -n $eshopAksName -g $eshopRg --node-count $eshopNodeCount --node-vm-size $vmSize --vm-set-type VirtualMachineScaleSets -l $eshopLocation --enable-managed-identity --generate-ssh-keys -o json"
 echo "${newline} > ${azCliCommandStyle}$aksCreateCommand${defaultTextStyle}${newline}"
 retry=5
 aks=`$aksCreateCommand`
 while [ ! $? -eq 0 ]&&[ $retry -gt 0 ]&&[ ! -z "$spHomepage" ]
 do
     echo
-    echo "New service principal is not yet ready for AKS cluster creation. ${bold}This is normal and expected.${defaultTextStyle} Retrying in 5s..."
+    echo "Not yet ready for AKS cluster creation. ${bold}This is normal and expected.${defaultTextStyle} Retrying in 5s..."
     let retry--
     sleep 5
     echo
@@ -177,36 +148,21 @@ kubectl apply -f ingress-controller/nginx-mandatory.yaml
 
 echo
 echo "Getting load balancer public IP"
+sleep 5
 
-k8sLbTag="ingress-nginx/ingress-nginx"
-aksNodeRGCommand="az aks list --query \"[?name=='$eshopAksName'&&resourceGroup=='$eshopRg'].nodeResourceGroup\" -otsv"
-
-retry=5
-echo "${newline} > ${azCliCommandStyle}$aksNodeRGCommand${defaultTextStyle}${newline}"
-aksNodeRG=$(eval $aksNodeRGCommand)
-while [ "$aksNodeRG" == "" ]
+while [ -z "$eshopLbIp" ]
 do
-    echo
-    echo "Unable to obtain load balancer resource group. Retrying in 5s..."
-    let retry--
-    sleep 5
-    echo
-    echo "Retrying..."
-    echo $aksNodeRGCommand
-    aksNodeRG=$(eval $aksNodeRGCommand)
-done
-
-
-while [ "$eshopLbIp" == "" ]
-do
-    eshopLbIpCommand="az network public-ip list -g $aksNodeRG --query \"[?tags.service=='$k8sLbTag'].ipAddress\" -otsv"
-    echo "${newline} > ${azCliCommandStyle}$eshopLbIpCommand${defaultTextStyle}${newline}"
+    eshopLbIpCommand="kubectl get svc -n ingress-nginx -o json | jq -r -e '.items[0].status.loadBalancer.ingress[0].ip // empty'"
+    echo "${newline} > ${genericCommandStyle}$eshopLbIpCommand${defaultTextStyle}${newline}"
     eshopLbIp=$(eval $eshopLbIpCommand)
-    echo "Waiting for the load balancer IP address..."
-    sleep 5
+    if [ -z "$eshopLbIp" ]
+    then
+        echo "Load balancer wasn't ready. If this takes more than a minute or two, something is probably wrong. Trying again in 5 seconds..."
+        sleep 5
+    fi
 done
 
-echo "Done!"
+echo "Load balancer IP is $eshopLbIp"
 
 echo export ESHOP_SUBS=$eshopSubs > create-aks-exports.txt
 echo export ESHOP_RG=$eshopRg >> create-aks-exports.txt
@@ -233,8 +189,8 @@ echo export ESHOP_LBIP=$eshopLbIp >> create-aks-exports.txt
 if [ -z "$ESHOP_QUICKSTART" ]
 then
     echo "Run the following command to update the environment"
-    echo 'eval $(cat ~/clouddrive/aspnet-learn/create-aks-exports.txt)'
+    echo 'eval $(cat ../../create-aks-exports.txt)'
     echo
 fi
 
-mv -f create-aks-exports.txt ~/clouddrive/aspnet-learn/
+mv -f create-aks-exports.txt ../../

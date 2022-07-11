@@ -3,6 +3,7 @@
 FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS base
 WORKDIR /app
 EXPOSE 80
+EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
@@ -12,10 +13,8 @@ COPY ["src/BuildingBlocks/EventBus/EventBusRabbitMQ/EventBusRabbitMQ.csproj", "s
 COPY ["src/BuildingBlocks/EventBus/EventBus/EventBus.csproj", "src/BuildingBlocks/EventBus/EventBus/"]
 COPY ["src/BuildingBlocks/EventBus/EventBusServiceBus/EventBusServiceBus.csproj", "src/BuildingBlocks/EventBus/EventBusServiceBus/"]
 RUN dotnet restore "src/Services/Coupon/Coupon.API/Coupon.API.csproj"
-
 COPY . .
 WORKDIR "/src/src/Services/Coupon/Coupon.API"
-# RUN dotnet build "Coupon.API.csproj" -c Release -o /app/build
 
 FROM build AS publish
 RUN dotnet publish --no-restore "Coupon.API.csproj" -c Release -o /app/publish
