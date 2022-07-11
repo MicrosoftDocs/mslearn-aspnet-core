@@ -15,10 +15,9 @@ COPY ["src/BuildingBlocks/EventBus/EventBusServiceBus/EventBusServiceBus.csproj"
 RUN dotnet restore "src/Services/Coupon/Coupon.API/Coupon.API.csproj"
 COPY . .
 WORKDIR "/src/src/Services/Coupon/Coupon.API"
-RUN dotnet build "Coupon.API.csproj" -c Release -o /app/build
 
 FROM build AS publish
-RUN dotnet publish "Coupon.API.csproj" -c Release -o /app/publish
+RUN dotnet publish --no-restore "Coupon.API.csproj" -c Release -o /app/publish
 
 FROM base AS final
 WORKDIR /app

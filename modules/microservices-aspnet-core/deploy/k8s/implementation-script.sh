@@ -3,9 +3,6 @@
 # Color theming
 . <(cat ./theme.sh)
 
-# AZ CLI check
-. <(cat azure-cli-check.sh)
-
 ## Add the discount coupon field in the checkout view.
 echo "Uncommenting HTML in src/Web/WebSPA/Client/src/modules/orders/orders-new/orders-new.component.html..."
 sed -i -E "/DISCOUNT-COUPON-COMMENT/s/<!--DISCOUNT-COUPON-COMMENT\*\*(.*)-->/\1/" ../../src/Web/WebSPA/Client/src/modules/orders/orders-new/orders-new.component.html
@@ -66,7 +63,7 @@ spec:
     spec:
       containers:
         - name: coupon-api
-          image: {{ .Values.registry }}/coupon.api:linux-net6
+          image: {{ .Values.registry }}/coupon.api:linux-net6-initial
           imagePullPolicy: Always
           ports:
             - containerPort: 80
