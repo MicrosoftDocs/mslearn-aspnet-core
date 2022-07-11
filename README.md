@@ -1,3 +1,3 @@
 # mslearn-aspnet-core
 
-Sample apps for Microsoft Learn modules using ASP.NET Core.
+Sample apps for Microsoft Learn modules using ASP.NET Core and eShopOnContainers.
