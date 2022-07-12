@@ -1,12 +1,12 @@
 #!/bin/bash
 
 # Color theming
-. <(cat ./theme.sh)
+. <(cat ../../../../infrastructure/scripts/theme.sh)
 
 # AZ CLI check
-. <(cat ./azure-cli-check.sh)
+. <(cat ../../../../infrastructure/scripts/azure-cli-check.sh)
 
-if [ -f create-acr-exports.txt ]
+if [ -f ../../create-acr-exports.txt ]
 then
   eval $(cat ../../create-acr-exports.txt)
 fi

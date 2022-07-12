@@ -2,14 +2,11 @@
 defaultLocation="centralus"
 defaultRg="eshop-learn-rg"
 
-# Set location
-cd /workspaces/mslearn-aspnet-core/modules/microservices-aspnet-core/deploy/k8s
-
 # Color theming
-. <(cat ./theme.sh)
+. <(cat ../../../../infrastructure/scripts/theme.sh)
 
 # AZ CLI check
-. <(cat azure-cli-check.sh)
+. <(cat ../../../../infrastructure/scripts/azure-cli-check.sh)
 
 eshopSubs=${ESHOP_SUBS}
 eshopRg=${ESHOP_RG}
@@ -44,7 +41,7 @@ then
     echo "Using the default resource group: $defaultRg"
     eshopRg=$defaultRg
 fi
-echo "${bold}Note: You can change the default location and resource group by modifying the variabels at the top of quickstart.sh.${defaultTextStyle}"
+echo "${bold}Note: You can change the default location and resource group by modifying the variables at the top of quickstart.sh.${defaultTextStyle}"
 
 if [ ! -z "$eshopSubs" ]
 then
