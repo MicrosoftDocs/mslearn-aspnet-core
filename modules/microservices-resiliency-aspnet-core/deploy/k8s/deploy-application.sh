@@ -1,17 +1,15 @@
 #!/bin/bash
 
 # Color theming
-if [ -f ~/clouddrive/aspnet-learn/setup/theme.sh ]
+if [ -f ./theme.sh ]
 then
-  . <(cat ~/clouddrive/aspnet-learn/setup/theme.sh)
+  . <(cat ./theme.sh)
 fi
 
 if [ -f ~/clouddrive/aspnet-learn/deploy-application-exports.txt ]
 then
   eval $(cat ~/clouddrive/aspnet-learn/deploy-application-exports.txt)
 fi
-
-pushd ~/clouddrive/aspnet-learn/src/deploy/k8s
 
 registry=$REGISTRY
 eshopRegistry=${ESHOP_REGISTRY}
@@ -164,6 +162,5 @@ echo "- Centralized logging       : $protocol://$hostName/seq/#/events?autorefre
 echo "- General application status: $protocol://$hostName/webstatus/ (See overall service status)" >> deployment-urls.txt
 echo "- Web SPA application       : $protocol://$hostName/" >> deployment-urls.txt
 echo "${newline}" >> deployment-urls.txt
-popd
 
-popd
+mv deployment-urls.txt ../../

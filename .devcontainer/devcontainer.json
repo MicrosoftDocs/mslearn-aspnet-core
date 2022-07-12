@@ -51,7 +51,7 @@
 	//      "mounts": [ "source=${env:HOME}${env:USERPROFILE}/.aspnet/https,target=/home/vscode/.aspnet/https,type=bind" ],
 
 	// Use 'postCreateCommand' to run commands after the container is created.
-	"postCreateCommand": "git config codespaces-theme.hide-status 1",
+	"postCreateCommand": "git config codespaces-theme.hide-status 1 && curl -sL https://run.linkerd.io/install | sh && echo \"export PATH=\\$PATH:~/.linkerd2/bin\" >> ~/.bashrc",
 
 	// Comment out to connect as root instead. More info: https://aka.ms/vscode-remote/containers/non-root.
 	"remoteUser": "vscode",
