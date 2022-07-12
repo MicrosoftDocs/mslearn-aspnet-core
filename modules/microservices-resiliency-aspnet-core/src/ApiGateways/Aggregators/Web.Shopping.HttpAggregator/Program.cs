@@ -36,6 +36,7 @@ namespace Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator
             }
         }
 
+#pragma warning disable 618
         public static IWebHost BuildWebHost(string[] args) =>
             WebHost
                 .CreateDefaultBuilder(args)
@@ -51,8 +52,10 @@ namespace Microsoft.eShopOnContainers.Web.Shopping.HttpAggregator
                     });
                 })
                 .UseStartup<Startup>()
+
                 .UseSerilog()
                 .Build();
+#pragma warning restore
 
         private static Serilog.ILogger CreateSerilogLogger()
         {
