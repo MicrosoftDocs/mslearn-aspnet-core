@@ -10,7 +10,6 @@ declare defaultColor=`tput setaf 9`
 declare bold=`tput bold`
 declare plain=`tput sgr0`
 declare newline=$'\n'
-
 # Element styling
 declare azCliCommandStyle="${plain}${cyan}"
 declare defaultTextStyle="${plain}${white}"

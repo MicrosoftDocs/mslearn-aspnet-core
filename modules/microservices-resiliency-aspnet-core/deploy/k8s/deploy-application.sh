@@ -1,17 +1,12 @@
 #!/bin/bash
 
 # Color theming
-if [ -f ~/clouddrive/aspnet-learn/setup/theme.sh ]
-then
-  . <(cat ~/clouddrive/aspnet-learn/setup/theme.sh)
-fi
+. <(cat ../../../../infrastructure/scripts/theme.sh)
 
-if [ -f ~/clouddrive/aspnet-learn/deploy-application-exports.txt ]
+if [ -f ../../deploy-application-exports.txt ]
 then
-  eval $(cat ~/clouddrive/aspnet-learn/deploy-application-exports.txt)
+  eval $(cat ../../deploy-application-exports.txt)
 fi
-
-pushd ~/clouddrive/aspnet-learn/src/deploy/k8s
 
 registry=$REGISTRY
 eshopRegistry=${ESHOP_REGISTRY}
@@ -100,11 +95,10 @@ then
     ./deploy-secrets.sh
 fi
 
-pushd ~/clouddrive/aspnet-learn
 echo "export ESHOP_LBIP=$ESHOP_LBIP" > deploy-application-exports.txt
 echo "export ESHOP_HOST=$hostName" >> deploy-application-exports.txt
 echo "export ESHOP_REGISTRY=$ESHOP_REGISTRY" >> deploy-application-exports.txt
-popd
+mv deploy-application-exports.txt ../..
 
 if [ "$charts" == "" ]
 then
@@ -112,7 +106,9 @@ then
     if [ "$installedCharts" != "" ]
     then
         echo "Uninstalling Helm charts..."
-        helm delete $installedCharts
+        helmCmd="helm delete $installedCharts"
+        echo "${newline} > ${genericCommandStyle}$helmCmd${defaultTextStyle}${newline}"
+        eval $helmCmd
     fi
     chartList=$(ls $chartsFolder)
 else
@@ -124,7 +120,9 @@ else
         then
             echo
             echo "Uninstalling chart ""$chart""..."
-            helm delete $installedChart
+            helmCmd="helm delete $installedChart"
+            echo "${newline} > ${genericCommandStyle}$helmCmd${defaultTextStyle}${newline}"
+            eval $helmCmd
         fi
     done
 fi
@@ -137,12 +135,9 @@ for chart in $chartList
 do
     echo
     echo "Installing chart \"$chart\"..."
-    helm install eshoplearn-$chart "$chartsFolder/$chart" \
-        --set registry=$registry \
-        --set imagePullPolicy=Always \
-        --set useHostName=$useHostName \
-        --set host=$hostName \
-        --set protocol=$protocol 
+    helmCmd="helm install eshoplearn-$chart \"$chartsFolder/$chart\" --set registry=$registry --set imagePullPolicy=Always --set useHostName=$useHostName --set host=$hostName --set protocol=$protocol"
+    echo "${newline} > ${genericCommandStyle}$helmCmd${defaultTextStyle}${newline}"
+    eval $helmCmd
 done
 
 echo
@@ -156,7 +151,6 @@ echo
 echo "${newline} > ${genericCommandStyle}kubectl get pods${defaultTextStyle}${newline}"
 kubectl get pods
 
-pushd ~/clouddrive/aspnet-learn
 echo "The eShop-Learn application has been deployed to \"$protocol://$hostName\" (IP: $ESHOP_LBIP)." > deployment-urls.txt
 echo "" >> deployment-urls.txt
 echo "You can begin exploring these services (when ready):" >> deployment-urls.txt
@@ -164,6 +158,5 @@ echo "- Centralized logging       : $protocol://$hostName/seq/#/events?autorefre
 echo "- General application status: $protocol://$hostName/webstatus/ (See overall service status)" >> deployment-urls.txt
 echo "- Web SPA application       : $protocol://$hostName/" >> deployment-urls.txt
 echo "${newline}" >> deployment-urls.txt
-popd
 
-popd
+mv deployment-urls.txt ../../

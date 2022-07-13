@@ -1,10 +1,7 @@
 #!/bin/bash
 
 # Color theming
-if [ -f ./theme.sh ]
-then
-  . <(cat ./theme.sh)
-fi
+. <(cat ../../../../infrastructure/scripts/theme.sh)
 
 if [ -f ../../create-aks-exports.txt ]
 then
@@ -60,16 +57,15 @@ then
         echo "${newline}${errorStyle}ERROR: If resource group has to be created, location is mandatory. Use -l to set it.${defaultTextStyle}${newline}"
         exit 1
     fi
-    echo "Creating RG $eshopRg in location $eshopLocation..."
+
+    echo "Creating resource group $eshopRg in location $eshopLocation..."
     az group create -n $eshopRg -l $eshopLocation
     if [ ! $? -eq 0 ]
     then
         echo "${newline}${errorStyle}ERROR: Can't create resource group${defaultTextStyle}${newline}"
         exit 1
     fi
-
-    echo "Created RG \"$eshopRg\" in location \"$eshopLocation\"."
-
+    echo "Created resource group \"$eshopRg\" in location \"$eshopLocation\"."
 else
     if [ -z "$eshopLocation" ]
     then

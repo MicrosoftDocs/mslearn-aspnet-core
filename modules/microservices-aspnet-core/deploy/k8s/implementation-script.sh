@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Color theming
-. <(cat ./theme.sh)
+. <(cat ../../../../infrastructure/scripts/theme.sh)
 
 ## Add the discount coupon field in the checkout view.
 echo "Uncommenting HTML in src/Web/WebSPA/Client/src/modules/orders/orders-new/orders-new.component.html..."

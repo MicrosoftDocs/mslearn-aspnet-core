@@ -1,19 +1,14 @@
 #!/bin/bash
 
 # Color theming
-if [ -f ~/clouddrive/aspnet-learn/setup/theme.sh ]
+if [ -f ../../../../infrastructure/scripts/theme.sh ]
 then
-  . <(cat ~/clouddrive/aspnet-learn/setup/theme.sh)
+  . <(cat ../../../../infrastructure/scripts/theme.sh)
 fi
 
-if [ -f ~/clouddrive/aspnet-learn/create-aks-exports.txt ]
+if [ -f ../../create-aks-exports.txt ]
 then
-  eval $(cat ~/clouddrive/aspnet-learn/create-aks-exports.txt)
-fi
-
-if [ -f ~/clouddrive/aspnet-learn/create-idtag-exports.txt ]
-then
-  eval $(cat ~/clouddrive/aspnet-learn/create-idtag-exports.txt)
+  eval $(cat ../../create-aks-exports.txt)
 fi
 
 eshopRg=${ESHOP_RG}
@@ -138,5 +133,5 @@ echo export ESHOP_IDTAG=$eshopIdTag >> create-idtag-exports.txt
 echo 
 echo "Created Azure Container Registry \"$eshopAcrName\" in resource group \"$eshopRg\" in location \"$eshopLocation\"." 
 
-mv -f create-acr-exports.txt ~/clouddrive/aspnet-learn/
-mv -f create-idtag-exports.txt ~/clouddrive/aspnet-learn/
+mv -f create-acr-exports.txt ../../
+mv -f create-idtag-exports.txt ../../

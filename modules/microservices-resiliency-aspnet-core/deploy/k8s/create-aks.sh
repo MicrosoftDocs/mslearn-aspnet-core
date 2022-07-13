@@ -1,9 +1,10 @@
 #!/bin/bash
+vmSize=Standard_D2_v5
 
 # Color theming
-if [ -f ~/clouddrive/aspnet-learn/setup/theme.sh ]
+if [ -f ../../../../infrastructure/scripts/theme.sh ]
 then
-  . <(cat ~/clouddrive/aspnet-learn/setup/theme.sh)
+  . <(cat ../../../../infrastructure/scripts/theme.sh)
 fi
 
 eshopSubs=${ESHOP_SUBS}
@@ -76,8 +77,9 @@ exec 2>&3
 if [ -z "$existingAks" ]
 then
     echo
-    echo "Creating AKS cluster \"$eshopAksName\" in resource group \"$eshopRg\" and location \"$eshopLocation\"..."
-    aksCreateCommand="az aks create -n $eshopAksName -g $eshopRg -c $eshopNodeCount --node-vm-size Standard_D2_v3 --vm-set-type VirtualMachineScaleSets -l $eshopLocation --enable-managed-identity --generate-ssh-keys -o json"
+    echo "Creating AKS cluster \"$eshopAksName\" in resource group \"$eshopRg\" and location \"$eshopLocation\"."
+    echo "Using VM size \"$vmSize\". You can change this by modifying the value of the \"vmSize\" variable at the top of \"create-aks.sh\""
+    aksCreateCommand="az aks create -n $eshopAksName -g $eshopRg -c $eshopNodeCount --node-vm-size $vmSize --vm-set-type VirtualMachineScaleSets -l $eshopLocation --enable-managed-identity --generate-ssh-keys -o json"
     echo "${newline} > ${azCliCommandStyle}$aksCreateCommand${defaultTextStyle}${newline}"
     retry=5
     aks=`$aksCreateCommand`
@@ -118,17 +120,19 @@ kubectl apply -f ingress-controller/nginx-controller.yaml
 echo
 echo "Getting Load Balancer public IP..."
 
-while [ "$eshopLbIp" == "" ] || [ "$eshopLbIp" == "<pending>" ]
+while [ -z "$eshopLbIp" ]
 do
-    eshopLbIp=`kubectl get svc/ingress-nginx-controller -n ingress-nginx -o jsonpath='{.status.loadBalancer.ingress[0].ip}'`
-    if [ "$eshopLbIp" == "" ]
+    eshopLbIpCommand="kubectl get svc -n ingress-nginx -o json | jq -r -e '.items[0].status.loadBalancer.ingress[0].ip // empty'"
+    echo "${newline} > ${genericCommandStyle}$eshopLbIpCommand${defaultTextStyle}${newline}"
+    eshopLbIp=$(eval $eshopLbIpCommand)
+    if [ -z "$eshopLbIp" ]
     then
-        echo "Waiting for the Load Balancer IP address - Ctrl+C to cancel..."
+        echo "Load balancer wasn't ready. If this takes more than a minute or two, something is probably wrong. Trying again in 5 seconds..."
         sleep 5
-    else
-        echo "Assigned IP address: $eshopLbIp"
     fi
 done
+
+echo "Load balancer IP is $eshopLbIp"
 
 echo
 echo "Nginx ingress controller installed."
@@ -150,8 +154,8 @@ echo export ESHOP_LBIP=$eshopLbIp >> create-aks-exports.txt
 if [ -z "$ESHOP_QUICKSTART" ]
 then
     echo "Run the following command to update the environment"
-    echo 'eval $(cat ~/clouddrive/aspnet-learn/create-aks-exports.txt)'
+    echo 'eval $(cat ../../create-aks-exports.txt)'
     echo
 fi
 
-mv -f create-aks-exports.txt ~/clouddrive/aspnet-learn/
+mv -f create-aks-exports.txt ../../

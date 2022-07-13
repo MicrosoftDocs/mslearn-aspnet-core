@@ -41,7 +41,7 @@ then
     echo "Using the default resource group: $defaultRg"
     eshopRg=$defaultRg
 fi
-echo "${bold}Note: You can change the default location and resource group by modifying the variabels at the top of quickstart.sh.${defaultTextStyle}"
+echo "${bold}Note: You can change the default location and resource group by modifying the variables at the top of quickstart.sh.${defaultTextStyle}"
 
 if [ ! -z "$eshopSubs" ]
 then
@@ -66,7 +66,7 @@ export ESHOP_QUICKSTART=true
 
 eval $(cat ../../create-aks-exports.txt)
 
-. <(cat ./deploy-aks.sh)
+. <(cat ./deploy-application.sh)
 
 . <(cat ./create-acr.sh)
 

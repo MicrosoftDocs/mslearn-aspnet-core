@@ -2,10 +2,7 @@
 vmSize=Standard_D2_v5
 
 # Color theming
-if [ -f ./theme.sh ]
-then
-  . <(cat ./theme.sh)
-fi
+. <(cat ../../../../infrastructure/scripts/theme.sh)
 
 eshopSubs=${ESHOP_SUBS}
 eshopRg=${ESHOP_RG}

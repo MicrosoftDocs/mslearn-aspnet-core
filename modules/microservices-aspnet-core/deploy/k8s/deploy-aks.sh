@@ -1,10 +1,7 @@
 #!/bin/bash
 
 # Color theming
-if [ -f ./theme.sh ]
-then
-  . <(cat ./theme.sh)
-fi
+. <(cat ../../../../infrastructure/scripts/theme.sh)
 
 acr=$REGISTRY
 lbIp=$ESHOP_LBIP
