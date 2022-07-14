@@ -61,6 +61,8 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API
             }
         }
 
+#pragma warning disable 618
+
         private static IWebHost CreateHostBuilder(IConfiguration configuration, string[] args) =>
             WebHost.CreateDefaultBuilder(args)
                 .UseConfiguration(configuration)
@@ -83,6 +85,8 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API
                 .UseWebRoot("Pics")
                 .UseSerilog()
                 .Build();
+
+#pragma warning restore
 
         private static Serilog.ILogger CreateSerilogLogger(IConfiguration configuration)
         {

@@ -44,7 +44,7 @@ done
 
 appPrefix="eshoplearn"
 chartsFolder="./helm-simple"
-defaultRegistry="eshop"
+defaultRegistry="eshoplearn"
 
 if [ -z "$registry" ]
 then
@@ -85,9 +85,9 @@ fi
 
 if [ "$certificate" == "self-signed" ]
 then
-    pushd ./certificates
+    pushd ./certificates >/dev/null
     ./create-self-signed-certificate.sh
-    popd
+    popd >/dev/null
 
     echo
     echo "Deploying a development self-signed certificate"
