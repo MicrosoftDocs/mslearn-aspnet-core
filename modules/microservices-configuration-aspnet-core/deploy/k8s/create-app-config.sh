@@ -1,18 +1,19 @@
 #!/bin/bash
+
 # Color theming
-if [ -f ~/clouddrive/aspnet-learn/setup/theme.sh ]
+. <(cat ../../../../infrastructure/scripts/theme.sh)
+
+# AZ CLI check
+. <(cat ../../../../infrastructure/scripts/azure-cli-check.sh)
+
+if [ -f ../../create-aks-exports.txt ]
 then
-  . <(cat ~/clouddrive/aspnet-learn/setup/theme.sh)
+  eval $(cat ../../create-aks-exports.txt)
 fi
 
-if [ -f ~/clouddrive/aspnet-learn/create-aks-exports.txt ]
+if [ -f ../../create-acr-exports.txt ]
 then
-  eval $(cat ~/clouddrive/aspnet-learn/create-aks-exports.txt)
-fi
-
-if [ -f ~/clouddrive/aspnet-learn/create-acr-exports.txt ]
-then
-  eval $(cat ~/clouddrive/aspnet-learn/create-acr-exports.txt)
+  eval $(cat ../../create-acr-exports.txt)
 fi
 
 if [ -z "$ESHOP_RG" ] || [ -z "$ESHOP_LOCATION" ]
@@ -68,4 +69,4 @@ echo export ESHOP_APPCONFIGNAME=$appConfigName > create-appconfig-exports.txt
 echo export ESHOP_APPCONFIGCONNSTRING=$connectionString >> create-appconfig-exports.txt
 echo export ESHOP_IDTAG=$eshopIdTag >> create-appconfig-exports.txt
 
-mv -f create-appconfig-exports.txt ~/clouddrive/aspnet-learn/
+mv -f create-appconfig-exports.txt ../..
