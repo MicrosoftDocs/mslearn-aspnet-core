@@ -151,11 +151,4 @@ echo export ESHOP_AKSNAME=$eshopAksName >> create-aks-exports.txt
 echo export ESHOP_AKSNODERG=$aksNodeRG >> create-aks-exports.txt
 echo export ESHOP_LBIP=$eshopLbIp >> create-aks-exports.txt
 
-if [ -z "$ESHOP_QUICKSTART" ]
-then
-    echo "Run the following command to update the environment"
-    echo 'eval $(cat ../../create-aks-exports.txt)'
-    echo
-fi
-
 mv -f create-aks-exports.txt ../../
