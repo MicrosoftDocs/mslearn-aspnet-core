@@ -8,6 +8,13 @@ then
   eval $(cat ../../deploy-application-exports.txt)
 fi
 
+# After the initial deployment, an ACR resource is created. This reads in the ACR name for subsequent deployments.
+if [ -f ../../create-acr-exports.txt ]
+then
+  eval $(cat ../../create-acr-exports.txt)
+fi
+
+
 registry=$REGISTRY
 eshopRegistry=${ESHOP_REGISTRY}
 
