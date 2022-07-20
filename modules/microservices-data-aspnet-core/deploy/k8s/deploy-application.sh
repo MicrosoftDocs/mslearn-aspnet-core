@@ -1,17 +1,19 @@
 #!/bin/bash
 
 # Color theming
-if [ -f ~/clouddrive/aspnet-learn/setup/theme.sh ]
+. <(cat ../../../../infrastructure/scripts/theme.sh)
+
+if [ -f ../../deploy-application-exports.txt ]
 then
-  . <(cat ~/clouddrive/aspnet-learn/setup/theme.sh)
+  eval $(cat ../../deploy-application-exports.txt)
 fi
 
-if [ -f ~/clouddrive/aspnet-learn/create-acr-exports.txt ]
+# After the initial deployment, an ACR resource is created. This reads in the ACR name for subsequent deployments.
+if [ -f ../../create-acr-exports.txt ]
 then
-  eval $(cat ~/clouddrive/aspnet-learn/create-acr-exports.txt)
+  eval $(cat ../../create-acr-exports.txt)
 fi
 
-pushd ~/clouddrive/aspnet-learn/src/deploy/k8s > /dev/null
 
 registry=$REGISTRY
 eshopRegistry=${ESHOP_REGISTRY}
@@ -90,9 +92,9 @@ fi
 
 if [ "$certificate" == "self-signed" ]
 then
-    pushd ./certificates > /dev/null
+    pushd ./certificates >/dev/null
     ./create-self-signed-certificate.sh
-    popd > /dev/null
+    popd >/dev/null
 
     echo
     echo "Deploying a development self-signed certificate"
@@ -100,11 +102,10 @@ then
     ./deploy-secrets.sh
 fi
 
-pushd ~/clouddrive/aspnet-learn > /dev/null
 echo "export ESHOP_LBIP=$ESHOP_LBIP" > deploy-application-exports.txt
 echo "export ESHOP_HOST=$hostName" >> deploy-application-exports.txt
 echo "export ESHOP_REGISTRY=$ESHOP_REGISTRY" >> deploy-application-exports.txt
-popd > /dev/null
+mv deploy-application-exports.txt ../..
 
 if [ "$charts" == "" ]
 then
@@ -141,7 +142,7 @@ for chart in $chartList
 do
     echo
     echo "Installing chart \"$chart\"..."
-    helmCmd="helm install eshoplearn-$chart "$chartsFolder/$chart" --set registry=$registry --set imagePullPolicy=Always --set useHostName=$useHostName --set host=$hostName --set protocol=$protocol"
+    helmCmd="helm install eshoplearn-$chart \"$chartsFolder/$chart\" --set registry=$registry --set imagePullPolicy=Always --set useHostName=$useHostName --set host=$hostName --set protocol=$protocol"
     echo "${newline} > ${genericCommandStyle}$helmCmd${defaultTextStyle}${newline}"
     eval $helmCmd
 done
@@ -157,7 +158,6 @@ echo
 echo "${newline} > ${genericCommandStyle}kubectl get pods${defaultTextStyle}${newline}"
 kubectl get pods
 
-pushd ~/clouddrive/aspnet-learn > /dev/null
 echo "The eShop-Learn application has been deployed to \"$protocol://$hostName\" (IP: $ESHOP_LBIP)." > deployment-urls.txt
 echo "" >> deployment-urls.txt
 echo "You can begin exploring these services (when ready):" >> deployment-urls.txt
@@ -165,6 +165,5 @@ echo "- Centralized logging       : $protocol://$hostName/seq/#/events?autorefre
 echo "- General application status: $protocol://$hostName/webstatus/ (See overall service status)" >> deployment-urls.txt
 echo "- Web SPA application       : $protocol://$hostName/" >> deployment-urls.txt
 echo "${newline}" >> deployment-urls.txt
-popd > /dev/null
 
-popd > /dev/null
+mv deployment-urls.txt ../../
