@@ -64,6 +64,7 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API
             }
         }
 
+#pragma warning disable 618
         private static IWebHost BuildWebHost(IConfiguration configuration, string[] args) =>
             WebHost.CreateDefaultBuilder(args)
                 .CaptureStartupErrors(false)
@@ -72,6 +73,7 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API
                 .UseConfiguration(configuration)
                 .UseSerilog()
                 .Build();
+#pragma warning restore
 
         private static Serilog.ILogger CreateSerilogLogger(IConfiguration configuration)
         {

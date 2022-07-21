@@ -1,20 +1,14 @@
 #!/bin/bash
 
 # Color theming
-if [ -f ~/clouddrive/aspnet-learn/setup/theme.sh ]
+. <(cat ../../../../infrastructure/scripts/theme.sh)
+
+# AZ CLI check
+. <(cat ../../../../infrastructure/scripts/azure-cli-check.sh)
+
+if [ -f ../../create-aks-exports.txt ]
 then
-  . <(cat ~/clouddrive/aspnet-learn/setup/theme.sh)
-fi
-
-if [ -f ~/clouddrive/source/create-aks-exports.txt ]
-then
-  eval $(cat ~/clouddrive/source/create-aks-exports.txt)
-fi
-
-pushd ~/clouddrive/aspnet-learn/src/deploy/k8s > /dev/null
-
-if [ -f ~/clouddrive/aspnet-learn/create-aks-exports.txt ]; then  
-  eval $(cat ~/clouddrive/aspnet-learn/create-aks-exports.txt)
+  eval $(cat ../../create-aks-exports.txt)
 fi
 
 if [ -z "$ESHOP_RG" ] || [ -z "$ESHOP_LOCATION" ]
@@ -24,13 +18,13 @@ then
 fi
 
 echo
-echo "Creating AKS with advanced networking"
-echo "====================================="
+echo ""
+echo "${newline}${bold}Creating application gateway with advanced networking...${defaultTextStyle}${newline}"
+
 
 appVNet="app-vnet"
 appgwSubNet="appgw-subnet"
 
-echo "export ESHOP_APPVNET=$appVNet"
 export ESHOP_APPVNET=$appVNet
 
 echo
@@ -43,7 +37,8 @@ az network vnet create \
     --address-prefix 11.0.0.0/8 \
     --subnet-name $appgwSubNet \
     --subnet-prefix 11.1.0.0/16 \
-    --query "{AddressSpace:newVNet.addressSpace,Location:newVNet.location,Name:newVNet.name}"
+    --query "{AddressSpace:newVNet.addressSpace,Location:newVNet.location,Name:newVNet.name}" \
+    --output table
 
 if [ ! $? -eq 0 ]; then
     echo "ERROR!"; exit 1
@@ -60,7 +55,8 @@ az network public-ip create \
     --name $appgwPublicIpName \
     --allocation-method Static \
     --sku Standard \
-    --query "{IPAddress:publicIp.ipAddress,Location:publicIp.location,Name:publicIp.name,ProvisioningState:publicIp.provisioningState,ResourceGroup:publicIp.resourceGroup}"
+    --query "{IPAddress:publicIp.ipAddress,Location:publicIp.location,Name:publicIp.name,ProvisioningState:publicIp.provisioningState,ResourceGroup:publicIp.resourceGroup}" \
+    --output table
 
 if [ ! $? -eq 0 ]; then
     echo "ERROR!"; exit 1
@@ -84,7 +80,8 @@ az network application-gateway create \
     --http-settings-protocol Http \
     --priority 10010 \
     --public-ip-address $appgwPublicIpName \
-    --query "{ProvisioningState:applicationGateway.provisioningState,OperationalState:applicationGateway.operationalState,SKU:applicationGateway.sku}"
+    --query "{ProvisioningState:applicationGateway.provisioningState,OperationalState:applicationGateway.operationalState,SKU:applicationGateway.sku}" \
+    --output table
 
 if [ ! $? -eq 0 ]; then
     echo "ERROR!"; exit 1
@@ -98,12 +95,9 @@ echo "export ESHOP_APPVNET=$appVNet" >> create-application-gateway-exports.txt
 echo "export ESHOP_APPGATEWAY=$appgwName" >> create-application-gateway-exports.txt
 echo "export ESHOP_APPGATEWAYRG=$ESHOP_RG" >> create-application-gateway-exports.txt
 echo "export ESHOP_APPGATEWAYPUBLICIP=$publicIp" >> create-application-gateway-exports.txt
-echo 
-echo create-application-gateway-exports
-echo ----------------------------------
-cat create-application-gateway-exports.txt
-echo
 
-mv -f create-application-gateway-exports.txt ~/clouddrive/aspnet-learn/
+mv -f create-application-gateway-exports.txt ../..
 
-popd > /dev/null
+echo "${newline}${bold}Your Application Gateway public IP address is: $publicIp ${defaultTextStyle}${newline}"
+
+
