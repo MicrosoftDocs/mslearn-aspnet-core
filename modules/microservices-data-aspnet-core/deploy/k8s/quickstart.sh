@@ -1,5 +1,5 @@
 #!/bin/bash
-defaultLocation="centralus"
+defaultLocation="eastus"
 defaultRg="eshop-learn-rg"
 
 # Color theming

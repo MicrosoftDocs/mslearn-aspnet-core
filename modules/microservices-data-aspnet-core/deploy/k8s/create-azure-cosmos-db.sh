@@ -1,19 +1,19 @@
 #!/bin/bash
 
 # Color theming
-if [ -f ~/clouddrive/aspnet-learn/setup/theme.sh ]
+. <(cat ../../../../infrastructure/scripts/theme.sh)
+
+# AZ CLI check
+. <(cat ../../../../infrastructure/scripts/azure-cli-check.sh)
+
+if [ -f ../../create-aks-exports.txt ]
 then
-  . <(cat ~/clouddrive/aspnet-learn/setup/theme.sh)
+  eval $(cat ../../create-aks-exports.txt)
 fi
 
-if [ -f ~/clouddrive/aspnet-learn/create-aks-exports.txt ]
+if [ -f ../../create-idtag-exports.txt ]
 then
-  eval $(cat ~/clouddrive/aspnet-learn/create-aks-exports.txt)
-fi
-
-if [ -f ~/clouddrive/aspnet-learn/create-idtag-exports.txt ]
-then
-  eval $(cat ~/clouddrive/aspnet-learn/create-idtag-exports.txt)
+  eval $(cat ../../create-idtag-exports.txt)
 fi
 
 if [ -z "$ESHOP_RG" ] || [ -z "$ESHOP_LOCATION" ]
@@ -41,7 +41,7 @@ cosmosDbName=CouponDb
 
 echo
 echo "Creating Azure CosmosDB account \"$cosmosAccountName\" in resource group \"$ESHOP_RG\"..."
-acdbCommand="az cosmosdb create --name $cosmosAccountName --resource-group $ESHOP_RG --kind MongoDB --output none"
+acdbCommand="az cosmosdb create --name $cosmosAccountName --resource-group $ESHOP_RG --kind MongoDB --locations regionName=eastus --output none"
 echo "${newline} > ${azCliCommandStyle}$acdbCommand${defaultTextStyle}${newline}"
 eval $acdbCommand
 
@@ -84,5 +84,5 @@ echo export ESHOP_IDTAG=$eshopIdTag >> create-idtag-exports.txt
 echo "${newline}${headingStyle}Connection String:${defaultTextStyle}${newline}${newline}$connectionString" 
 echo 
 
-mv -f create-azure-cosmosdb-exports.txt ~/clouddrive/aspnet-learn/
-mv -f create-idtag-exports.txt ~/clouddrive/aspnet-learn/
+mv -f create-azure-cosmosdb-exports.txt ../../
+mv -f create-idtag-exports.txt ../../
