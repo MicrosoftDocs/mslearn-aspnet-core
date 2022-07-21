@@ -1,20 +1,21 @@
 #!/bin/bash
 
 # Color theming
-if [ -f ~/clouddrive/aspnet-learn/setup/theme.sh ]
+. <(cat ../../../../infrastructure/scripts/theme.sh)
+
+# AZ CLI check
+. <(cat ../../../../infrastructure/scripts/azure-cli-check.sh)
+
+if [ -f ../../create-aks-exports.txt ]
 then
-  . <(cat ~/clouddrive/aspnet-learn/setup/theme.sh)
+  eval $(cat ../../create-aks-exports.txt)
 fi
 
-if [ -f ~/clouddrive/aspnet-learn/create-aks-exports.txt ]
+if [ -f ../../create-idtag-exports.txt ]
 then
-  eval $(cat ~/clouddrive/aspnet-learn/create-aks-exports.txt)
+  eval $(cat ../../create-idtag-exports.txt)
 fi
 
-if [ -f ~/clouddrive/aspnet-learn/create-idtag-exports.txt ]
-then
-  eval $(cat ~/clouddrive/aspnet-learn/create-idtag-exports.txt)
-fi
 
 if [ -z "$ESHOP_RG" ] || [ -z "$ESHOP_LOCATION" ]
 then
@@ -36,8 +37,7 @@ then
     eshopIdTag="$dateString$random"
 fi
 
-redisName=eshop-redis-$eshopIdTag
-
+redisName=eshop-redis-$eshopId
 
 echo
 echo "Creating Azure Cache for Redis \"$redisName\" in resource group \"$ESHOP_RG\"..."
@@ -54,11 +54,7 @@ fi
 echo
 echo "Retrieving Azure Cache for Redis connection string..."
 
-primaryKey=$(az redis list-keys \
-    --resource-group $ESHOP_RG \
-    --name $redisName \
-    --query primaryKey \
-    --output tsv)
+primaryKey=$(az redis list-keys --resource-group $ESHOP_RG --name $redisName --query primaryKey --output tsv)
 
 if [ ! $? -eq 0 ]
 then
@@ -80,5 +76,5 @@ echo "${newline}${headingStyle}Done! The Azure Cache for Redis resource is provi
 echo "${newline}Check the status of the resource with the following:"
 echo "${newline} > ${azCliCommandStyle}az redis show -g $ESHOP_RG -n $redisName --query provisioningState${defaultTextStyle}${newline}"
 
-mv -f create-azure-redis-exports.txt ~/clouddrive/aspnet-learn/
-mv -f create-idtag-exports.txt ~/clouddrive/aspnet-learn/
+mv -f create-azure-redis-exports.txt ../../
+mv -f create-idtag-exports.txt ../../

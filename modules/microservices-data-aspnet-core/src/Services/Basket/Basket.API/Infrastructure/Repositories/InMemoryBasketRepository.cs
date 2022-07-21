@@ -19,6 +19,7 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API.Infrastructure.Reposit
             _basketMapData = new Dictionary<string, string>();
         }
 
+#pragma warning disable 1998
         public async Task<bool> DeleteBasketAsync(string id)
         {
             return _basketMapData.Remove(id);
@@ -35,6 +36,7 @@ namespace Microsoft.eShopOnContainers.Services.Basket.API.Infrastructure.Reposit
 
             return null;
         }
+#pragma warning restore
 
         public IEnumerable<string> GetUsers()
         {
