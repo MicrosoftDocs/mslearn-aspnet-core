@@ -144,7 +144,9 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+#pragma warning disable 618
                 app.UseDatabaseErrorPage();
+#pragma warning restore
             }
             else
             {

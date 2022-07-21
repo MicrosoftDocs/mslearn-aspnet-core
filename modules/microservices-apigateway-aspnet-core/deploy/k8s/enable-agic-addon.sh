@@ -1,23 +1,17 @@
 #!/bin/bash
 
 # Color theming
-if [ -f ~/clouddrive/aspnet-learn/setup/theme.sh ]
-then
-  . <(cat ~/clouddrive/aspnet-learn/setup/theme.sh)
+. <(cat ../../../../infrastructure/scripts/theme.sh)
+
+# AZ CLI check
+. <(cat ../../../../infrastructure/scripts/azure-cli-check.sh)
+
+if [ -f ../../create-aks-exports.txt ]; then  
+  eval $(cat ../../create-aks-exports.txt)
 fi
 
-pushd ~/clouddrive/aspnet-learn/src/deploy/k8s > /dev/null
-
-echo
-echo "Enable AGIC add on"
-echo "============================"
-
-if [ -f ~/clouddrive/aspnet-learn/create-aks-exports.txt ]; then  
-  eval $(cat ~/clouddrive/aspnet-learn/create-aks-exports.txt)
-fi
-
-if [ -f ~/clouddrive/aspnet-learn/create-application-gateway-exports.txt ]; then
-  eval $(cat ~/clouddrive/aspnet-learn/create-application-gateway-exports.txt)
+if [ -f ../../create-application-gateway-exports.txt ]; then
+  eval $(cat ../../create-application-gateway-exports.txt)
 fi
 
 if [ -z "$ESHOP_RG" ]  || [ -z "$ESHOP_AKSNAME" ] || [ -z "$ESHOP_APPGATEWAY" ] || [ -z "$ESHOP_APPGATEWAYRG" ] || [ -z "$ESHOP_APPVNET" ]
@@ -31,9 +25,10 @@ then
     exit 1
 fi
 
+echo "${newline}${bold}Enabling the AGIC add-on...${defaultTextStyle}${newline}"
+
 appgwId=$(az network application-gateway show -n $ESHOP_APPGATEWAY -g $ESHOP_RG -o tsv --query "id") 
 az aks enable-addons -n $ESHOP_AKSNAME -g $ESHOP_RG -a ingress-appgw --appgw-id $appgwId
-
 
 echo
 echo "Peer the AKS and APP Gateway virtual networks together"
@@ -48,8 +43,4 @@ az network vnet peering create -n AppGWtoAKSVnetPeering -g $ESHOP_RG --vnet-name
 appGWVnetId=$(az network vnet show -n $ESHOP_APPVNET -g $ESHOP_RG -o tsv --query "id")
 az network vnet peering create -n AKStoAppGWVnetPeering -g $nodeResourceGroup --vnet-name $aksVnetName --remote-vnet $appGWVnetId --allow-vnet-access
 
-echo
-echo "AGIC enabled in your existing cluster"
-echo "============================"
-
-popd > /dev/null
+echo "${newline}${bold}AGIC has been enabled in your cluster!${defaultTextStyle}${newline}"

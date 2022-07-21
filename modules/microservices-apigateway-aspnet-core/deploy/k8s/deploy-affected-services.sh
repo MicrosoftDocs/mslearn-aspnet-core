@@ -1,17 +1,12 @@
 #!/bin/bash
 
 # Color theming
-if [ -f ~/clouddrive/aspnet-learn/setup/theme.sh ]
-then
-  . <(cat ~/clouddrive/aspnet-learn/setup/theme.sh)
-fi
+. <(cat ../../../../infrastructure/scripts/theme.sh)
 
-if [ -f ~/clouddrive/aspnet-learn/create-acr-exports.txt ]
+if [ -f ../../create-acr-exports.txt ]
 then
-  eval $(cat ~/clouddrive/aspnet-learn/create-acr-exports.txt)
+  eval $(cat ../../create-acr-exports.txt)
 fi
-
-pushd ~/clouddrive/aspnet-learn/src/deploy/k8s > /dev/null
 
 
 while [ "$1" != "" ]; do
@@ -38,13 +33,13 @@ then
     exit 1
 fi
 
-echo "=========Deploy the WebStatus service=============="
+echo "${newline}${bold}=========Deploy the WebStatus service==============${defaultTextStyle}${newline}"
 ./deploy-application.sh --registry eshoplearn --hostip $ipAddress --charts webstatus
 
-echo "=========Deploy the Identity.API service=============="
+echo "${newline}${bold}=========Deploy the Identity.API service==============${defaultTextStyle}${newline}"
 ./deploy-application.sh --registry $ESHOP_REGISTRY --hostip $ipAddress --charts identity
 
-echo "=========Deploy the WebSalesAgg service=============="
+echo "${newline}${bold}=========Deploy the WebSalesAgg service==============${defaultTextStyle}${newline}"
 ./deploy-application.sh --registry $ESHOP_REGISTRY --hostip $ipAddress --charts websalesagg
 
-popd
+echo "${newline}${bold}Done!${defaultTextStyle}${newline}"
