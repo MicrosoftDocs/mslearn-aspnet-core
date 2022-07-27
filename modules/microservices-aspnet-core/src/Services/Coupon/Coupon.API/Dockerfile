@@ -17,7 +17,7 @@ COPY . .
 WORKDIR "/src/src/Services/Coupon/Coupon.API"
 
 FROM build AS publish
-RUN dotnet publish --no-restore "Coupon.API.csproj" -c Release -o /app/publish
+RUN dotnet publish "Coupon.API.csproj" -c Release -o /app/publish
 
 FROM base AS final
 WORKDIR /app

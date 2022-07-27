@@ -19,7 +19,7 @@ WORKDIR "/src/src/Services/Payment/Payment.API"
 # RUN dotnet build "Payment.API.csproj" -c Release -o /app/build
 
 FROM build AS publish
-RUN dotnet publish --no-restore "Payment.API.csproj" -c Release -o /app/publish
+RUN dotnet publish "Payment.API.csproj" -c Release -o /app/publish
 
 FROM base AS final
 WORKDIR /app

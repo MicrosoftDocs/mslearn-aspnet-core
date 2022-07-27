@@ -13,7 +13,7 @@ WORKDIR "/src/src/ApiGateways/Aggregators/Web.Sales.HttpAggregator"
 # RUN dotnet build "Web.Sales.HttpAggregator.csproj" -c Release -o /app/build
 
 FROM build AS publish
-RUN dotnet publish --no-restore "Web.Sales.HttpAggregator.csproj" -c Release -o /app/publish
+RUN dotnet publish "Web.Sales.HttpAggregator.csproj" -c Release -o /app/publish
 
 FROM base AS final
 WORKDIR /app

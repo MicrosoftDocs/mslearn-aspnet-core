@@ -22,7 +22,7 @@ WORKDIR "/src/src/Services/Ordering/Ordering.SignalrHub"
 # RUN dotnet build "Ordering.SignalrHub.csproj" -c Release -o /app/build
 
 FROM build AS publish
-RUN dotnet publish --no-restore "Ordering.SignalrHub.csproj" -c Release -o /app/publish
+RUN dotnet publish "Ordering.SignalrHub.csproj" -c Release -o /app/publish
 
 FROM base AS final
 WORKDIR /app
