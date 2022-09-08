@@ -37,7 +37,7 @@ then
     eshopIdTag="$dateString$random"
 fi
 
-redisName=eshop-redis-$eshopId
+redisName=eshop-redis-$eshopIdTag
 
 echo
 echo "Creating Azure Cache for Redis \"$redisName\" in resource group \"$ESHOP_RG\"..."
