@@ -109,18 +109,15 @@ eshopAcrCredentials=`az acr credential show -n $eshopAcrName --query "[username,
 eshopAcrUser=`echo "$eshopAcrCredentials" | head -1`
 eshopAcrPassword=`echo "$eshopAcrCredentials" | tail -1`
 
-# Grant permisions to AKS if created
-aksIdentityObjectId=$(az aks show -g $eshopRg -n $ESHOP_AKSNAME --query identityProfile.kubeletidentity.objectId -otsv)
+	# Grant permisions to AKS if created
+eshopAks=`az aks show -n eshop-learn-aks -g $eshopRg`
 
-if [ ! -z "$aksIdentityObjectId" ]
+if [ ! -z "$eshopAks" ]
 then
-    acrResourceId=$(az acr show -n $eshopAcrName -g $eshopRg --query id -o tsv)
-
-    az role assignment create \
-        --role AcrPull \
-        --assignee-object-id $aksIdentityObjectId \
-        --scope $acrResourceId \
-        --output none
+    echo "Attaching ACR to AKS..."
+    attachCmd="az aks update -n eshop-learn-aks -g $eshopRg --attach-acr $eshopAcrName --output none" 
+    echo "${newline} > ${azCliCommandStyle}$attachCmd${defaultTextStyle}${newline}"
+    eval $attachCmd
 fi
 
 echo export ESHOP_RG=$eshopRg >> create-acr-exports.txt
