@@ -1,5 +1,7 @@
 #!/bin/bash
-defaultLocation="centralus"
+# Change this for a different location
+defaultLocation="eastus"
+# Change this for a different resource group name
 defaultRg="eshop-learn-rg"
 
 # Color theming
@@ -32,16 +34,16 @@ done
 
 if [ -z "$eshopLocation" ]
 then
-    echo "Using the default location: $defaultLocation"
+    echo "Using the default location: ${warningStyle}$defaultLocation${defaultTextStyle}"
     eshopLocation=$defaultLocation
 fi
 
 if [ -z "$eshopRg" ]
 then
-    echo "Using the default resource group: $defaultRg"
+    echo "Using the default resource group: ${warningStyle}$defaultRg${defaultTextStyle}"
     eshopRg=$defaultRg
 fi
-echo "${bold}Note: You can change the default location and resource group by modifying the variables at the top of quickstart.sh.${defaultTextStyle}"
+echo "${warningStyle}Note: You can change the default location and resource group by modifying the variables at the top of quickstart.sh.${defaultTextStyle}"
 
 if [ ! -z "$eshopSubs" ]
 then

@@ -1,11 +1,9 @@
 #!/bin/bash
+# Change this for a different VM size
 vmSize=Standard_D2_v5
 
 # Color theming
-if [ -f ../../../../infrastructure/scripts/theme.sh ]
-then
   . <(cat ../../../../infrastructure/scripts/theme.sh)
-fi
 
 eshopSubs=${ESHOP_SUBS}
 eshopRg=${ESHOP_RG}
@@ -78,7 +76,7 @@ if [ -z "$existingAks" ]
 then
     echo
     echo "Creating AKS cluster \"$eshopAksName\" in resource group \"$eshopRg\" and location \"$eshopLocation\"."
-    echo "Using VM size \"$vmSize\". You can change this by modifying the value of the \"vmSize\" variable at the top of \"create-aks.sh\""
+    echo "${warningStyle}Using VM size \"$vmSize\". You can change this by modifying the value of the \"vmSize\" variable at the top of \"create-aks.sh\"${defaultTextStyle}"
     aksCreateCommand="az aks create -n $eshopAksName -g $eshopRg -c $eshopNodeCount --node-vm-size $vmSize --vm-set-type VirtualMachineScaleSets -l $eshopLocation --enable-managed-identity --generate-ssh-keys -o json"
     echo "${newline} > ${azCliCommandStyle}$aksCreateCommand${defaultTextStyle}${newline}"
     retry=5

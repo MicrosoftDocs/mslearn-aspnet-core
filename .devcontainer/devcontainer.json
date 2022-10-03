@@ -57,6 +57,6 @@
 	"remoteUser": "vscode",
 	"features": {
 		"kubectl-helm-minikube": "1.23",
-		"azure-cli": "2.38.0"
+		"azure-cli": "2.40.0"
 	}
 }
