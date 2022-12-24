@@ -1,0 +1,9 @@
+
+[37m[1mThe eShop-Learn application has been deployed.(B[m[37m
+
+You can begin exploring these services (when available):
+- Centralized logging       : http://20.241.241.128/seq/#/events?autorefresh (See transient failures during startup)
+- General application status: http://20.241.241.128/webstatus/ (See overall service status)
+- Web SPA application       : http://20.241.241.128/
+
+

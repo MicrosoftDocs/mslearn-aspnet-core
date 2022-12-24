@@ -1,0 +1,5 @@
+export ESHOP_SUBS=
+export ESHOP_RG=eshop-learn-rg
+export ESHOP_LOCATION=eastus
+export ESHOP_REGISTRY=eshoplearn
+export ESHOP_LBIP=20.241.241.128
