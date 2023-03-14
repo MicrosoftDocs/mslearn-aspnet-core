@@ -34,7 +34,7 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API
             {
                 Log.Information("Configuring web host ({ApplicationContext})...", AppName);
                 var host = CreateHostBuilder(configuration, args);
-
+                
                 Log.Information("Applying migrations ({ApplicationContext})...", AppName);
                 host.MigrateDbContext<CatalogContext>((context, services) =>
                 {
